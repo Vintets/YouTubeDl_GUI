@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '3', '0')
+__version_info__ = ('0', '3', '1')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -390,9 +390,15 @@ class MainGUI(Tk):
 
         button_enter = Button(link_block, text='Вставить', command=self.buffer2entry)
         button_enter.pack(side='left', padx=3)
+        Tooltip(button_enter,
+                text='Вставить из буфера обмена',
+                wraplength=250)
 
-        self.button_out_info = Button(link_block, text='!', state=DISABLED, width=3, command=self.out_info)
+        self.button_out_info = Button(link_block, text='i', state=DISABLED, width=3, command=self.out_info)
         self.button_out_info.pack(side='right', padx=3)
+        Tooltip(self.button_out_info,
+                text='Показать информацию по видео',
+                wraplength=250)
 
     def create_buttons_frame(self):
         """Блок основных кнопок"""
@@ -417,20 +423,31 @@ class MainGUI(Tk):
         self.button_format_1080mp4 = Button(widget_control, text='Видео mp4 <=1080p', state=DISABLED,
                                             command=self.download_1080mp4)  # font=('Arial', 8, 'bold')
         self.button_format_1080mp4.grid(row=1, column=2, padx=5, sticky='WE')
+        Tooltip(self.button_format_1080mp4,
+                text='Формат mp4\nЛучшее качество\nРазрешение до 1080p\nСборка: быстро',
+                wraplength=250)
 
         self.button_format_1080 = Button(widget_control, text='Видео <=1080p', state=DISABLED,
                                          command=self.download_1080)
         self.button_format_1080.grid(row=1, column=3, padx=5, sticky='WE')
+        Tooltip(self.button_format_1080,
+                text='Формат любой\nЛучшее качество\nРазрешение до 1080p\nСборка: медленно',
+                wraplength=250)
 
         self.button_format_best = Button(widget_control, text='Видео наилучшее', state=DISABLED,
                                          command=self.download_best)
         self.button_format_best.grid(row=1, column=4, padx=5, sticky='WE')
+        Tooltip(self.button_format_best,
+                text='Формат любой\nЛучшее качество\nРазрешение максимальное\nСборка: медленно',
+                wraplength=250)
 
         self.button_format_best_progressive = Button(widget_control, text='Видео без кодирования',
                                                      state=DISABLED,
                                                      command=self.download_best_progressive)
         self.button_format_best_progressive.grid(row=1, column=5, padx=5, sticky='W')
-
+        Tooltip(self.button_format_best_progressive,
+                text='Видео в наилучшем качестве без перекодирования! (progressive).\nСразу video+audio формат\nСборка: нет',
+                wraplength=250)
 
         bitrate = ['96 kbps', '128 kbps', '160 kbps', '192 kbps', '224 kbps', '256 kbps', '320 kbps']
         self.bitrate_mp3 = Combobox(widget_control, values=bitrate, width=12, state='readonly')
@@ -445,6 +462,9 @@ class MainGUI(Tk):
         # bitrate_mp3 = OptionMenu(widget_control, variable, *bitrate,
                                       # command=YoutubeDlExternal().set_bitrate_mp3)
         # bitrate_mp3.grid(row=2, column=1, padx=3, sticky='WE')
+        Tooltip(self.bitrate_mp3,
+                text='Выбрать битрейт mp3',
+                wraplength=250)
 
         self.preview = BooleanVar()
         self.preview.set(1)
@@ -455,10 +475,16 @@ class MainGUI(Tk):
                          )
         c1.grid(row=2, column=2, padx=3, sticky='W')
         self.set_writethumbnail()
+        Tooltip(c1,
+                text='Сохранять превью изображение',
+                wraplength=250)
 
 
         button_clear_console = Button(widget_control, text='Очистить', command=self.clear_console)
         button_clear_console.grid(row=2, column=5, padx=48, pady=3, sticky='ES')
+        Tooltip(button_clear_console,
+                text='Очистить консоль',
+                wraplength=250)
 
         # print('↡', '⇊', '▼', '↓', '⇓', '⇩')
         button_clear_console = Button(widget_control, text='▼', width=3, command=self.clear_console)
