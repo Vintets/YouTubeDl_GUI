@@ -23,20 +23,20 @@
 
 import os
 import sys
-import json
+import json  # noqa: F401
 import string
 import time
 import threading
 import re
 import functools
-# import subprocess
-from tkinter import Tk, Frame, Label, StringVar, OptionMenu, Toplevel, BooleanVar
-from tkinter import DISABLED, GROOVE, LEFT, SOLID
+import subprocess
+from tkinter import Tk, Frame, Label, StringVar, Toplevel, BooleanVar
+from tkinter import OptionMenu, GROOVE  # noqa: F401
+from tkinter import DISABLED, LEFT, SOLID
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Entry, Button, Combobox, Checkbutton
-from tkinter import ttk
 # from youtube_dl import YoutubeDL
-from yt_dlp import YoutubeDL, write_string, FileDownloader
+from yt_dlp import YoutubeDL, FileDownloader
 from yt_dlp.utils import DownloadError, ExtractorError
 import pyperclip
 from configs import config
@@ -91,15 +91,14 @@ def listformats(video_link):
         'writethumbnail': True,
         'listformats': True,
         # 'forcetitle': True,
-        #'force-ipv4': True,
+        # 'force-ipv4': True,
         'extractaudio': True,
         'noplaylist': True,
         'http_chunk_size': 2097152,
-        #'max_downloads': 1,
-        'progress_hooks': [youtubeDlHook],
-        'format': 'bestaudio/best',
-        'format': 'webm',
-        #'ignoreerrors': True,
+        # 'max_downloads': 1,
+        # 'progress_hooks': [youtubeDlHook],
+        'format': 'bestaudio/best',  # webm
+        # 'ignoreerrors': True,
         'postprocessors': [
             {
                 'key': 'FFmpegExtractAudio',
@@ -196,19 +195,18 @@ class YoutubeDlExternal:
 
     def out_info(self, link=None):
         info = self.get_listformats_dict(link=link)
-        id = info['id']
+        id_ = info['id']
         title = info['title']
         duration = info['duration']
-        duration_string = info['duration_string']
+        # duration_string = info['duration_string']
         format_id = info['format_id']
         length = divmod(duration, 60)
 
         print('Свединия о видео:')
-        cprint(f'20    id: ^5_{id}', force_linux=config.COLOR_TK_CONSOLE)
+        cprint(f'20    id: ^5_{id_}', force_linux=config.COLOR_TK_CONSOLE)
         cprint(f'20    Название:    ^5_{title}', force_linux=config.COLOR_TK_CONSOLE)
         cprint(f'20    Длительность ^5_{length[0]}:{length[1]} ({duration}s)', force_linux=config.COLOR_TK_CONSOLE)
         cprint(f'20    Наилучшие форматы по умолчанию: ^5_{format_id}', force_linux=config.COLOR_TK_CONSOLE)
-
 
     def listformats(self, link=None):
         ydl_opts = {
@@ -295,7 +293,7 @@ class TextRedirector():
     def __init__(self, widget, tag='stdout'):
         self.widget = widget
         self.tag = tag
-        self.pattern = re.compile('\\033\[(\d;)*\d+m')
+        self.pattern = re.compile(r'\033\[(\d;)*\d+m')
 
     def write(self, text):
         if text == '':
@@ -455,13 +453,15 @@ class MainGUI(Tk):
         self.bitrate_mp3.current(3)  # 192 kbps
         self.bitrate_mp3.bind('<<ComboboxSelected>>', self.set_bitrate_mp3)
         self.set_bitrate_mp3(None, log=False)
-        # default_bitrate_mp3 = bitrate[3]  # default value
-        # variable = StringVar(widget_control)
-        # variable.set(default_bitrate_mp3)
-        # YoutubeDlExternal().set_bitrate_mp3(default_bitrate_mp3)
-        # bitrate_mp3 = OptionMenu(widget_control, variable, *bitrate,
-                                      # command=YoutubeDlExternal().set_bitrate_mp3)
-        # bitrate_mp3.grid(row=2, column=1, padx=3, sticky='WE')
+        '''
+        default_bitrate_mp3 = bitrate[3]  # default value
+        variable = StringVar(widget_control)
+        variable.set(default_bitrate_mp3)
+        YoutubeDlExternal().set_bitrate_mp3(default_bitrate_mp3)
+        bitrate_mp3 = OptionMenu(widget_control, variable, *bitrate,
+                                 command=YoutubeDlExternal().set_bitrate_mp3)
+        bitrate_mp3.grid(row=2, column=1, padx=3, sticky='WE')
+        '''
         Tooltip(self.bitrate_mp3,
                 text='Выбрать битрейт mp3',
                 wraplength=250)
@@ -478,7 +478,6 @@ class MainGUI(Tk):
         Tooltip(c1,
                 text='Сохранять превью изображение',
                 wraplength=250)
-
 
         button_clear_console = Button(widget_control, text='Очистить', command=self.clear_console)
         button_clear_console.grid(row=2, column=5, padx=48, pady=3, sticky='ES')
@@ -543,7 +542,7 @@ class MainGUI(Tk):
         self.log_widget.tag_configure('35', foreground='#881798')  # purple
         self.log_widget.tag_configure('36', foreground='#3A96DD')  # cyan
         self.log_widget.tag_configure('37', foreground='#CCCCCC')  # grey
-        
+
         # Замена под серую консоль. Меняем серый, на тёмно-серый
         self.log_widget.tag_configure('37', foreground='#767676')  # dark_grey
 
@@ -660,49 +659,49 @@ class MainGUI(Tk):
     def list_all_available_formats(self):
         # YoutubeDlExternal().listformats(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().listformats,
-                         kwargs={'link':self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     @validate_link_format
     def out_title(self):
         # YoutubeDlExternal().out_title(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().out_title,
-                         kwargs={'link':self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     @validate_link_format
     def out_info(self):
         # YoutubeDlExternal().out_info(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().out_info,
-                         kwargs={'link':self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_1080mp4(self):
         # YoutubeDlExternal().format1080mp4(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format1080mp4,
-                         kwargs={'link':self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_1080(self):
         # YoutubeDlExternal().format1080(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format1080,
-                         kwargs={'link':self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_best(self):
         # YoutubeDlExternal().format_best(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format_best,
-                         kwargs={'link':self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_best_progressive(self):
         # YoutubeDlExternal().format_best_progressive(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format_best_progressive,
-                         kwargs={'link':self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_mp3(self):
         # YoutubeDlExternal().format_mp3(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().format_mp3, 
-                         kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().format_mp3,
+                         kwargs={'link': self.get_valid_id_link()}).start()
 
     def set_bitrate_mp3(self, event, log=True):
         # print(f'{event = }')
@@ -743,7 +742,7 @@ class Tooltip:
     TODO: themes styles support
     '''
 
-    def __init__(self, widget,
+    def __init__(self, widget,  # noqa: CFQ002
                  *,
                  bg='#FFFFEA',
                  pad=(5, 3, 5, 3),
@@ -755,18 +754,18 @@ class Tooltip:
         self.wraplength = wraplength  # in pixels, originally 180
         self.widget = widget
         self.text = text
-        self.widget.bind("<Enter>", self.onEnter)
-        self.widget.bind("<Leave>", self.onLeave)
-        self.widget.bind("<ButtonPress>", self.onLeave)
+        self.widget.bind("<Enter>", self.on_enter)
+        self.widget.bind("<Leave>", self.on_leave)
+        self.widget.bind("<ButtonPress>", self.on_leave)
         self.bg = bg
         self.pad = pad
         self.id = None
         self.tw = None
 
-    def onEnter(self, event=None):
+    def on_enter(self, event=None):
         self.schedule()
 
-    def onLeave(self, event=None):
+    def on_leave(self, event=None):
         self.unschedule()
         self.hide()
 
@@ -780,53 +779,54 @@ class Tooltip:
         if id_:
             self.widget.after_cancel(id_)
 
+    @staticmethod
+    def tip_pos_calculator(widget, label,
+                           *,
+                           tip_delta=(10, 5), pad=(5, 3, 5, 3)):
+
+        w = widget
+
+        s_width, s_height = w.winfo_screenwidth(), w.winfo_screenheight()
+
+        width, height = (pad[0] + label.winfo_reqwidth() + pad[2],
+                         pad[1] + label.winfo_reqheight() + pad[3])
+
+        mouse_x, mouse_y = w.winfo_pointerxy()
+
+        x1, y1 = mouse_x + tip_delta[0], mouse_y + tip_delta[1]
+        x2, y2 = x1 + width, y1 + height
+
+        x_delta = x2 - s_width
+        if x_delta < 0:
+            x_delta = 0
+        y_delta = y2 - s_height
+        if y_delta < 0:
+            y_delta = 0
+
+        offscreen = (x_delta, y_delta) != (0, 0)
+
+        if offscreen:
+
+            if x_delta:
+                x1 = mouse_x - tip_delta[0] - width
+
+            if y_delta:
+                y1 = mouse_y - tip_delta[1] - height
+
+        offscreen_again = y1 < 0  # out on the top
+
+        if offscreen_again:
+            # No further checks will be done.
+
+            # TIP:
+            # A further mod might automagically augment the
+            # wraplength when the tooltip is too high to be
+            # kept inside the screen.
+            y1 = 0
+
+        return x1, y1
+
     def show(self):
-        def tip_pos_calculator(widget, label,
-                               *,
-                               tip_delta=(10, 5), pad=(5, 3, 5, 3)):
-
-            w = widget
-
-            s_width, s_height = w.winfo_screenwidth(), w.winfo_screenheight()
-
-            width, height = (pad[0] + label.winfo_reqwidth() + pad[2],
-                             pad[1] + label.winfo_reqheight() + pad[3])
-
-            mouse_x, mouse_y = w.winfo_pointerxy()
-
-            x1, y1 = mouse_x + tip_delta[0], mouse_y + tip_delta[1]
-            x2, y2 = x1 + width, y1 + height
-
-            x_delta = x2 - s_width
-            if x_delta < 0:
-                x_delta = 0
-            y_delta = y2 - s_height
-            if y_delta < 0:
-                y_delta = 0
-
-            offscreen = (x_delta, y_delta) != (0, 0)
-
-            if offscreen:
-
-                if x_delta:
-                    x1 = mouse_x - tip_delta[0] - width
-
-                if y_delta:
-                    y1 = mouse_y - tip_delta[1] - height
-
-            offscreen_again = y1 < 0  # out on the top
-
-            if offscreen_again:
-                # No further checks will be done.
-
-                # TIP:
-                # A further mod might automagically augment the
-                # wraplength when the tooltip is too high to be
-                # kept inside the screen.
-                y1 = 0
-
-            return x1, y1
-
         bg = self.bg
         pad = self.pad
         widget = self.widget
@@ -838,24 +838,23 @@ class Tooltip:
         self.tw.wm_overrideredirect(True)
 
         win = Frame(self.tw,
-                       background=bg,
-                       borderwidth=0)
+                    background=bg,
+                    borderwidth=0)
         label = Label(win,
-                          text=self.text,
-                          justify=LEFT,
-                          background=bg,
-                          relief=SOLID,
-                          borderwidth=0,
-                          wraplength=self.wraplength)
+                      text=self.text,
+                      justify=LEFT,
+                      background=bg,
+                      relief=SOLID,
+                      borderwidth=0,
+                      wraplength=self.wraplength)
 
         label.grid(padx=(pad[0], pad[2]),
                    pady=(pad[1], pad[3]),
                    sticky='NSEW')
         win.grid()
 
-        x, y = tip_pos_calculator(widget, label)
-
-        self.tw.wm_geometry("+%d+%d" % (x, y))
+        x, y = self.tip_pos_calculator(widget, label)
+        self.tw.wm_geometry('+%d+%d' % (x, y))
 
     def hide(self):
         tw = self.tw
@@ -903,11 +902,11 @@ if __name__ == '__main__':
 
     try:
         main(video_link)
-    # except Exception as e:
-        # logger.critical(e)  # __str__()
-        # if config.EXCEPTION_TRACE:
-            # raise e
-        # exit_from_program(code=1)
+    except Exception as e:
+        logger.critical(e)  # __str__()
+        if config.EXCEPTION_TRACE:
+            raise e
+        exit_from_program(code=1)
     except KeyboardInterrupt:
         logger.info('Отмена. Скрипт остановлен.')
         exit_from_program(code=0)

@@ -5,7 +5,6 @@ from .utils import check_version, create_dirs  # noqa: E402
 from .log import logger  # noqa: E402
 
 
-
 __all__ = (
     'authorship',
     'clear_consol',

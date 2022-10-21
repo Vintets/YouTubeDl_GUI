@@ -18,7 +18,7 @@ def check_version() -> None:
 
 def check_monitor_resolution() -> None:
     size = (ctypes.windll.user32.GetSystemMetrics(0), ctypes.windll.user32.GetSystemMetrics(1))
-    if size not in ((3440, 1440),  (2560, 1080)):
+    if size not in ((3440, 1440), (2560, 1080)):
         raise err.UnsupportedResolutionError(size)
 
 
