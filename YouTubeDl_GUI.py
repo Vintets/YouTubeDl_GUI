@@ -44,7 +44,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '2', '5')
+__version_info__ = ('0', '3', '0')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -398,8 +398,8 @@ class MainGUI(Tk):
 
         widget_control = Frame(self)
         widget_control.grid(row=1, column=0, padx=3, pady=5, sticky='WE')
-        widget_control.columnconfigure((1, 2), weight=1)
-        widget_control.columnconfigure((0, 3, 4), weight=1)
+        widget_control.columnconfigure((0, 1), weight=1)
+        widget_control.columnconfigure((2, 3, 4, 5), weight=1)
 
         self.button_list_all__formats = Button(widget_control, text='Вывести список всех доступных форматов',
                                                state=DISABLED,
@@ -425,9 +425,14 @@ class MainGUI(Tk):
                                          command=self.download_best)
         self.button_format_best.grid(row=1, column=4, padx=5, sticky='WE')
 
+        self.button_format_best_progressive = Button(widget_control, text='Видео без кодирования',
+                                                     state=DISABLED,
+                                                     command=self.download_best_progressive)
+        self.button_format_best_progressive.grid(row=1, column=5, padx=5, sticky='W')
+
 
         bitrate = ['96 kbps', '128 kbps', '160 kbps', '192 kbps', '224 kbps', '256 kbps', '320 kbps']
-        self.bitrate_mp3 = Combobox(widget_control, values=bitrate, state='readonly')
+        self.bitrate_mp3 = Combobox(widget_control, values=bitrate, width=12, state='readonly')
         self.bitrate_mp3.grid(row=2, column=1, padx=5, sticky='WE')
         self.bitrate_mp3.current(3)  # 192 kbps
         self.bitrate_mp3.bind('<<ComboboxSelected>>', self.set_bitrate_mp3)
@@ -596,6 +601,7 @@ class MainGUI(Tk):
                         self.button_format_1080mp4,
                         self.button_format_1080,
                         self.button_format_best,
+                        self.button_format_best_progressive,
                         self.button_format_mp3
                         )
         if not input_link:
@@ -660,7 +666,7 @@ class MainGUI(Tk):
                          kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
-    def download_format_best_progressive(self):
+    def download_best_progressive(self):
         # YoutubeDlExternal().format_best_progressive(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format_best_progressive,
                          kwargs={'link':self.get_valid_id_link()}).start()
