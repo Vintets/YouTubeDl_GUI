@@ -43,7 +43,8 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
-__version_info__ = ('0', '2', '4')
+
+__version_info__ = ('0', '2', '5')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -408,36 +409,26 @@ class MainGUI(Tk):
         label_download = Label(widget_control, text='Скачать:')
         label_download.grid(row=1, column=0, padx=5, pady=5, sticky='E')
 
+        self.button_format_mp3 = Button(widget_control, text='mp3', state=DISABLED,
+                                        command=self.download_mp3)
+        self.button_format_mp3.grid(row=1, column=1, padx=5, sticky='WE')
+
         self.button_format_1080mp4 = Button(widget_control, text='Видео mp4 <=1080p', state=DISABLED,
                                             command=self.download_1080mp4)  # font=('Arial', 8, 'bold')
-        self.button_format_1080mp4.grid(row=1, column=1, padx=5, sticky='WE')
+        self.button_format_1080mp4.grid(row=1, column=2, padx=5, sticky='WE')
 
         self.button_format_1080 = Button(widget_control, text='Видео <=1080p', state=DISABLED,
                                          command=self.download_1080)
-        self.button_format_1080.grid(row=1, column=2, padx=5, sticky='WE')
+        self.button_format_1080.grid(row=1, column=3, padx=5, sticky='WE')
 
         self.button_format_best = Button(widget_control, text='Видео наилучшее', state=DISABLED,
                                          command=self.download_best)
-        self.button_format_best.grid(row=1, column=3, padx=5, sticky='WE')
+        self.button_format_best.grid(row=1, column=4, padx=5, sticky='WE')
 
-        self.button_format_mp3 = Button(widget_control, text='mp3', state=DISABLED,
-                                        command=self.download_mp3)
-        self.button_format_mp3.grid(row=1, column=4, padx=5, sticky='WE')
 
-        self.preview = BooleanVar()
-        self.preview.set(1)
-        c1 = Checkbutton(widget_control, text='Картинка превью',
-                         variable=self.preview,
-                         onvalue=1, offvalue=0,
-                         command=self.set_writethumbnail
-                         )
-        c1.grid(row=2, column=1, padx=3, sticky='W')
-        self.set_writethumbnail()
-
-        self
         bitrate = ['96 kbps', '128 kbps', '160 kbps', '192 kbps', '224 kbps', '256 kbps', '320 kbps']
         self.bitrate_mp3 = Combobox(widget_control, values=bitrate, state='readonly')
-        self.bitrate_mp3.grid(row=2, column=4, padx=5, sticky='WE')
+        self.bitrate_mp3.grid(row=2, column=1, padx=5, sticky='WE')
         self.bitrate_mp3.current(3)  # 192 kbps
         self.bitrate_mp3.bind('<<ComboboxSelected>>', self.set_bitrate_mp3)
         self.set_bitrate_mp3(None, log=False)
@@ -447,7 +438,18 @@ class MainGUI(Tk):
         # YoutubeDlExternal().set_bitrate_mp3(default_bitrate_mp3)
         # bitrate_mp3 = OptionMenu(widget_control, variable, *bitrate,
                                       # command=YoutubeDlExternal().set_bitrate_mp3)
-        # bitrate_mp3.grid(row=2, column=4, padx=3, sticky='WE')
+        # bitrate_mp3.grid(row=2, column=1, padx=3, sticky='WE')
+
+        self.preview = BooleanVar()
+        self.preview.set(1)
+        c1 = Checkbutton(widget_control, text='Картинка превью',
+                         variable=self.preview,
+                         onvalue=1, offvalue=0,
+                         command=self.set_writethumbnail
+                         )
+        c1.grid(row=2, column=2, padx=3, sticky='W')
+        self.set_writethumbnail()
+
 
         button_clear_console = Button(widget_control, text='Очистить', command=self.clear_console)
         button_clear_console.grid(row=2, column=5, padx=48, pady=3, sticky='ES')
@@ -624,37 +626,50 @@ class MainGUI(Tk):
     @validate_link_format
     def list_all_available_formats(self):
         # YoutubeDlExternal().listformats(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().listformats, kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().listformats,
+                         kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
     def out_title(self):
         # YoutubeDlExternal().out_title(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().out_title, kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().out_title,
+                         kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
     def out_info(self):
         # YoutubeDlExternal().out_info(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().out_info, kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().out_info,
+                         kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_1080mp4(self):
         # YoutubeDlExternal().format1080mp4(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().format1080mp4, kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().format1080mp4,
+                         kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_1080(self):
         # YoutubeDlExternal().format1080(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().format1080, kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().format1080,
+                         kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_best(self):
         # YoutubeDlExternal().format_best(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().format_best, kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().format_best,
+                         kwargs={'link':self.get_valid_id_link()}).start()
+
+    @validate_link_format
+    def download_format_best_progressive(self):
+        # YoutubeDlExternal().format_best_progressive(link=self.get_valid_id_link())
+        threading.Thread(target=YoutubeDlExternal().format_best_progressive,
+                         kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_mp3(self):
         # YoutubeDlExternal().format_mp3(link=self.get_valid_id_link())
-        threading.Thread(target=YoutubeDlExternal().format_mp3, kwargs={'link':self.get_valid_id_link()}).start()
+        threading.Thread(target=YoutubeDlExternal().format_mp3, 
+                         kwargs={'link':self.get_valid_id_link()}).start()
 
     def set_bitrate_mp3(self, event, log=True):
         # print(f'{event = }')
