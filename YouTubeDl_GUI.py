@@ -41,7 +41,7 @@ from configs import config
 from accessory import authorship, clear_consol, cprint, check_version, logger
 
 
-__version_info__ = ('0', '2', '0')
+__version_info__ = ('0', '2', '1')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -188,11 +188,22 @@ class YoutubeDlExternal:
         }
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
+
+    def out_info(self, link=None):
         info = self.get_listformats_dict(link=link)
-        print(f'{info["title"]}')
-        print(f'{info["duration"]}')
-        print(f'{info["duration_string"]}')
-        print(f'{info["format_id"]}')
+        id = info['id']
+        title = info['title']
+        duration = info['duration']
+        duration_string = info['duration_string']
+        format_id = info['format_id']
+        length = divmod(duration, 60)
+
+        print('Свединия о видео:')
+        cprint(f'20    id: ^5_{id}', force_linux=config.COLOR_TK_CONSOLE)
+        cprint(f'20    Название:    ^5_{title}', force_linux=config.COLOR_TK_CONSOLE)
+        cprint(f'20    Длительность ^5_{length[0]}:{length[1]} ({duration}s)', force_linux=config.COLOR_TK_CONSOLE)
+        cprint(f'20    Наилучшие форматы по умолчанию: ^5_{format_id}', force_linux=config.COLOR_TK_CONSOLE)
+
 
     def listformats(self, link=None):
         ydl_opts = {
@@ -327,7 +338,6 @@ class MainGUI(Tk):
     def __init__(self):
         self.valid_characters_id = string.ascii_letters + string.digits + '-_'
 
-        self.flinux = config.COLOR_TK_CONSOLE
         Tk.__init__(self)
         self.title(f'YouTubeDl_GUI v{__version__}')
         self.geometry('+490+150')
@@ -344,7 +354,7 @@ class MainGUI(Tk):
 
         self.buffer_insert()
         self.redirect_logging()
-        # cprint('9YouTubeDl_GUI запущен!', force_linux=self.flinux)
+        # cprint('9YouTubeDl_GUI запущен!', force_linux=config.COLOR_TK_CONSOLE)
         self.tick()
 
     def create_link_frame(self):
@@ -365,8 +375,8 @@ class MainGUI(Tk):
         button_enter = Button(link_block, text='Вставить', command=self.buffer2entry)
         button_enter.pack(side='left', padx=3)
 
-        self.button_out_title = Button(link_block, text='!', state=DISABLED, width=3, command=self.out_title)
-        self.button_out_title.pack(side='right', padx=3)
+        self.button_out_info = Button(link_block, text='!', state=DISABLED, width=3, command=self.out_info)
+        self.button_out_info.pack(side='right', padx=3)
 
     def create_buttons_frame(self):
         """Блок основных кнопок"""
@@ -525,7 +535,7 @@ class MainGUI(Tk):
         # print('\r***\033[36mhttp\033[0m---\033[35m0123456789\033[0m---')
         link = self.get_input_link_or_default('This is stdout 0123456789')
         print(f'\033[36m{link}\033[0m' + '---\033[35m0123456789\033[0m---')
-        # cprint('9YouTubeDl_GUI запущен!', force_linux=self.flinux)
+        # cprint('9YouTubeDl_GUI запущен!', force_linux=config.COLOR_TK_CONSOLE)
         # print('Конец')
         # self.log_widget.tag_add('32', '1.2', '1.5')
         # write_string('\033[36m---0123456789---\033[0m')
@@ -565,7 +575,7 @@ class MainGUI(Tk):
     def tick(self):
         input_link = self.inserted_link.get()
         list_disable = (
-                        self.button_out_title,
+                        self.button_out_info,
                         self.button_list_all__formats,
                         self.button_format_1080mp4,
                         self.button_format_1080,
@@ -606,6 +616,11 @@ class MainGUI(Tk):
     def out_title(self):
         # YoutubeDlExternal().out_title(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().out_title, kwargs={'link':self.get_valid_id_link()}).start()
+
+    @validate_link_format
+    def out_info(self):
+        # YoutubeDlExternal().out_info(link=self.get_valid_id_link())
+        threading.Thread(target=YoutubeDlExternal().out_info, kwargs={'link':self.get_valid_id_link()}).start()
 
     @validate_link_format
     def download_1080mp4(self):
