@@ -28,6 +28,7 @@ import string
 import time
 import threading
 import re
+import functools
 # import subprocess
 from tkinter import Tk, Frame, Label, StringVar, OptionMenu, DISABLED, GROOVE, BooleanVar
 from tkinter.scrolledtext import ScrolledText
@@ -40,8 +41,9 @@ import pyperclip
 from configs import config
 from accessory import authorship, clear_consol, cprint, check_version, logger
 
+cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
-__version_info__ = ('0', '2', '1')
+__version_info__ = ('0', '2', '2')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
