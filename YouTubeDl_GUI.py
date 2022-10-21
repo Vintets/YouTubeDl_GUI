@@ -43,7 +43,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
-__version_info__ = ('0', '2', '2')
+__version_info__ = ('0', '2', '3')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -108,7 +108,7 @@ def listformats(video_link):
             {'key': 'EmbedThumbnail'},
         ],
         # 'outtmpl': yt_song_structure['playlist_path'] + '/' + yt_song_structure['title'] + '.%(ext)s',
-        'outtmpl': '"%HOMEDRIVE%\%HOMEPATH%\Desktop\%(title)s-%(id)s.%(ext)s"',
+        'outtmpl': f'{config.PATH_SAVE}%(title)s-%(id)s.%(ext)s',
         'logger': MyLogger(),
         'progress_hooks': [my_hook],
     }
@@ -165,6 +165,7 @@ class YoutubeDlExternal:
             self.youtube_dl = YoutubeDLColorTk
         else:
             self.youtube_dl = YoutubeDL
+        self.filename_sample = '%(title)s-%(id)s.%(ext)s'
 
     def external_list_all_available_formats_(self, link=None):
         if link:
@@ -221,7 +222,7 @@ class YoutubeDlExternal:
             'writethumbnail': self.writethumbnail,
             # 'forcetitle': True,
             'format': 'bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-            'outtmpl': f'{config.PATH_SAVE}%(title)s-%(id)s.%(ext)s',
+            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
         with self.youtube_dl(ydl_opts) as ydl:
@@ -232,7 +233,7 @@ class YoutubeDlExternal:
             'writethumbnail': self.writethumbnail,
             # 'forcetitle': True,
             'format': 'bestvideo[height<=?1080]+bestaudio/best',
-            'outtmpl': f'{config.PATH_SAVE}%(title)s-%(id)s.%(ext)s',
+            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
         with self.youtube_dl(ydl_opts) as ydl:
@@ -243,7 +244,7 @@ class YoutubeDlExternal:
             'writethumbnail': self.writethumbnail,
             # 'forcetitle': True,
             'format': 'bestvideo[height<=?1080]+bestaudio/best',
-            'outtmpl': f'{config.PATH_SAVE}%(title)s-%(id)s.%(ext)s',
+            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
         with self.youtube_dl(ydl_opts) as ydl:
@@ -260,7 +261,7 @@ class YoutubeDlExternal:
                 'preferredcodec': 'mp3',
                 'preferredquality': self.bitrate_mp3,
             }],
-            'outtmpl': f'{config.PATH_SAVE}%(title)s-%(id)s.%(ext)s',
+            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
         with self.youtube_dl(ydl_opts) as ydl:
