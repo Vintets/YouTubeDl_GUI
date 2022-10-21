@@ -88,6 +88,8 @@ def colors_win2linux():
             13: 95,
             14: 93,
             15: 97,
+
+            20: 0,
             }
 
 
@@ -95,8 +97,10 @@ def _dafault_color(force_linux):
     # цвет по умолчанию: 20
     # для windows это 1, для linux - сброс
     def_color = 1
-    if ('linux' in PLATFORM) or force_linux:
-        def_color = 15
+    if 'linux' in PLATFORM:
+        def_color = 0
+    elif force_linux:
+        def_color = 20
     elif PLATFORM == 'win32':
         def_color = 1
     return def_color
