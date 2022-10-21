@@ -54,6 +54,8 @@
         "**/*.m4a": true,
         "zYouTubeDl_GUI_development/": true,
         "LICENSE": true,
+        "media": true,
+        "screenshots": true,
     },
     "search.exclude": {
         ".vscode/": true,
@@ -75,6 +77,8 @@
         "**/*.m4a": true,
         "zYouTubeDl_GUI_development/": true,
         "LICENSE": true,
+        "media": true,
+        "screenshots": true,
     },
 
     // "python.linting.pylintEnabled": true,
