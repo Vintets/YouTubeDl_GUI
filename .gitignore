@@ -1,0 +1,37 @@
+# System
+Thumbs.db
+*.bak
+
+# Venv
+/env/
+/env2/
+/venv/
+
+# Configs
+
+# Project dirs
+**/__pycache__/
+/zYouTubeDl_GUI_development/*
+/media/
+/screenshots/*
+
+# Project files
+cookies*.txt
+
+# Simlinks
+
+# Log files
+/logs/
+
+# Other files
+Очистка_компил_py3.bat
+*.png
+*.jpg
+*.webm
+*.mp4
+*.mkv
+*.mp3
+*.m4a
+*.exe
+!/zYouTubeDl_GUI_development/YouTubeDl_GUI_description.txt
+!/screenshots/*_screenshot_*.png

@@ -1,0 +1,277 @@
+
+            *** yt-dlp ***
+
+youtube-dl давно не обновлялся, используем его форк yt-dlp
+
+
+# папка приложения
+#WIN#
+cd /d %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI
+
+# запуск
+python3 %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\YouTubeDl_GUI.py
+
+
+# ==================================================================================================
+            *** Git ***
+
+Проект YouTubeDl_GUI
+    cd "$YandexDisk/_Python/_Python_Projects/YouTubeDl_GUI"
+    git remote add origin git@bitbucket.org:Vintets/youtubedl_gui.git
+    # добавить привязку ко 2 репозиторию (github
+    git remote set-url origin --add git@github.com:Vintets/YouTubeDl_GUI.git
+    # добавим раздельные команды
+    git remote add github git@github.com:Vintets/YouTubeDl_GUI.git
+
+
+    git push origin master
+
+    git push github master
+
+
+# ==================================================================================================
+            *** flake8 ***
+
+cd /d %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI
+
+flake8
+flake8 YouTubeDl_GUI.py
+flake8 D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI\YouTubeDl_GUI.py
+
+# noqa
+
+
+# ==================================================================================================
+            *** Пример видео ***
+
+# Входит и замечательно выходит 19s
+https://youtu.be/b_tdqGM4_sE
+
+# Stronghold
+https://youtu.be/XifjHd4ySWA
+
+
+#‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡
+
+# вывести инфу о видео
+yt-dlp --get-title -F https://youtu.be/b_tdqGM4_sE
+yt-dlp --cookies cookies.txt --get-title -F https://youtu.be/b_tdqGM4_sE
+
+
+#▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+# запуск приложения с конфигом
+
+# конфиг 1080
+# формат <=1080p адаптивный (DASH)/прогрессивный (совмещённый)
+yt-dlp --config-location yt-dl-1080.conf https://youtu.be/b_tdqGM4_sE
+
+# конфиг 1080-mp4
+# формат <=1080p mp4 адаптивный (DASH)/прогрессивный (совмещённый)/если mp4 недоступен - любой лучший
+yt-dlp --config-location yt-dl-1080-mp4.conf https://youtu.be/b_tdqGM4_sE
+
+# конфиг best-progressive
+# формат лучший прогрессивный (совмещённый) (такие форматы через плагин браузера)
+yt-dlp --config-location yt-dl-best-progressive.conf https://youtu.be/b_tdqGM4_sE
+
+# конфиг best
+# формат лучший любой (по умолчанию)
+yt-dlp --config-location yt-dl-best.conf https://youtu.be/b_tdqGM4_sE
+
+# конфиг yt-dl-mp3-192
+# конвертация в mp3 192
+yt-dlp --config-location yt-dl-mp3-192.conf https://youtu.be/b_tdqGM4_sE
+#▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+
+# скачать в  наилучшем качестве (по умолчанию) -f bestvideo+bestaudio/best
+yt-dlp --write-thumbnail https://youtu.be/b_tdqGM4_sE
+
+# формат лучший доступный mp4 или любой другой лучший, если mp4 недоступен
+yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --write-thumbnail https://youtu.be/b_tdqGM4_sE
+
+
+# вывести список миниатюр
+yt-dlp --list-thumbnails https://youtu.be/XifjHd4ySWA
+https://i.ytimg.com/vi/XifjHd4ySWA/maxresdefault.jpg
+
+# сохранять миниатюру/все миниатюры
+yt-dlp --write-thumbnail https://youtu.be/XifjHd4ySWA
+yt-dlp --write-all-thumbnails https://youtu.be/XifjHd4ySWA
+
+# description
+yt-dlp [OPTIONS] [--] URL [URL...]
+
+
+#----------------------------------------------
+# Конфиги с указанием параметров
+# запуск приложения с конфигом 1080
+# формат <=1080p адаптивный (DASH)/прогрессивный (совмещённый)
+yt-dlp --config-location yt-dl-1080.conf https://youtu.be/b_tdqGM4_sE
+# -f 'bestvideo[height<=?1080]+bestaudio/best'
+
+# запуск приложения с конфигом 1080-mp4
+# формат <=1080p mp4 адаптивный (DASH)/прогрессивный (совмещённый)/или любой другой лучший, если mp4 недоступен
+yt-dlp --config-location yt-dl-1080-mp4.conf https://youtu.be/b_tdqGM4_sE
+# -f 'bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+
+# запуск приложения с конфигом best-progressive
+# формат лучший прогрессивный (совмещённый)
+yt-dlp --config-location yt-dl-best-progressive.conf https://youtu.be/b_tdqGM4_sE
+# -f best
+
+# запуск приложения с конфигом best
+# формат лучший любой (по умолчанию)
+yt-dlp --config-location yt-dl-best.conf https://youtu.be/b_tdqGM4_sE
+# -f bestvideo+bestaudio/best
+
+# запуск приложения с конфигом yt-dl-mp3-192
+# конвертация в mp3 192
+yt-dlp --config-location yt-dl-mp3-192.conf https://youtu.be/b_tdqGM4_sE
+-f bestaudio/best
+-x
+--audio-format mp3
+--audio-quality 192
+#----------------------------------------------
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Входит и замечательно выходит 19s
+https://youtu.be/b_tdqGM4_sE
+Просмотр в браузере         398+251
+Наилучший (без параметров)  247+140.mkv
+[youtube] b_tdqGM4_sE: Writing thumbnail to: Входит и замечательно выходит!-b_tdqGM4_sE.jpg
+WARNING: Requested formats are incompatible for merge and will be merged into mkv.
+[download] Destination: Входит и замечательно выходит!-b_tdqGM4_sE.f247.webm
+[download] 100% of 1.93MiB in 00:25
+[download] Destination: Входит и замечательно выходит!-b_tdqGM4_sE.f140.m4a
+[download] 100% of 302.71KiB in 00:03
+[ffmpeg] Merging formats into "Входит и замечательно выходит!-b_tdqGM4_sE.mkv"
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            *** Выбор формата ***
+
+
+yt-dlp https://youtu.be/b_tdqGM4_sE
+или
+yt-dlp -f bestvideo+bestaudio/best https://youtu.be/b_tdqGM4_sE
+
+yt-dlp -f mp4/bestvideo+m4a/bestaudio https://youtu.be/b_tdqGM4_sE
+
+# видео 299 или 303, аудио 140 или 251
+yt-dlp --write-thumbnail -f 299/303,140/251 
+yt-dlp --write-thumbnail -f best 
+yt-dlp --write-thumbnail -f bestvideo 
+yt-dlp --write-thumbnail -f bestaudio 
+
+yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio 
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            *** OPTIONS ***
+
+
+# coding: utf-8
+
+-N, --concurrent-fragments N    Number of fragments of a dash/hlsnative
+                                video that should be downloaded concurrently
+                                (default is 1)
+-r, --limit-rate RATE           Maximum download rate in bytes per second,
+                                e.g. 50K or 4.2M
+
+
+вы можете использовать загрузчик aria2.
+он может загружать файлы с несколькими подключениями, например, с 16 подключений
+--external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M"
+
+
+# печатать название
+--get-title
+
+
+# ==================================================================================================
+            *** передать файлы cookie в yt-dlp ***
+
+
+# передать файл cookie
+--cookies cookies.txt
+--cookies /path/to/cookies/cookies.txt
+
+первая строка файла cookie должна быть либо # HTTP Cookie File, либо # Netscape HTTP Cookie File
+правильный формат новой строки в файле cookie, в соответствии с ОС, а именно CRLF (\r\n) для Windows
+В Firefox можно создать расширением cookies.txt
+
+
+# ==================================================================================================
+            *** install, download ***
+
+
+да и сам youtube-dl давно не обновлялся, попробуйте его форк yt-dlp
+https://github.com/yt-dlp/yt-dlp
+
+Через pip
+pip3 install yt-dlp -U
+sudo pip3 install --upgrade youtube_dl
+
+
+Windows.exe
+https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe
+
+
+Full source
+https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.tar.gz
+
+Хотя все остальные зависимости являются необязательными, настоятельно рекомендуется использовать ffmpeg и ffprobe.
+
+
+# github
+git@github.com:yt-dlp/yt-dlp.git
+https://github.com/yt-dlp/yt-dlp.git
+
+
+# ==================================================================================================
+            *** Внедрение yt-dlp ***
+
+from yt_dlp import YoutubeDL
+
+URLS = ['https://www.youtube.com/watch?v=BaW_jenozKc']
+with YoutubeDL() as ydl:
+    ydl.download(URLS)
+
+
+# ==================================================================================================
+            *** ffmpeg ***
+
+
+ffmpeg -i "%HOMEDRIVE%\%HOMEPATH%\Desktop\No Doubt - Don't Speak (Official 4K Music Video)-TR3Vdo5etCQ_313+251.webm" %HOMEDRIVE%\%HOMEPATH%\Desktop\output.mp4
+
+
+-vcodec или -c:v    - указать видеокодек.
+                    libx264 и установить CRF, который является уровнем качества (чем ниже, тем лучше, по умолчанию - 23,
+                    а вменяемые значения - между 18 и 28).
+Вам также нужно указать -strict experimental иначе вы можете получить:
+« Кодировщик AAC является экспериментальным, но экспериментальные кодеки не включены, добавьте« -strict -2 »,
+если хотите его использовать».
+
+
+# ==================================================================================================
+
+\x1b[0;33m
+
+
+YoutubeDL.py
+стр. 951
+allow_colors = True
+
+или заменить функцию
+    def _format_out(self, *args, **kwargs):
+        return self._format_text(self._out_files.out, self._allow_colors.out, *args, **kwargs)
+на
+    def _format_out(self, *args, **kwargs):
+        return self._format_text(self._out_files.out, True, *args, **kwargs)
+
+print('\033[33mTest\033[0m')
+print('\033[31mText\033[0m')
+
+
