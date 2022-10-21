@@ -20,13 +20,9 @@ python3 %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\YouTubeDl_GUI.py
     git remote add origin git@bitbucket.org:Vintets/youtubedl_gui.git
     # добавить привязку ко 2 репозиторию (github
     git remote set-url origin --add git@github.com:Vintets/YouTubeDl_GUI.git
-    # добавим раздельные команды
-    git remote add github git@github.com:Vintets/YouTubeDl_GUI.git
 
 
     git push origin master
-
-    git push github master
 
 
 # ==================================================================================================
