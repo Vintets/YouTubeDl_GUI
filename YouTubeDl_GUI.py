@@ -519,7 +519,7 @@ class MainGUI(Tk):
         # button_clear_console.grid(row=0, column=5, padx=16, pady=3, sticky='ES')
 
         self.log_widget = ScrolledText(widget_consol, state='disabled', wrap='word',
-                                       height=44, width=130, bg='#cccccc', fg='#000080',
+                                       height=48, width=130, bg='#cccccc', fg='#000080',
                                        font=('consolas', '8', 'normal'))
         # self.log_widget.pack(side='top', fill='both', expand=True)
         self.log_widget.grid(row=1, column=0, columnspan=6, sticky='ES')
