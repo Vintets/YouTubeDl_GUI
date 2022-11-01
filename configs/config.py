@@ -5,6 +5,9 @@ PATH_SAVE = '%HOMEDRIVE%\\%HOMEPATH%\\Desktop\\'
 PATH_LOGS = Path('logs')
 COLOR_TK_CONSOLE = True
 
+# Контейнеры, которые можно использовать при слиянии, например 'mp4/mkv' (avi, flv, mkv, mov, mp4, webm)
+MERGE_OUTPUT_FORMAT = 'mp4/mkv'
+
 CLOSECONSOLE = True
 LOGGER_NAME_MODULE = True
 EXCEPTION_TRACE = True

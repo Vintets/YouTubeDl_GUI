@@ -177,6 +177,11 @@ yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio
                                 e.g. 50K or 4.2M
 
 
+--merge-output-format FORMAT    Containers that may be used when merging
+                                formats, separated by "/", e.g. "mp4/mkv".
+                                Ignored if no merge is required. (currently
+                                supported: avi, flv, mkv, mov, mp4, webm)
+
 вы можете использовать загрузчик aria2.
 он может загружать файлы с несколькими подключениями, например, с 16 подключений
 --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M"

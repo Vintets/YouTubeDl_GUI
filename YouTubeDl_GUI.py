@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '3', '2')
+__version_info__ = ('0', '3', '3')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -155,6 +155,7 @@ class YoutubeDlExternal:
     youtube_dl = None
     bitrate_mp3 = None
     writethumbnail = False
+    out_format = config.MERGE_OUTPUT_FORMAT
 
     def __new__(cls):
         if cls.instance is None:
@@ -236,6 +237,8 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        if self.out_format:
+            ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
@@ -247,6 +250,8 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        if self.out_format:
+            ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
