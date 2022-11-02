@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '3', '5')
+__version_info__ = ('0', '3', '6')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -356,6 +356,7 @@ class TextRedirector():
 class MainGUI(Tk):
     def __init__(self):
         self.valid_characters_id = string.ascii_letters + string.digits + '-_'
+        self.height_console = 48
 
         Tk.__init__(self)
         self.title(f'YouTubeDl_GUI v{__version__}')
@@ -494,9 +495,8 @@ class MainGUI(Tk):
                 text='Очистить консоль',
                 wraplength=250)
 
-        # print('↡', '⇊', '▼', '↓', '⇓', '⇩')
-        button_clear_console = Button(frame, text='▼', width=3, command=self.clear_console)
-        button_clear_console.grid(row=2, column=5, padx=16, pady=3, sticky='ES')
+        self.button_toggle_console = Button(frame, text='▲', width=3, command=self.toggle_size_consol)
+        self.button_toggle_console.grid(row=2, column=5, padx=16, pady=3, sticky='ES')
 
     def redirect_stdout_elements(self, frame, show=True):
         label_redirect = Label(frame, text='Redirect console:')  # relief=GROOVE
@@ -529,6 +529,17 @@ class MainGUI(Tk):
         # self.log_widget.pack(side='top', fill='both', expand=True)
         self.log_widget.grid(row=0, column=0, columnspan=6, sticky='ES')
         self.create_tags()
+
+    def toggle_size_consol(self):
+        if self.height_console == 48:
+            self.height_console = 24
+            self.button_toggle_console.config(text='▼')
+            # print('↡', '⇊', '▼', '↓', '⇓', '⇩')
+        else:
+            self.height_console = 48
+            self.button_toggle_console.config(text='▲')
+            # print('🠕', '⇈', '▲', '↑', '⇑', '⇧')
+        self.log_widget.config(height=self.height_console)
 
     def buffer2entry(self):
         text = pyperclip.paste()
