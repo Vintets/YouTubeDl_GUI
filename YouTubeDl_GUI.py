@@ -516,18 +516,16 @@ class MainGUI(Tk):
 
         widget_consol = Frame(self)
         widget_consol.grid(row=2, column=0, padx=3, pady=3)
-
-        # button_clear_console = Button(widget_consol, text='Очистить', command=self.clear_console)
-        # button_clear_console.grid(row=0, column=5, padx=48, pady=3, sticky='ES')
-
-        # button_clear_console = Button(widget_consol, text='▼', width=3, command=self.clear_console)
-        # button_clear_console.grid(row=0, column=5, padx=16, pady=3, sticky='ES')
+        self.columnconfigure(0, weight=1)
+        # self.rowconfigure(2, weight=1)
+        widget_consol.columnconfigure(0, weight=1)
+        widget_consol.rowconfigure(0, weight=1)
 
         self.log_widget = ScrolledText(widget_consol, state='disabled', wrap='word',
                                        height=48, width=130, bg='#cccccc', fg='#000080',
                                        font=('consolas', '8', 'normal'))
         # self.log_widget.pack(side='top', fill='both', expand=True)
-        self.log_widget.grid(row=1, column=0, columnspan=6, sticky='ES')
+        self.log_widget.grid(row=0, column=0, columnspan=6, sticky='ES')
         self.create_tags()
 
     def buffer2entry(self):
