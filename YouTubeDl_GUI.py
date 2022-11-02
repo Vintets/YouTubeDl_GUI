@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '3', '3')
+__version_info__ = ('0', '3', '4')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -408,8 +408,11 @@ class MainGUI(Tk):
 
         widget_control = Frame(self)
         widget_control.grid(row=1, column=0, padx=3, pady=5, sticky='WE')
+        self.columnconfigure(0, weight=1)
+        # self.rowconfigure(1, weight=1)
         widget_control.columnconfigure((0, 1), weight=1)
         widget_control.columnconfigure((2, 3, 4, 5), weight=1)
+        # widget_control.rowconfigure((0, 1, 2), weight=1)
 
         self.button_list_all__formats = Button(widget_control, text='Вывести список всех доступных форматов',
                                                state=DISABLED,
