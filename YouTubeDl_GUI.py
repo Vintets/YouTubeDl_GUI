@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '3', '4')
+__version_info__ = ('0', '3', '5')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -414,40 +414,48 @@ class MainGUI(Tk):
         widget_control.columnconfigure((2, 3, 4, 5), weight=1)
         # widget_control.rowconfigure((0, 1, 2), weight=1)
 
-        self.button_list_all__formats = Button(widget_control, text='Вывести список всех доступных форматов',
+        self.create_widget_all_formats(frame=widget_control)
+        self.create_widgets_download(frame=widget_control)
+        self.create_widgets_config(frame=widget_control)
+        self.create_widgets_control_console(frame=widget_control)
+        self.redirect_stdout_elements(frame=widget_control, show=False)
+
+    def create_widget_all_formats(self, frame):
+        self.button_list_all_formats = Button(frame, text='Вывести список всех доступных форматов',
                                                state=DISABLED,
                                                command=self.list_all_available_formats)
-        self.button_list_all__formats.grid(row=0, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
+        self.button_list_all_formats.grid(row=0, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
 
-        label_download = Label(widget_control, text='Скачать:')
+    def create_widgets_download(self, frame):
+        label_download = Label(frame, text='Скачать:')
         label_download.grid(row=1, column=0, padx=5, pady=5, sticky='E')
 
-        self.button_format_mp3 = Button(widget_control, text='mp3', state=DISABLED,
+        self.button_format_mp3 = Button(frame, text='mp3', state=DISABLED,
                                         command=self.download_mp3)
         self.button_format_mp3.grid(row=1, column=1, padx=5, sticky='WE')
 
-        self.button_format_1080mp4 = Button(widget_control, text='Видео mp4 <=1080p', state=DISABLED,
+        self.button_format_1080mp4 = Button(frame, text='Видео mp4 <=1080p', state=DISABLED,
                                             command=self.download_1080mp4)  # font=('Arial', 8, 'bold')
         self.button_format_1080mp4.grid(row=1, column=2, padx=5, sticky='WE')
         Tooltip(self.button_format_1080mp4,
                 text='Формат mp4\nЛучшее качество\nРазрешение до 1080p\nСборка: быстро',
                 wraplength=250)
 
-        self.button_format_1080 = Button(widget_control, text='Видео <=1080p', state=DISABLED,
+        self.button_format_1080 = Button(frame, text='Видео <=1080p', state=DISABLED,
                                          command=self.download_1080)
         self.button_format_1080.grid(row=1, column=3, padx=5, sticky='WE')
         Tooltip(self.button_format_1080,
                 text='Формат любой\nЛучшее качество\nРазрешение до 1080p\nСборка: медленно',
                 wraplength=250)
 
-        self.button_format_best = Button(widget_control, text='Видео наилучшее', state=DISABLED,
+        self.button_format_best = Button(frame, text='Видео наилучшее', state=DISABLED,
                                          command=self.download_best)
         self.button_format_best.grid(row=1, column=4, padx=5, sticky='WE')
         Tooltip(self.button_format_best,
                 text='Формат любой\nЛучшее качество\nРазрешение максимальное\nСборка: медленно',
                 wraplength=250)
 
-        self.button_format_best_progressive = Button(widget_control, text='Видео без кодирования',
+        self.button_format_best_progressive = Button(frame, text='Видео без кодирования',
                                                      state=DISABLED,
                                                      command=self.download_best_progressive)
         self.button_format_best_progressive.grid(row=1, column=5, padx=5, sticky='W')
@@ -455,28 +463,20 @@ class MainGUI(Tk):
                 text='Видео в наилучшем качестве без перекодирования! (progressive).\nСразу video+audio формат\nСборка: нет',
                 wraplength=250)
 
+    def create_widgets_config(self, frame):
         bitrate = ['96 kbps', '128 kbps', '160 kbps', '192 kbps', '224 kbps', '256 kbps', '320 kbps']
-        self.bitrate_mp3 = Combobox(widget_control, values=bitrate, width=12, state='readonly')
+        self.bitrate_mp3 = Combobox(frame, values=bitrate, width=12, state='readonly')
         self.bitrate_mp3.grid(row=2, column=1, padx=5, sticky='WE')
         self.bitrate_mp3.current(3)  # 192 kbps
         self.bitrate_mp3.bind('<<ComboboxSelected>>', self.set_bitrate_mp3)
         self.set_bitrate_mp3(None, log=False)
-        '''
-        default_bitrate_mp3 = bitrate[3]  # default value
-        variable = StringVar(widget_control)
-        variable.set(default_bitrate_mp3)
-        YoutubeDlExternal().set_bitrate_mp3(default_bitrate_mp3)
-        bitrate_mp3 = OptionMenu(widget_control, variable, *bitrate,
-                                 command=YoutubeDlExternal().set_bitrate_mp3)
-        bitrate_mp3.grid(row=2, column=1, padx=3, sticky='WE')
-        '''
         Tooltip(self.bitrate_mp3,
                 text='Выбрать битрейт mp3',
                 wraplength=250)
 
         self.preview = BooleanVar()
         self.preview.set(1)
-        c1 = Checkbutton(widget_control, text='Картинка превью',
+        c1 = Checkbutton(frame, text='Картинка превью',
                          variable=self.preview,
                          onvalue=1, offvalue=0,
                          command=self.set_writethumbnail
@@ -487,25 +487,24 @@ class MainGUI(Tk):
                 text='Сохранять превью изображение',
                 wraplength=250)
 
-        button_clear_console = Button(widget_control, text='Очистить', command=self.clear_console)
+    def create_widgets_control_console(self, frame):
+        button_clear_console = Button(frame, text='Очистить', command=self.clear_console)
         button_clear_console.grid(row=2, column=5, padx=48, pady=3, sticky='ES')
         Tooltip(button_clear_console,
                 text='Очистить консоль',
                 wraplength=250)
 
         # print('↡', '⇊', '▼', '↓', '⇓', '⇩')
-        button_clear_console = Button(widget_control, text='▼', width=3, command=self.clear_console)
+        button_clear_console = Button(frame, text='▼', width=3, command=self.clear_console)
         button_clear_console.grid(row=2, column=5, padx=16, pady=3, sticky='ES')
 
-        self.redirect_stdout_elements(widget_control, show=False)
+    def redirect_stdout_elements(self, frame, show=True):
+        label_redirect = Label(frame, text='Redirect console:')  # relief=GROOVE
+        self.button_redirect = Button(frame, text='to widget', command=self.redirect_logging)
+        self.button_redirect_reset = Button(frame, text='reset', command=self.reset_logging)
 
-    def redirect_stdout_elements(self, widget_control, show=True):
-        label_redirect = Label(widget_control, text='Redirect console:')  # relief=GROOVE
-        self.button_redirect = Button(widget_control, text='to widget', command=self.redirect_logging)
-        self.button_redirect_reset = Button(widget_control, text='reset', command=self.reset_logging)
-
-        print_stdout_button = Button(widget_control, text='Print to stdout', command=self.print_stdout)
-        print_stderr_button = Button(widget_control, text='Print to stderr', command=self.print_stderr)
+        print_stdout_button = Button(frame, text='Print to stdout', command=self.print_stdout)
+        print_stderr_button = Button(frame, text='Print to stderr', command=self.print_stderr)
 
         if show:
             label_redirect.grid(row=3, column=0, padx=5, pady=5, sticky='W')
@@ -629,7 +628,7 @@ class MainGUI(Tk):
         input_link = self.inserted_link.get()
         list_disable = (
                         self.button_out_info,
-                        self.button_list_all__formats,
+                        self.button_list_all_formats,
                         self.button_format_1080mp4,
                         self.button_format_1080,
                         self.button_format_best,

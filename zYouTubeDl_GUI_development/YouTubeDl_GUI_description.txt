@@ -257,6 +257,18 @@ ffmpeg -i "%HOMEDRIVE%\%HOMEPATH%\Desktop\No Doubt - Don't Speak (Official 4K Mu
 
 
 # ==================================================================================================
+'''
+default_bitrate_mp3 = bitrate[3]  # default value
+variable = StringVar(widget_control)
+variable.set(default_bitrate_mp3)
+YoutubeDlExternal().set_bitrate_mp3(default_bitrate_mp3)
+bitrate_mp3 = OptionMenu(widget_control, variable, *bitrate,
+                         command=YoutubeDlExternal().set_bitrate_mp3)
+bitrate_mp3.grid(row=2, column=1, padx=3, sticky='WE')
+'''
+
+
+# ==================================================================================================
 
 \x1b[0;33m
 
