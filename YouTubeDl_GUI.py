@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '2')
+__version_info__ = ('0', '4', '3')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -955,7 +955,7 @@ def exit_from_program(code: int = 0) -> None:
         os._exit(code)
 
 
-def main(video_link):
+def main():
     app = MainGUI()
 
     # authorship(__author__, __title__, __version__, __copyright__)
@@ -980,12 +980,8 @@ if __name__ == '__main__':
 
     authorship(__author__, __title__, __version__, __copyright__)  # width=_width
 
-    video_link = 'https://www.youtube.com/watch?v=XifjHd4ySWA'
-    video_link = 'https://youtu.be/XifjHd4ySWA'
-    video_link = 'https://youtu.be/b_tdqGM4_sE'
-
     try:
-        main(video_link)
+        main()
     except Exception as e:
         logger.critical(e)  # __str__()
         if config.EXCEPTION_TRACE:
