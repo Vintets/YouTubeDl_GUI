@@ -15,5 +15,5 @@ def authorship(author, title: str, version: str, copyright_: str, width: int = 0
     copyright_ = copyright_.center(width, ' ')
     version = f'version {version} {author}'.center(width, ' ')
     name_product = title.center(width, ' ')
-    print('{0}{1}{2}{0}'.format('*' * width, copyright_, version))
+    print('{0}\n{1}\n{2}{0}'.format('*' * width, copyright_, version))
     print('{0}\n'.format(name_product))
