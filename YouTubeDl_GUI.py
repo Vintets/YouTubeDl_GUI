@@ -461,7 +461,7 @@ class MainGUI(Tk):
                                                      command=self.download_best_progressive)
         self.button_format_best_progressive.grid(row=1, column=5, padx=5, sticky='W')
         Tooltip(self.button_format_best_progressive,
-                text='Видео в наилучшем качестве без перекодирования! (progressive).\nСразу video+audio формат\nСборка: нет',
+                text='Видео в наилучшем качестве (до 720p) без перекодирования! (progressive).\nСразу video+audio формат\nСборка: нет',
                 wraplength=250)
 
     def create_widgets_config(self, frame):
