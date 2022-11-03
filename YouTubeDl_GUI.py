@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '3', '6')
+__version_info__ = ('0', '4', '0')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -154,6 +154,7 @@ class YoutubeDlExternal:
     instance = None
     youtube_dl = None
     bitrate_mp3 = None
+    formats = None
     writethumbnail = False
     out_format = config.MERGE_OUTPUT_FORMAT
 
@@ -283,10 +284,27 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    def format_custom(self, link=None):
+        ydl_opts = {
+            'writethumbnail': self.writethumbnail,
+            # 'forcetitle': True,
+            'format': self.formats,
+            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
+            # 'logger': MyLogger(),
+        }
+        if self.out_format:
+            ydl_opts['merge_output_format'] = self.out_format
+        with self.youtube_dl(ydl_opts) as ydl:
+            ydl.download([link])
+
     def set_bitrate_mp3(self, bitrate_mp3, log=True):
         self.bitrate_mp3 = bitrate_mp3[:-5]
         if log:
             print(f'Выбран битрейт mp3: {self.bitrate_mp3}')
+
+    def set_formats(self, formats):
+        self.formats = formats
+        cprint(f'20Выбраны форматы: ^14_{self.formats}')
 
     def set_writethumbnail(self, value):
         self.writethumbnail = value
@@ -488,6 +506,21 @@ class MainGUI(Tk):
                 text='Сохранять превью изображение',
                 wraplength=250)
 
+        self.button_format_custom = Button(frame, text='Указанные:', state=DISABLED,
+                                           command=self.download_custom)
+        self.button_format_custom.grid(row=2, column=3, padx=5, sticky='WE')
+        Tooltip(self.button_format_custom,
+                text='Скачать произвольно заданные форматы video+audio',
+                wraplength=250)
+
+        self.inserted_format = StringVar()
+        self.field_formats = Entry(frame, width=7, font=('consolas', '10', 'normal'),
+                                textvariable=self.inserted_format)
+        self.field_formats.grid(row=2, column=4, padx=5, sticky='W')
+        Tooltip(self.field_formats,
+                text='Указать id формата или idVideo+idAudio',
+                wraplength=250)
+
     def create_widgets_control_console(self, frame):
         button_clear_console = Button(frame, text='Очистить', command=self.clear_console)
         button_clear_console.grid(row=2, column=5, padx=48, pady=3, sticky='ES')
@@ -625,6 +658,22 @@ class MainGUI(Tk):
             return filter_link
         return False
 
+    def validate_format(self, format):
+        if not format:
+            return format
+        format = format.replace(' ', '')
+        self.pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
+        re_format = self.pattern_formats.match(format)
+        if re_format is None or re_format.group() != format:
+            return None
+
+        # исключаем начало iв с 0
+        for f in re_format.group().split('+'):
+            if f.startswith('0'):
+                return None
+
+        return format
+
     def buffer_insert(self):
         self.insert_link2field(self.validate_link(pyperclip.paste()))
 
@@ -635,6 +684,9 @@ class MainGUI(Tk):
     def get_valid_id_link(self):
         return self.validate_link(self.inserted_link.get())
 
+    def get_valid_format(self):
+        return self.validate_format(self.inserted_format.get())
+
     def tick(self):
         input_link = self.inserted_link.get()
         list_disable = (
@@ -644,7 +696,8 @@ class MainGUI(Tk):
                         self.button_format_1080,
                         self.button_format_best,
                         self.button_format_best_progressive,
-                        self.button_format_mp3
+                        self.button_format_mp3,
+                        self.button_format_custom,
                         )
         if not input_link:
             self.label_err_link.configure(text='Введите ссылку на видео или id', bg='SystemButtonFace', fg='black')
@@ -718,6 +771,16 @@ class MainGUI(Tk):
         # YoutubeDlExternal().format_mp3(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format_mp3,
                          kwargs={'link': self.get_valid_id_link()}).start()
+
+    @validate_link_format
+    def download_custom(self):
+        valid_format = self.get_valid_format()
+        if valid_format:
+            YoutubeDlExternal().set_formats(valid_format)
+            threading.Thread(target=YoutubeDlExternal().format_custom,
+                             kwargs={'link': self.get_valid_id_link()}).start()
+        else:
+            cprint(f'4Форматы заданы неверно! Введите id формата или idVideo+idAudio, например 137+140')
 
     def set_bitrate_mp3(self, event, log=True):
         # print(f'{event = }')
