@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '3')
+__version_info__ = ('0', '4', '4')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -427,7 +427,9 @@ class MainGUI(Tk):
 
         self.buffer_insert()
         self.redirect_logging()
+        authorship(__author__, __title__, __version__, __copyright__, width=130)
         # cprint('9YouTubeDl_GUI запущен!')
+        self.after(1500, self.clear_console)
         self.tick()
 
     def create_link_frame(self):
