@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '0')
+__version_info__ = ('0', '4', '1')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -64,7 +64,7 @@ def validate_link_format(func):
     return wrapper
 
 
-class MyLogger():
+class MyLogger:
     def trace(self, msg):
         print(f'tr**{msg}')
 
@@ -205,10 +205,10 @@ class YoutubeDlExternal:
         length = divmod(duration, 60)
 
         print('Свединия о видео:')
-        cprint(f'20    id: ^5_{id_}', force_linux=config.COLOR_TK_CONSOLE)
-        cprint(f'20    Название:    ^5_{title}', force_linux=config.COLOR_TK_CONSOLE)
-        cprint(f'20    Длительность ^5_{length[0]}:{length[1]} ({duration}s)', force_linux=config.COLOR_TK_CONSOLE)
-        cprint(f'20    Наилучшие форматы по умолчанию: ^5_{format_id}', force_linux=config.COLOR_TK_CONSOLE)
+        cprint(f'20    id: ^5_{id_}')
+        cprint(f'20    Название:    ^5_{title}')
+        cprint(f'20    Длительность ^5_{length[0]}:{length[1]} ({duration}s)')
+        cprint(f'20    Наилучшие форматы по умолчанию: ^5_{format_id}')
 
     def listformats(self, link=None):
         ydl_opts = {
@@ -392,7 +392,7 @@ class MainGUI(Tk):
 
         self.buffer_insert()
         self.redirect_logging()
-        # cprint('9YouTubeDl_GUI запущен!', force_linux=config.COLOR_TK_CONSOLE)
+        # cprint('9YouTubeDl_GUI запущен!')
         self.tick()
 
     def create_link_frame(self):
@@ -407,7 +407,8 @@ class MainGUI(Tk):
                                     bd=2, padx=12, pady=3, fg='black', bg='SystemButtonFace',
                                     font=('Arial', 8, 'bold'))
         self.label_err_link.pack()
-        self.field_link = Entry(link_block, width=75, font=('consolas', '10', 'normal'), textvariable=self.inserted_link)
+        self.field_link = Entry(link_block, width=75, font=('consolas', '10', 'normal'),
+                                textvariable=self.inserted_link)
         self.field_link.pack(side='left', padx=3)
 
         button_enter = Button(link_block, text='Вставить', command=self.buffer2entry)
@@ -631,7 +632,7 @@ class MainGUI(Tk):
         # print('\r***\033[36mhttp\033[0m---\033[35m0123456789\033[0m---')
         link = self.get_input_link_or_default('This is stdout 0123456789')
         print(f'\033[36m{link}\033[0m' + '---\033[35m0123456789\033[0m---')
-        # cprint('9YouTubeDl_GUI запущен!', force_linux=config.COLOR_TK_CONSOLE)
+        # cprint('9YouTubeDl_GUI запущен!')
         # print('Конец')
         # self.log_widget.tag_add('32', '1.2', '1.5')
         # write_string('\033[36m---0123456789---\033[0m')
