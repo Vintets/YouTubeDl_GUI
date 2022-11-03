@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '1')
+__version_info__ = ('0', '4', '2')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -371,9 +371,44 @@ class TextRedirector():
         return text
 
 
+class Validator:
+    valid_characters_id = string.ascii_letters + string.digits + '-_'
+    pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
+
+    def validate_link(self, link):
+        if not link:
+            return(link)
+        link = link.split('&')[0]
+        if link.startswith(r'https://'):
+            link = link.replace(r'https://', '')
+        if link.startswith(r'www.youtube.com/watch?v='):
+            link = link.replace(r'www.youtube.com/watch?v=', '')
+        if link.startswith(r'youtu.be/'):
+            link = link.replace(r'youtu.be/', '')
+        filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
+        if len(filter_link) == 11 and filter_link == link:
+            return filter_link
+        return False
+
+    def validate_format(self, format):
+        if not format:
+            return format
+        format = format.replace(' ', '')
+        re_format = self.pattern_formats.match(format)
+        if re_format is None or re_format.group() != format:
+            return None
+
+        # исключаем начало iв с 0
+        for f in re_format.group().split('+'):
+            if f.startswith('0'):
+                return None
+
+        return format
+
+
 class MainGUI(Tk):
     def __init__(self):
-        self.valid_characters_id = string.ascii_letters + string.digits + '-_'
+        self.validator = Validator()
         self.height_console = 48
 
         Tk.__init__(self)
@@ -644,49 +679,18 @@ class MainGUI(Tk):
         text = self.get_input_link_or_default('This is stderr 0123456789')
         sys.stderr.write(f'{text}\n')
 
-    def validate_link(self, link):
-        if not link:
-            return(link)
-        link = link.split('&')[0]
-        if link.startswith(r'https://'):
-            link = link.replace(r'https://', '')
-        if link.startswith(r'www.youtube.com/watch?v='):
-            link = link.replace(r'www.youtube.com/watch?v=', '')
-        if link.startswith(r'youtu.be/'):
-            link = link.replace(r'youtu.be/', '')
-        filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
-        if len(filter_link) == 11 and filter_link == link:
-            return filter_link
-        return False
-
-    def validate_format(self, format):
-        if not format:
-            return format
-        format = format.replace(' ', '')
-        self.pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
-        re_format = self.pattern_formats.match(format)
-        if re_format is None or re_format.group() != format:
-            return None
-
-        # исключаем начало iв с 0
-        for f in re_format.group().split('+'):
-            if f.startswith('0'):
-                return None
-
-        return format
-
     def buffer_insert(self):
-        self.insert_link2field(self.validate_link(pyperclip.paste()))
+        self.insert_link2field(self.validator.validate_link(pyperclip.paste()))
 
     def insert_link2field(self, link):
         if link:
             self.inserted_link.set(f'https://youtu.be/{link}')
 
     def get_valid_id_link(self):
-        return self.validate_link(self.inserted_link.get())
+        return self.validator.validate_link(self.inserted_link.get())
 
     def get_valid_format(self):
-        return self.validate_format(self.inserted_format.get())
+        return self.validator.validate_format(self.inserted_format.get())
 
     def tick(self):
         input_link = self.inserted_link.get()
