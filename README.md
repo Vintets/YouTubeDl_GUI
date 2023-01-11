@@ -22,6 +22,11 @@ pip3 install -r requirements.txt
 ```
 включает:
 > pip3 install yt-dlp
+> pip3 install pyperclip
+> pip3 install loguru
+
++ ffmpeg-master-latest-win64-gpl_fix
+
 
 
 Добавить в Path путь:
