@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '4')
+__version_info__ = ('0', '4', '5')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -61,6 +61,14 @@ def validate_link_format(func):
             func(self, *args, **kwargs)
         except (DownloadError, ExtractorError):
             print('Не удаётся загрузить ресурс по ссылке!')
+    return wrapper
+
+def download_error(func):
+    def wrapper(self, *args, **kwargs):
+        try:
+            func(self, *args, **kwargs)
+        except DownloadError as e:
+            print(e)
     return wrapper
 
 
@@ -195,6 +203,7 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    @download_error
     def out_info(self, link=None):
         info = self.get_listformats_dict(link=link)
         id_ = info['id']
@@ -210,6 +219,7 @@ class YoutubeDlExternal:
         cprint(f'20    Длительность ^5_{length[0]}:{length[1]} ({duration}s)')
         cprint(f'20    Наилучшие форматы по умолчанию: ^5_{format_id}')
 
+    @download_error
     def listformats(self, link=None):
         ydl_opts = {
             'forcetitle': True,
@@ -219,6 +229,7 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    @download_error
     def format1080mp4(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
@@ -230,6 +241,7 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    @download_error
     def format1080(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
@@ -243,6 +255,7 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    @download_error
     def format_best(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
@@ -256,6 +269,7 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    @download_error
     def format_best_progressive(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
@@ -267,6 +281,7 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    @download_error
     def format_mp3(self, link=None):
         print(f'Загрузка аудио дорожки и конвертация в mp3 с битрейтом {self.bitrate_mp3} kbps')
         ydl_opts = {
@@ -284,6 +299,7 @@ class YoutubeDlExternal:
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
+    @download_error
     def format_custom(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
