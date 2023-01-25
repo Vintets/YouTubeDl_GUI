@@ -287,7 +287,7 @@ class YoutubeDlExternal:
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
             'forcetitle': True,
-            'format': 'm4a/bestaudio/best',  # bestaudio/best
+            'format': 'bestaudio/best[ext=m4a]/best',  # m4a/bestaudio/best
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
