@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '5', '1')
+__version_info__ = ('0', '5', '2')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -418,6 +418,7 @@ class Validator:
         link = self.exclude_substr(link, r'youtube.com/watch?v=')
         link = self.exclude_substr(link, r'youtube.com/shorts/')
         link = self.exclude_substr(link, r'youtu.be/')
+        link = link.split('?')[0]
         filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
         if len(filter_link) == 11 and filter_link == link:
             return filter_link
