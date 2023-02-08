@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '5', '0')
+__version_info__ = ('0', '5', '1')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -404,20 +404,20 @@ class Validator:
     valid_characters_id = string.ascii_letters + string.digits + '-_'
     pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
 
+    def exclude_substr(self, link, substr):
+        if link.startswith(substr):
+            link = link.replace(substr, '')
+        return link
+
     def validate_link(self, link):
         if not link:
             return link
-        if link.startswith(r'https://'):
-            link = link.replace(r'https://', '')
-        if link.startswith(r'www.'):
-            link = link.replace(r'www.', '')
-        if link.startswith(r'youtube.com/watch?v='):
-            link = link.replace(r'youtube.com/watch?v=', '')
-        if link.startswith(r'youtube.com/shorts/'):
-            link = link.replace(r'youtube.com/shorts/', '')
-        if link.startswith(r'youtu.be/'):
-            link = link.replace(r'youtu.be/', '')
         link = link.split('&')[0]
+        link = self.exclude_substr(link, r'https://')
+        link = self.exclude_substr(link, r'www.')
+        link = self.exclude_substr(link, r'youtube.com/watch?v=')
+        link = self.exclude_substr(link, r'youtube.com/shorts/')
+        link = self.exclude_substr(link, r'youtu.be/')
         filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
         if len(filter_link) == 11 and filter_link == link:
             return filter_link
