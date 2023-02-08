@@ -63,6 +63,7 @@ def validate_link_format(func):
             print('Не удаётся загрузить ресурс по ссылке!')
     return wrapper
 
+
 def download_error(func):
     def wrapper(self, *args, **kwargs):
         try:
@@ -416,10 +417,11 @@ class Validator:
         if re_format is None or re_format.group() != _format:
             return None
 
-        # исключаем начало iв с 0
+        # исключаем начало id с 0
         for f in re_format.group().split('+'):
             if f.startswith('0'):
-                return None
+                _format = None
+                break
 
         return _format
 
@@ -497,8 +499,8 @@ class MainGUI(Tk):
 
     def create_widget_all_formats(self, frame):
         self.button_list_all_formats = Button(frame, text='Вывести список всех доступных форматов',
-                                               state=DISABLED,
-                                               command=self.list_all_available_formats)
+                                              state=DISABLED,
+                                              command=self.list_all_available_formats)
         self.button_list_all_formats.grid(row=0, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
 
     def create_widgets_download(self, frame):
@@ -571,7 +573,7 @@ class MainGUI(Tk):
 
         self.inserted_format = StringVar()
         self.field_formats = Entry(frame, width=7, font=('consolas', '10', 'normal'),
-                                textvariable=self.inserted_format)
+                                   textvariable=self.inserted_format)
         self.field_formats.grid(row=2, column=4, padx=5, sticky='W')
         Tooltip(self.field_formats,
                 text='Указать id формата или idVideo+idAudio',
