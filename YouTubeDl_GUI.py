@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '6')
+__version_info__ = ('0', '4', '7')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -408,12 +408,12 @@ class Validator:
             return filter_link
         return False
 
-    def validate_format(self, format):
-        if not format:
-            return format
-        format = format.replace(' ', '')
-        re_format = self.pattern_formats.match(format)
-        if re_format is None or re_format.group() != format:
+    def validate_format(self, _format):
+        if not _format:
+            return _format
+        _format = _format.replace(' ', '')
+        re_format = self.pattern_formats.match(_format)
+        if re_format is None or re_format.group() != _format:
             return None
 
         # исключаем начало iв с 0
@@ -421,7 +421,7 @@ class Validator:
             if f.startswith('0'):
                 return None
 
-        return format
+        return _format
 
 
 class MainGUI(Tk):
