@@ -407,7 +407,6 @@ class Validator:
     def validate_link(self, link):
         if not link:
             return link
-        link = link.split('?')[0]
         if link.startswith(r'https://'):
             link = link.replace(r'https://', '')
         if link.startswith(r'www.'):
@@ -418,6 +417,7 @@ class Validator:
             link = link.replace(r'youtube.com/shorts/', '')
         if link.startswith(r'youtu.be/'):
             link = link.replace(r'youtu.be/', '')
+        link = link.split('&')[0]
         filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
         if len(filter_link) == 11 and filter_link == link:
             return filter_link
