@@ -393,7 +393,7 @@ class Validator:
 
     def validate_link(self, link):
         if not link:
-            return(link)
+            return link
         link = link.split('&')[0]
         if link.startswith(r'https://'):
             link = link.replace(r'https://', '')
