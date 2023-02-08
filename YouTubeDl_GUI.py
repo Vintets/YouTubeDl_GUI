@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '8')
+__version_info__ = ('0', '4', '9')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -395,7 +395,7 @@ class Validator:
     def validate_link(self, link):
         if not link:
             return link
-        link = link.split('&')[0]
+        link = link.split('?')[0]
         if link.startswith(r'https://'):
             link = link.replace(r'https://', '')
         if link.startswith(r'www.'):
