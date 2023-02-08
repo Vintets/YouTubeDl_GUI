@@ -288,3 +288,11 @@ print('\033[33mTest\033[0m')
 print('\033[31mText\033[0m')
 
 
+# ==================================================================================================
+
+Warning : nsig extraction failed: You may experience throttling for some formats
+Install PhantomJS to workaround the issue. Please download it from
+https://phantomjs.org/download.html
+
+# ==================================================================================================
+

@@ -33,6 +33,11 @@ pip3 install -r requirements.txt
 D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI
 D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI\yt-dlp
 
+
+> Warning : nsig extraction failed: You may experience throttling for some formats
+> Install PhantomJS to workaround the issue. Please download it from
+> https://phantomjs.org/download.html
+
 ## Конфигурирование
 
 `configs/config.py`
