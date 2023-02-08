@@ -12,6 +12,9 @@ CLOSECONSOLE = True
 LOGGER_NAME_MODULE = True
 EXCEPTION_TRACE = True
 
+USE_COOKIES = False
+COOKIES_YT = 'cookies.txt'
+
 EN_RU = {
         'Video unavailable': 'Видео недоступно',
         }

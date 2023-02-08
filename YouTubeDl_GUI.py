@@ -45,7 +45,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '4', '9')
+__version_info__ = ('0', '5', '0')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -195,6 +195,11 @@ class YoutubeDlExternal:
             # print(json.dumps(info_json))
         return info
 
+    def append_cookies(self, ydl_opts=''):
+        cookies = config.COOKIES_YT
+        if config.USE_COOKIES and cookies:
+            ydl_opts['cookiefile'] = cookies
+
     def out_title(self, link=None):
         ydl_opts = {
             'forcetitle': True,
@@ -227,6 +232,7 @@ class YoutubeDlExternal:
             'listformats': True,
             # 'logger': MyLogger(),
         }
+        self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
@@ -239,6 +245,7 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
@@ -251,6 +258,7 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        self.append_cookies(ydl_opts)
         if self.out_format:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
@@ -265,6 +273,7 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        self.append_cookies(ydl_opts)
         if self.out_format:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
@@ -279,6 +288,7 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
@@ -297,6 +307,7 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
@@ -309,6 +320,7 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
+        self.append_cookies(ydl_opts)
         if self.out_format:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
