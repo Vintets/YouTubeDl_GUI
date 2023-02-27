@@ -36,7 +36,8 @@ from tkinter import DISABLED, LEFT, SOLID
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Entry, Button, Combobox, Checkbutton
 # from youtube_dl import YoutubeDL
-from yt_dlp import YoutubeDL, FileDownloader
+from yt_dlp import YoutubeDL
+from yt_dlp.downloader import FileDownloader
 from yt_dlp.utils import DownloadError, ExtractorError
 import pyperclip
 from configs import config
@@ -45,7 +46,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('0', '5', '2')
+__version_info__ = ('0', '5', '3')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
