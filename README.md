@@ -1,7 +1,7 @@
 
 # Проект YouTubeDl_GUI
 
-GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp
+GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2022.11.11
 
 ---------------------------------------------------------
 
@@ -21,7 +21,7 @@ https://github.com/yt-dlp/yt-dlp
 pip3 install -r requirements.txt
 ```
 включает:
-> pip3 install yt-dlp
+> pip3 install yt-dlp==2022.11.11
 > pip3 install pyperclip
 > pip3 install loguru
 
