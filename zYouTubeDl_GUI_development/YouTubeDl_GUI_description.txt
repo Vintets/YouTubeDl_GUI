@@ -10,6 +10,18 @@ cd /d %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI
 
 # запуск
 python3 %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\YouTubeDl_GUI.py
+# запуск через виртуальное окружение
+venv\Scripts\pythonw.exe YouTubeDl_GUI.py
+
+
+#WIN#
+# активация виртуального окружения
+%YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\venv\Scripts\activate.bat
+
+# деактивация окружения
+%YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\venv\Scripts\deactivate.bat
+
+
 
 
 # ==================================================================================================

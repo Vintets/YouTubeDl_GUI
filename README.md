@@ -52,7 +52,13 @@ D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI\yt-dlp
 ## Запуск
 
 ```cmd
+\venv\Scripts\activate.bat
 python3 YouTubeDl_GUI.py
+```
+
+через виртуальное окружение
+```cmd
+venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 ```
 
 ## Скриншоты
