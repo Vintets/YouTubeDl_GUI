@@ -3,6 +3,10 @@
 
 GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2023.2.17
 
+<div align="center">
+[![YouTubeDl_GUI](https://raw.githubusercontent.com/Vintets/YouTubeDl_GUI/master/zYouTubeDl_GUI_development/YT-DLP_128.png)](#readme)
+</div>
+
 ---------------------------------------------------------
 
 
