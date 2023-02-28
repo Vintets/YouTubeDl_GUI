@@ -4,7 +4,10 @@
 GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2023.2.17
 
 <div align="center">
-![YouTubeDl_GUI](https://github.com/Vintets/YouTubeDl_GUI/raw/master/zYouTubeDl_GUI_development/YT-DLP_128.png)
+<!-- ![YouTubeDl_GUI](https://github.com/Vintets/YouTubeDl_GUI/raw/master/zYouTubeDl_GUI_development/YT-DLP_128.png)  -->
+<a href="#readme" target="_blank">
+<img src="https://github.com/Vintets/YouTubeDl_GUI/raw/master/zYouTubeDl_GUI_development/YT-DLP_128.png" height="128"/>
+</a>
 </div>
 
 ---------------------------------------------------------
@@ -12,7 +15,7 @@ GUI-враппер для консольной утилиты youtube-dl обн�
 
 Скачивание файлов с youtube c практичными настройками
 
-Сам форк форк yt-dlp
+Сам форк yt-dlp
 https://github.com/yt-dlp/yt-dlp
 
 
@@ -26,20 +29,27 @@ pip3 install -r requirements.txt
 ```
 включает:
 > pip3 install yt-dlp==2023.2.17
+
 > pip3 install pyperclip
+
 > pip3 install loguru
 
 + ffmpeg-master-latest-win64-gpl_fix
 
 
 
-Добавить в Path путь:
+Добавить в Path пути:
+
+```
 D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI
 D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI\yt-dlp
+```
 
 
 > Warning : nsig extraction failed: You may experience throttling for some formats
+
 > Install PhantomJS to workaround the issue. Please download it from
+
 > https://phantomjs.org/download.html
 
 ## Конфигурирование
@@ -74,7 +84,9 @@ clear open
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2022-10-21_14-10-10_screenshot_2.png)
 
 
+<!--
 ## Структура скрипта
+-->
 
 ____
 
@@ -96,5 +108,6 @@ ____
 ____
 
 
+<!-- 
 > Примичание: ...
-
+-->
