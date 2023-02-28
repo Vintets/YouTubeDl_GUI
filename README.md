@@ -77,11 +77,11 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 
 ## Скриншоты
 
-ver 1.0
-![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2022-10-20_13-52-15_screenshot_1.png)
+ver 1.5.3
+![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-24-24_v1.5.3_screenshot_3.png)
 
 clear open
-![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2022-10-21_14-10-10_screenshot_2.png)
+![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-13-39_v1.5.3_screenshot_4.png)
 
 
 <!--
