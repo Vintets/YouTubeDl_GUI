@@ -46,7 +46,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('1', '5', '3')
+__version_info__ = ('1', '5', '4')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -178,7 +178,7 @@ class YoutubeDlExternal:
             self.youtube_dl = YoutubeDLColorTk
         else:
             self.youtube_dl = YoutubeDL
-        self.filename_sample = '%(title)s-%(id)s.%(ext)s'
+        self.filename_sample = '%(title)s_[%(id)s]_f%(format_id)s.%(ext)s'
 
     def external_list_all_available_formats_(self, link=None):
         if link:
