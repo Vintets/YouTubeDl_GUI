@@ -46,7 +46,7 @@ from accessory import authorship, clear_consol, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('1', '5', '4')
+__version_info__ = ('1', '5', '5')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -450,6 +450,7 @@ class MainGUI(Tk):
         Tk.__init__(self)
         self.title(f'YouTubeDl_GUI v{__version__}')
         self.geometry('+490+150')
+        self.iconbitmap('YT-DLP.ico')
 
         self.create_link_frame()
         self.create_buttons_frame()
