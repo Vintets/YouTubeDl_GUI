@@ -30,7 +30,7 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 Проект YouTubeDl_GUI
     cd "$YandexDisk/_Python/_Python_Projects/YouTubeDl_GUI"
     git remote add origin git@bitbucket.org:Vintets/youtubedl_gui.git
-    # добавить привязку ко 2 репозиторию (github
+    # добавить привязку ко 2 репозиторию (github)
     git remote set-url origin --add git@github.com:Vintets/YouTubeDl_GUI.git
 
 

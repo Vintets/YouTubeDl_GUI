@@ -193,7 +193,7 @@ class YoutubeDlExternal:
 
             # ℹ️ ydl.sanitize_info makes the info json-serializable
             info = ydl.sanitize_info(info_obj)
-            # print(json.dumps(info_json))
+            # print(json.dumps(info))
         return info
 
     def append_cookies(self, ydl_opts=''):
