@@ -41,12 +41,12 @@ from yt_dlp.downloader import FileDownloader
 from yt_dlp.utils import DownloadError, ExtractorError
 import pyperclip
 from configs import config
-from accessory import authorship, clear_consol, cprint, check_version, logger
+from accessory import authorship, clear_console, cprint, check_version, logger
 
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('1', '5', '5')
+__version_info__ = ('1', '5', '6')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -1014,7 +1014,7 @@ if __name__ == '__main__':
     cur_script = __file__
     PATH_SCRIPT = os.path.abspath(os.path.dirname(cur_script))
     os.chdir(PATH_SCRIPT)
-    clear_consol()
+    clear_console()
     check_version()
 
     authorship(__author__, __title__, __version__, __copyright__)  # width=_width
