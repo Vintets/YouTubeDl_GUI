@@ -1021,11 +1021,11 @@ if __name__ == '__main__':
 
     try:
         main()
+    except KeyboardInterrupt:
+        logger.info('Отмена. Скрипт остановлен.')
+        exit_from_program(code=0)
     except Exception as e:
         logger.critical(e)  # __str__()
         if config.EXCEPTION_TRACE:
             raise e
         exit_from_program(code=1)
-    except KeyboardInterrupt:
-        logger.info('Отмена. Скрипт остановлен.')
-        exit_from_program(code=0)
