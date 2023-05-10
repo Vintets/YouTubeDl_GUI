@@ -69,6 +69,8 @@ yt-dlp --cookies cookies.txt --get-title -F https://youtu.be/b_tdqGM4_sE
 #▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 # запуск приложения с конфигом
 
+cd "$YandexDisk/_Python/_Python_Projects/YouTubeDl_GUI/yt-dlp"
+
 # конфиг 1080
 # формат <=1080p адаптивный (DASH)/прогрессивный (совмещённый)
 yt-dlp --config-location yt-dl-1080.conf https://youtu.be/b_tdqGM4_sE
@@ -308,3 +310,39 @@ https://phantomjs.org/download.html
 
 # ==================================================================================================
 
+            *** Video Vkontakte (Вконтакте) ***
+
+
+# вывести инфу о видео
+yt-dlp --get-title -F https://vk.com/video-3156562_456244281
+
+# скачать в  наилучшем качестве (по умолчанию) -f bestvideo+bestaudio/best
+yt-dlp --write-thumbnail https://vk.com/video-3156562_456244281
+
+
+
+«oid» и «id» легко получить из API, но я не могу найти способ получить значение «хеш».
+
+Встроить ссылку:
+https://vk.com/video_ext.php?oid=-31038184&id=456242753&hash=d79895b5c0835fc7
+
+Прямая ссылка:
+https://vk.com/video-31038184_456242753
+
+
+Используйте метод video.get API. Хэш будет присутствовать в response.items[0].player
+Пример запроса:
+https://api.vk.com/method/video.get?owner_id=-31038184&videos=-31038184_456242753&v=5.131&access_token=...
+
+
+Документация здесь
+https://vk.com/dev/video.get
+
+
+
+Разбор фильма "Место встречи изменить нельзя"
+https://vk.com/video_ext.php?oid=-3156562&id=456244281&hash=4e58196736fa2b37
+https://vk.com/video-3156562_456244281
+
+
+# ==================================================================================================
