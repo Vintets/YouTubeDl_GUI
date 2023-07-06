@@ -6,20 +6,20 @@ youtube-dl давно не обновлялся, используем его ф�
 
 # папка приложения
 #WIN#
-cd /d %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI
+cd /d %YandexDisk%\_Projects_Py\YouTubeDl_GUI
 
 # запуск
-python3 %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\YouTubeDl_GUI.py
+python3 %YandexDisk%\_Projects_Py\YouTubeDl_GUI\YouTubeDl_GUI.py
 # запуск через виртуальное окружение
 venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 
 
 #WIN#
 # активация виртуального окружения
-%YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\venv\Scripts\activate.bat
+%YandexDisk%\_Projects_Py\YouTubeDl_GUI\venv\Scripts\activate.bat
 
 # деактивация окружения
-%YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI\venv\Scripts\deactivate.bat
+%YandexDisk%\_Projects_Py\YouTubeDl_GUI\venv\Scripts\deactivate.bat
 
 
 
@@ -28,7 +28,7 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
             *** Git ***
 
 Проект YouTubeDl_GUI
-    cd "$YandexDisk/_Python/_Python_Projects/YouTubeDl_GUI"
+    cd "$YandexDisk/_Projects_Py/YouTubeDl_GUI"
     git remote add origin git@bitbucket.org:Vintets/youtubedl_gui.git
     # добавить привязку ко 2 репозиторию (github)
     git remote set-url origin --add git@github.com:Vintets/YouTubeDl_GUI.git
@@ -40,11 +40,11 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 # ==================================================================================================
             *** flake8 ***
 
-cd /d %YandexDisk%\_Python\_Python_Projects\YouTubeDl_GUI
+cd /d %YandexDisk%\_Projects_Py\YouTubeDl_GUI
 
 flake8
 flake8 YouTubeDl_GUI.py
-flake8 D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI\YouTubeDl_GUI.py
+flake8 D:\YandexDisk\_Projects_Py\YouTubeDl_GUI\YouTubeDl_GUI.py
 
 # noqa
 
@@ -69,7 +69,7 @@ yt-dlp --cookies cookies.txt --get-title -F https://youtu.be/b_tdqGM4_sE
 #▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 # запуск приложения с конфигом
 
-cd "$YandexDisk/_Python/_Python_Projects/YouTubeDl_GUI/yt-dlp"
+cd "$YandexDisk/_Projects_Py/YouTubeDl_GUI/yt-dlp"
 
 # конфиг 1080
 # формат <=1080p адаптивный (DASH)/прогрессивный (совмещённый)
@@ -179,6 +179,18 @@ yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            *** Playlists ***
+
+
+yt-dlp --flat-playlist PLDyvV36pndZFHXjXuwA_NywNrVQO0aQqb
+
+yt-dlp --config-location "D:\YandexDisk\_Projects_Py\YouTubeDl_GUI\yt-dlp\yt-dl-1080.conf" PLDyvV36pndZFHXjXuwA_NywNrVQO0aQqb
+
+https://www.youtube.com/watch?v=W4hoc24K93E&list=PLDyvV36pndZFHXjXuwA_NywNrVQO0aQqb&index=1&pp=iAQB
+https://www.youtube.com/playlist?list=PLDyvV36pndZFHXjXuwA_NywNrVQO0aQqb
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             *** OPTIONS ***
 
 
@@ -190,11 +202,25 @@ yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio
 -r, --limit-rate RATE           Maximum download rate in bytes per second,
                                 e.g. 50K or 4.2M
 
-
 --merge-output-format FORMAT    Containers that may be used when merging
                                 formats, separated by "/", e.g. "mp4/mkv".
                                 Ignored if no merge is required. (currently
                                 supported: avi, flv, mkv, mov, mp4, webm)
+                                Контейнеры, которые можно использовать при слиянии
+--merge-output-format "mp4/mkv"
+
+--no-playlist                   Download only the video, if the URL refers
+                                to a video and a playlist
+-I, --playlist-items ITEM_SPEC  Comma separated playlist_index of the items
+                                to download. You can specify a range using
+                                "[START]:[STOP][:STEP]". For backward
+                                compatibility, START-STOP is also supported.
+                                Use negative indices to count from the right
+                                and negative STEP to download in reverse
+                                order. E.g. "-I 1:3,7,-5::2" used on a
+                                playlist of size 15 will download the items
+                                at index 1,2,3,7,11,13,15
+
 
 вы можете использовать загрузчик aria2.
 он может загружать файлы с несколькими подключениями, например, с 16 подключений
@@ -232,6 +258,10 @@ sudo pip3 install --upgrade youtube_dl
 
 Windows.exe
 https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe
+
+
+Проверить и установить обновления
+yt-dlp -U
 
 
 Full source
