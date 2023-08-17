@@ -46,7 +46,7 @@ from accessory import authorship, clear_console, cprint, check_version, logger
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
-__version_info__ = ('1', '5', '6')
+__version_info__ = ('1', '5', '7')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -242,7 +242,9 @@ class YoutubeDlExternal:
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
             # 'forcetitle': True,
-            'format': 'bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+            # [vcodec~="^((he|a)vc|h26[45])"]   # с кодеком h264 или h265
+            # [protocol^=http]                  # по прямой ссылке по протоколу HTTP/HTTPS
+            'format': '(bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a])[protocol^=http]/best[ext=mp4][protocol^=http]/best',
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
         }
