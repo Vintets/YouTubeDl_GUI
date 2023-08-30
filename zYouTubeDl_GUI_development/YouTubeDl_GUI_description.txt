@@ -23,6 +23,20 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 
 
 
+Запуск с ярлыка
+D:\YandexDisk\_Projects_Py\YouTubeDl_GUI\launcher_YTDL.cmd
+
+в launcher_YTDL.cmd:
+@echo off
+@color 71
+REM cd %~dp0
+start /B /D "%~dp0venv\Scripts" "python.exe" "%~dp0YouTubeDl_GUI.py"
+
+
+Запуск с ярлыка строго в папке проекта
+%windir%\system32\cmd.exe /C @color 71 && start /B /D ".\venv\Scripts" "python.exe" ".\YouTubeDl_GUI.py"
+
+
 
 # ==================================================================================================
             *** Git ***
