@@ -1,6 +1,6 @@
+import ctypes
 import sys
 import time
-import ctypes
 from enum import Enum
 
 
@@ -16,10 +16,12 @@ def check_version() -> None:
         raise Exception(u'Для работы требуется версия Python 3.9.7 и выше')
 
 
+"""
 def check_monitor_resolution() -> None:
     size = (ctypes.windll.user32.GetSystemMetrics(0), ctypes.windll.user32.GetSystemMetrics(1))
     if size not in ((3440, 1440), (2560, 1080)):
         raise err.UnsupportedResolutionError(size)
+"""
 
 
 def create_dirs(path_graphlog) -> None:
@@ -32,12 +34,12 @@ def limit(value: int, low: int = 0, high: int = 255) -> int:
     return min(max(value, low), high)
 
 
-def lclick(x: int, y: int) -> None:
+def lclick(x_coord: int, y_coord: int) -> None:
     win32api = ctypes.windll.user32
-    win32api.SetCursorPos(x, y)
-    win32api.mouse_event(MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
+    win32api.SetCursorPos(x_coord, y_coord)
+    win32api.mouse_event(MOUSEEVENTF_LEFTDOWN, x_coord, y_coord, 0, 0)
     time.sleep(0.3)
-    win32api.mouse_event(MOUSEEVENTF_LEFTUP, x, y, 0, 0)
+    win32api.mouse_event(MOUSEEVENTF_LEFTUP, x_coord, y_coord, 0, 0)
 
 
 class ResultType(Enum):

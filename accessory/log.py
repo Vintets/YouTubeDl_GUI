@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import sys
-from configs.config import PATH_LOGS, LOGGER_NAME_MODULE
+
+from configs.config import LOGGER_NAME_MODULE, PATH_LOGS
+
 from loguru import logger
 
 

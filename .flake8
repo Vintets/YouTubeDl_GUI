@@ -17,5 +17,7 @@ ignore =
     # F541 f-string is missing placeholders
     F541,
     # type annotations
-    TAE001
+    TAE001,
+    # print found
+    T201
 exclude = .git,.vscode,__pycache__,env,venv,logs,zYouTubeDl_GUI_development,*.db,*.bat,*.exe,*.png,*.jpg,*.webm,*.mp4,*.mkv,*.mp3,*.m4a

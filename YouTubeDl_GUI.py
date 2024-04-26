@@ -21,27 +21,32 @@
 # for python 3.9.7 and over
 """
 
-import os
-import sys
-import json  # noqa: F401
-import string
-import time
-import threading
-import re
 import functools
+import json  # noqa: F401
+import os
+import re
+import string
 import subprocess
-from tkinter import Tk, Frame, Label, StringVar, Toplevel, BooleanVar
-from tkinter import OptionMenu, GROOVE  # noqa: F401
+import sys
+import threading
+import time
+from tkinter import BooleanVar, Frame, Label, StringVar, Tk, Toplevel
 from tkinter import DISABLED, LEFT, SOLID
+from tkinter import GROOVE, OptionMenu  # noqa: F401
 from tkinter.scrolledtext import ScrolledText
-from tkinter.ttk import Entry, Button, Combobox, Checkbutton
+from tkinter.ttk import Button, Checkbutton, Combobox, Entry
+
+from accessory import authorship, check_version, clear_console, cprint, logger
+
+from configs import config
+
+import pyperclip
+
 # from youtube_dl import YoutubeDL
 from yt_dlp import YoutubeDL
 from yt_dlp.downloader import FileDownloader
 from yt_dlp.utils import DownloadError, ExtractorError
-import pyperclip
-from configs import config
-from accessory import authorship, clear_console, cprint, check_version, logger
+
 
 cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
@@ -91,8 +96,8 @@ class MyLogger:
         print(msg)
 
 
-def my_hook(d):
-    if d['status'] == 'finished':
+def my_hook(__d):
+    if __d['status'] == 'finished':
         print('Done downloading, now converting ...')
 
 
@@ -372,16 +377,16 @@ class TextRedirector():
         color_lines = self.split_text_by_color(text)
         for line in color_lines:
             tag = self.tag
-            m = self.pattern.match(line)
-            if m:
-                tag = m.group()[2:-1]
+            pattern = self.pattern.match(line)
+            if pattern:
+                tag = pattern.group()[2:-1]
                 if tag.find(';') != -1:
                     tag = tag.split(';')[1]
 
                 # замена синего на голубой
                 tag = '36' if tag == '34' else tag
 
-                line = line[m.end():]
+                line = line[pattern.end():]
             self.widget.insert('end', line, (tag,))
         # self.widget.insert('end', text, (tag,))
         self.widget.see('end')  # scroll to end
@@ -443,8 +448,8 @@ class Validator:
             return None
 
         # исключаем начало id с 0
-        for f in re_format.group().split('+'):
-            if f.startswith('0'):
+        for _f in re_format.group().split('+'):
+            if _f.startswith('0'):
                 _format = None
                 break
 
@@ -711,7 +716,7 @@ class MainGUI(Tk):
         return link
 
     def print_stdout(self):
-        '''Illustrate that using 'print' writes to stdout'''
+        """Illustrate that using 'print' writes to stdout"""
         # print('\r***\033[36mhttp\033[0m---\033[35m0123456789\033[0m---')
         link = self.get_input_link_or_default('This is stdout 0123456789')
         print(f'\033[36m{link}\033[0m' + '---\033[35m0123456789\033[0m---')
@@ -723,7 +728,7 @@ class MainGUI(Tk):
         pass
 
     def print_stderr(self):
-        '''Illustrate that we can write directly to stderr'''
+        """Illustrate that we can write directly to stderr"""
         text = self.get_input_link_or_default('This is stderr 0123456789')
         sys.stderr.write(f'{text}\n')
 
@@ -844,7 +849,7 @@ class MainGUI(Tk):
 
 
 class Tooltip:
-    '''
+    """
     It creates a tooltip for a given widget as the mouse goes on it.
 
     see:
@@ -872,7 +877,7 @@ class Tooltip:
       Tested on Ubuntu 16.04/16.10, running Python 3.5.2
 
     TODO: themes styles support
-    '''
+    """
 
     def __init__(self, widget,  # noqa: CFQ002
                  *,
@@ -886,9 +891,9 @@ class Tooltip:
         self.wraplength = wraplength  # in pixels, originally 180
         self.widget = widget
         self.text = text
-        self.widget.bind("<Enter>", self.on_enter)
-        self.widget.bind("<Leave>", self.on_leave)
-        self.widget.bind("<ButtonPress>", self.on_leave)
+        self.widget.bind('<Enter>', self.on_enter)
+        self.widget.bind('<Leave>', self.on_leave)
+        self.widget.bind('<ButtonPress>', self.on_leave)
         self.bg = bg
         self.pad = pad
         self.id = None
@@ -916,14 +921,14 @@ class Tooltip:
                            *,
                            tip_delta=(10, 5), pad=(5, 3, 5, 3)):
 
-        w = widget
+        _w = widget
 
-        s_width, s_height = w.winfo_screenwidth(), w.winfo_screenheight()
+        s_width, s_height = _w.winfo_screenwidth(), _w.winfo_screenheight()
 
         width, height = (pad[0] + label.winfo_reqwidth() + pad[2],
                          pad[1] + label.winfo_reqheight() + pad[3])
 
-        mouse_x, mouse_y = w.winfo_pointerxy()
+        mouse_x, mouse_y = _w.winfo_pointerxy()
 
         x1, y1 = mouse_x + tip_delta[0], mouse_y + tip_delta[1]
         x2, y2 = x1 + width, y1 + height
@@ -985,8 +990,8 @@ class Tooltip:
                    sticky='NSEW')
         win.grid()
 
-        x, y = self.tip_pos_calculator(widget, label)
-        self.tw.wm_geometry('+%d+%d' % (x, y))
+        _x, _y = self.tip_pos_calculator(widget, label)
+        self.tw.wm_geometry('+%d+%d' % (_x, _y))
 
     def hide(self):
         tw = self.tw
