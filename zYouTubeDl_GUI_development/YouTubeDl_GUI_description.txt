@@ -421,6 +421,10 @@ yt-dlp --get-title -F https://vk.com/video-211351780_456247221
 yt-dlp --write-thumbnail -f hls-1271 https://vk.com/video-211351780_456247221
 
 
+Магнитофон Днепр 14 [175062719_456239338]
+yt-dlp --write-thumbnail -f hls-702 https://vk.com/video175062719_456239338
+
+
 # ==================================================================================================
             *** Video Rutube (Рутуб) ***
 
