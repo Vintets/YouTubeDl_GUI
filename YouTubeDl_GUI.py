@@ -166,6 +166,7 @@ class YoutubeDlExternal:
     bitrate_mp3 = None
     formats = None
     writethumbnail = False
+    nocheckcertificate = True
     out_format = config.MERGE_OUTPUT_FORMAT
 
     def __new__(cls):
@@ -241,6 +242,7 @@ class YoutubeDlExternal:
     def format1080mp4(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
+            'nocheckcertificate': self.nocheckcertificate,
             # 'forcetitle': True,
             # [vcodec~="^((he|a)vc|h26[45])"]   # с кодеком h264 или h265
             # [protocol^=http]                  # по прямой ссылке по протоколу HTTP/HTTPS
@@ -256,6 +258,7 @@ class YoutubeDlExternal:
     def format1080(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
+            'nocheckcertificate': self.nocheckcertificate,
             # 'forcetitle': True,
             'format': 'bestvideo[height<=?1080]+bestaudio/best',
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
@@ -271,6 +274,7 @@ class YoutubeDlExternal:
     def format_best(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
+            'nocheckcertificate': self.nocheckcertificate,
             # 'forcetitle': True,
             'format': 'bestvideo+bestaudio/best',
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
@@ -286,6 +290,7 @@ class YoutubeDlExternal:
     def format_best_progressive(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
+            'nocheckcertificate': self.nocheckcertificate,
             # 'forcetitle': True,
             'format': 'best',
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
@@ -300,6 +305,7 @@ class YoutubeDlExternal:
         print(f'Загрузка аудио дорожки и конвертация в mp3 с битрейтом {self.bitrate_mp3} kbps')
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
+            'nocheckcertificate': self.nocheckcertificate,
             'forcetitle': True,
             'format': 'bestaudio/best[ext=m4a]/best',  # m4a/bestaudio/best
             'postprocessors': [{
@@ -318,6 +324,7 @@ class YoutubeDlExternal:
     def format_custom(self, link=None):
         ydl_opts = {
             'writethumbnail': self.writethumbnail,
+            'nocheckcertificate': self.nocheckcertificate,
             # 'forcetitle': True,
             'format': self.formats,
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
