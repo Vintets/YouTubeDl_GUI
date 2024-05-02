@@ -182,11 +182,13 @@ class MainGUI(Tk):
                 text='Вставить из буфера обмена',
                 wraplength=250)
 
+        """
         self.button_out_info = Button(link_block, text='i', state=DISABLED, width=3, command=self.out_info)
         self.button_out_info.pack(side='right', padx=3)
         Tooltip(self.button_out_info,
                 text='Показать информацию по видео',
                 wraplength=250)
+        """
 
     def create_buttons_frame(self):
         """Блок основных кнопок"""
@@ -200,6 +202,7 @@ class MainGUI(Tk):
         # widget_control.rowconfigure((0, 1, 2), weight=1)
 
         self.create_widget_all_formats(frame=widget_control)
+        self.create_widget_out_info(frame=widget_control)
         self.create_widgets_download(frame=widget_control)
         self.create_widgets_config(frame=widget_control)
         self.create_widgets_control_console(frame=widget_control)
@@ -210,6 +213,13 @@ class MainGUI(Tk):
                                               state=DISABLED,
                                               command=self.list_all_available_formats)
         self.button_list_all_formats.grid(row=0, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
+
+    def create_widget_out_info(self, frame):
+        self.button_out_info = Button(frame, text='i', state=DISABLED, width=3, command=self.out_info)
+        self.button_out_info.grid(row=0, column=5, padx=5, sticky='W')
+        Tooltip(self.button_out_info,
+                text='Показать информацию по видео',
+                wraplength=250)
 
     def create_widgets_download(self, frame):
         label_download = Label(frame, text='Скачать:')
