@@ -1,10 +1,9 @@
 import json  # noqa: F401
 import subprocess
 
-from accessory import cprint
-
 from configs import config
 
+from core.cprint_linux import cprint
 from core.errors import download_error
 from core.logger_ydl import MyLogger
 

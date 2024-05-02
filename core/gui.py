@@ -1,4 +1,3 @@
-import functools
 import re
 import string
 import sys
@@ -9,19 +8,17 @@ from tkinter import DISABLED
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Button, Checkbutton, Combobox, Entry
 
-from accessory import authorship, cprint
+from accessory import authorship
 
 from configs import config
 
+from core.cprint_linux import cprint
 from core.dlp import YoutubeDlExternal
 from core.tooltip import Tooltip
 
 import pyperclip
 
 from yt_dlp.utils import DownloadError, ExtractorError
-
-
-cprint = functools.partial(cprint, force_linux=config.COLOR_TK_CONSOLE)
 
 
 def validate_link_format(func):
