@@ -40,6 +40,7 @@ from accessory import authorship, check_version, clear_console, cprint, logger
 
 from configs import config
 
+from core.errors import download_error
 from core.logger_ydl import MyLogger
 from core.tooltip import Tooltip
 
@@ -70,43 +71,6 @@ def validate_link_format(func):
         except (DownloadError, ExtractorError):
             print('Не удаётся загрузить ресурс по ссылке!')
     return wrapper
-
-
-
-def my_hook(__d):
-    if __d['status'] == 'finished':
-        print('Done downloading, now converting ...')
-
-
-def listformats(video_link):
-    ydl_opts = {
-        'writethumbnail': True,
-        'listformats': True,
-        # 'forcetitle': True,
-        # 'force-ipv4': True,
-        'extractaudio': True,
-        'noplaylist': True,
-        'http_chunk_size': 2097152,
-        # 'max_downloads': 1,
-        # 'progress_hooks': [youtubeDlHook],
-        'format': 'bestaudio/best',  # webm
-        # 'ignoreerrors': True,
-        'postprocessors': [
-            {
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            },
-            {'key': 'FFmpegMetadata'},
-            {'key': 'EmbedThumbnail'},
-        ],
-        # 'outtmpl': yt_song_structure['playlist_path'] + '/' + yt_song_structure['title'] + '.%(ext)s',
-        'outtmpl': f'{config.PATH_SAVE}%(title)s-%(id)s.%(ext)s',
-        'logger': MyLogger(),
-        'progress_hooks': [my_hook],
-    }
-    with YoutubeDL(ydl_opts) as ydl:
-        ydl.download([video_link])
 
 
 def _prepare_multiline_status_color_tk(self, lines=1):
@@ -835,8 +799,6 @@ def exit_from_program(code: int = 0) -> None:
 
 def main():
     app = MainGUI()
-
-    # authorship(__author__, __title__, __version__, __copyright__)
     app.mainloop()
 
 
