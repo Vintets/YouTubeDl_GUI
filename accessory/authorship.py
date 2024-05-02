@@ -12,7 +12,7 @@ authorship.authorship(__author__, __title__, __version__, __copyright__)
 import shutil
 
 
-def authorship(author, title: str, version: str, copyright_: str, width: int = 0) -> None:
+def authorship(author: str, title: str, version: str, copyright_: str, width: int = 0) -> None:
     if not width:
         width = shutil.get_terminal_size().columns
     copyright_ = copyright_.center(width, ' ')
