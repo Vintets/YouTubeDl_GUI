@@ -45,7 +45,6 @@ from core.tooltip import Tooltip
 
 import pyperclip
 
-# from youtube_dl import YoutubeDL
 from yt_dlp import YoutubeDL
 from yt_dlp.downloader import FileDownloader
 from yt_dlp.utils import DownloadError, ExtractorError
@@ -72,14 +71,6 @@ def validate_link_format(func):
             print('Не удаётся загрузить ресурс по ссылке!')
     return wrapper
 
-
-def download_error(func):
-    def wrapper(self, *args, **kwargs):
-        try:
-            func(self, *args, **kwargs)
-        except DownloadError as e:
-            print(e)
-    return wrapper
 
 
 def my_hook(__d):
