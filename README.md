@@ -1,7 +1,7 @@
 
 # Проект YouTubeDl_GUI
 
-GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2023.2.17
+GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2024.4.9
 
 <div align="center">
 <!-- ![YouTubeDl_GUI](https://github.com/Vintets/YouTubeDl_GUI/raw/master/zYouTubeDl_GUI_development/YT-DLP_128.png)  -->
@@ -28,7 +28,7 @@ https://github.com/yt-dlp/yt-dlp
 pip3 install -r requirements.txt
 ```
 включает:
-> pip3 install yt-dlp==2023.2.17
+> pip3 install yt-dlp==2024.4.9
 
 > pip3 install pyperclip
 
@@ -77,22 +77,20 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 
 ## Скриншоты
 
-ver 1.5.3
+ver 1.5.3  
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-24-24_v1.5.3_screenshot_3.png)
 
-clear open
+clear open  
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-13-39_v1.5.3_screenshot_4.png)
 
-
-<!--
-## Структура скрипта
--->
 
 ____
 
 :copyright: 2022 by Vint
 
-:license:
+## License
+
+:license:  
 /*******************************************************
  * Copyright 2022 Vintets <programmer@vintets.ru> - All Rights Reserved
  *
@@ -106,8 +104,3 @@ ____
 *******************************************************/
 
 ____
-
-
-<!-- 
-> Примичание: ...
--->
