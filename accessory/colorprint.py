@@ -114,7 +114,6 @@ def _set_color(color: int, force_linux: bool = False) -> str:
 if __name__ == '__main__':
     from authorship import authorship
     from clear_console import clear_console
-    # from clear_console import clear_console
     _width = 100
     _hight = 50
     if sys.platform == 'win32':
