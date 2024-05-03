@@ -143,7 +143,6 @@ class MainGUI(Tk):
         self.geometry('+490+150')
         self.iconbitmap('YT-DLP.ico')
 
-        self.create_link_frame()
         self.create_buttons_frame()
         self.create_consol_frame()
 
@@ -160,92 +159,82 @@ class MainGUI(Tk):
         self.after(1500, self.clear_console)
         self.tick()
 
-    def create_link_frame(self):
-        """Блок ссылки"""
-
-        link_block = Frame(self)  # bd=5, bg='ivory2'
-        # link_block.pack(side='top', fill='x')
-        link_block.grid(row=0, column=0, padx=5, pady=5)
-
-        self.inserted_link = StringVar()
-        self.label_err_link = Label(link_block, text='Введите ссылку на видео или id',
-                                    bd=2, padx=12, pady=3, fg='black', bg='SystemButtonFace',
-                                    font=('Arial', 8, 'bold'))
-        self.label_err_link.pack()
-        self.field_link = Entry(link_block, width=75, font=('consolas', '10', 'normal'),
-                                textvariable=self.inserted_link)
-        self.field_link.pack(side='left', padx=3)
-
-        button_enter = Button(link_block, text='Вставить', command=self.buffer2entry)
-        button_enter.pack(side='left', padx=3)
-        Tooltip(button_enter,
-                text='Вставить из буфера обмена',
-                wraplength=250)
-
-        """
-        self.button_out_info = Button(link_block, text='i', state=DISABLED, width=3, command=self.out_info)
-        self.button_out_info.pack(side='right', padx=3)
-        Tooltip(self.button_out_info,
-                text='Показать информацию по видео',
-                wraplength=250)
-        """
-
     def create_buttons_frame(self):
         """Блок основных кнопок"""
 
         widget_control = Frame(self)
         widget_control.grid(row=1, column=0, padx=3, pady=5, sticky='WE')
-        self.columnconfigure(0, weight=1)
+        # self.columnconfigure(0, weight=1)
         # self.rowconfigure(1, weight=1)
         widget_control.columnconfigure((0, 1), weight=1)
         widget_control.columnconfigure((2, 3, 4, 5), weight=1)
         # widget_control.rowconfigure((0, 1, 2), weight=1)
 
-        self.create_widget_all_formats(frame=widget_control)
-        self.create_widget_out_info(frame=widget_control)
-        self.create_widgets_download(frame=widget_control)
-        self.create_widgets_config(frame=widget_control)
-        self.create_widgets_control_console(frame=widget_control)
+        self.create_link_frame(frame=widget_control, row=0)
+        self.create_widget_all_formats(frame=widget_control, row=2)
+        self.create_widget_out_info(frame=widget_control, row=2)
+        self.create_widgets_download(frame=widget_control, row=3)
+        self.create_widgets_config(frame=widget_control, row=4)
+        self.create_widgets_control_console(frame=widget_control, row=4)
         self.redirect_stdout_elements(frame=widget_control, show=False)
 
-    def create_widget_all_formats(self, frame):
+    def create_link_frame(self, frame, row):
+        """Блок ссылки"""
+
+        self.inserted_link = StringVar()
+        self.label_err_link = Label(frame, text='Введите ссылку на видео или id',
+                                    bd=2, fg='black', bg='SystemButtonFace',
+                                    font=('Arial', 8, 'bold'))
+        self.label_err_link.grid(row=row, column=1, columnspan=4, padx=5, sticky='WE')
+
+        self.field_link = Entry(frame, font=('consolas', '10', 'normal'),
+                                textvariable=self.inserted_link)  # width=75
+        self.field_link.grid(row=row + 1, column=1, columnspan=4, padx=5, sticky='WE')
+
+        button_enter = Button(frame, text='Вставить', command=self.buffer2entry)
+        button_enter.grid(row=row + 1, column=5, padx=5, pady=3, sticky='WS')
+        Tooltip(button_enter,
+                text='Вставить из буфера обмена',
+                wraplength=250)
+
+    def create_widget_all_formats(self, frame, row):
         self.button_list_all_formats = Button(frame, text='Вывести список всех доступных форматов',
                                               state=DISABLED,
                                               command=self.list_all_available_formats)
-        self.button_list_all_formats.grid(row=0, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
+        self.button_list_all_formats.grid(row=row, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
 
-    def create_widget_out_info(self, frame):
+    def create_widget_out_info(self, frame, row):
         self.button_out_info = Button(frame, text='i', state=DISABLED, width=3, command=self.out_info)
-        self.button_out_info.grid(row=0, column=5, padx=5, sticky='W')
+        self.button_out_info.grid(row=row, column=5, padx=5, sticky='W')
         Tooltip(self.button_out_info,
                 text='Показать информацию по видео',
                 wraplength=250)
 
-    def create_widgets_download(self, frame):
+    def create_widgets_download(self, frame, row):
         label_download = Label(frame, text='Скачать:')
-        label_download.grid(row=1, column=0, padx=5, pady=5, sticky='E')
+        label_download.grid(row=row, column=0, padx=5, pady=5, sticky='E')
 
         self.button_format_mp3 = Button(frame, text='mp3', state=DISABLED,
                                         command=self.download_mp3)
-        self.button_format_mp3.grid(row=1, column=1, padx=5, sticky='WE')
+        self.button_format_mp3.grid(row=row, column=1, padx=5, sticky='WE')
 
         self.button_format_1080mp4 = Button(frame, text='Видео mp4 <=1080p', state=DISABLED,
                                             command=self.download_1080mp4)  # font=('Arial', 8, 'bold')
-        self.button_format_1080mp4.grid(row=1, column=2, padx=5, sticky='WE')
+        self.button_format_1080mp4.grid(row=row, column=2, padx=5, sticky='WE')
         Tooltip(self.button_format_1080mp4,
                 text='Формат mp4\nЛучшее качество\nРазрешение до 1080p\nСборка: быстро',
                 wraplength=250)
 
         self.button_format_1080 = Button(frame, text='Видео <=1080p', state=DISABLED,
                                          command=self.download_1080)
-        self.button_format_1080.grid(row=1, column=3, padx=5, sticky='WE')
+        self.button_format_1080.grid(row=row, column=3, padx=5, sticky='WE')
         Tooltip(self.button_format_1080,
                 text='Формат любой\nЛучшее качество\nРазрешение до 1080p\nСборка: медленно',
                 wraplength=250)
 
         self.button_format_best = Button(frame, text='Видео наилучшее', state=DISABLED,
                                          command=self.download_best)
-        self.button_format_best.grid(row=1, column=4, padx=5, sticky='WE')
+        self.button_format_best.grid(row=row, column=4, padx=5, sticky='WE')
         Tooltip(self.button_format_best,
                 text='Формат любой\nЛучшее качество\nРазрешение максимальное\nСборка: медленно',
                 wraplength=250)
@@ -253,15 +242,15 @@ class MainGUI(Tk):
         self.button_format_best_progressive = Button(frame, text='Видео без кодирования',
                                                      state=DISABLED,
                                                      command=self.download_best_progressive)
-        self.button_format_best_progressive.grid(row=1, column=5, padx=5, sticky='W')
+        self.button_format_best_progressive.grid(row=row, column=5, padx=5, sticky='W')
         Tooltip(self.button_format_best_progressive,
                 text='Видео в наилучшем качестве (до 720p) без перекодирования! (progressive).\nСразу video+audio формат\nСборка: нет',
                 wraplength=250)
 
-    def create_widgets_config(self, frame):
+    def create_widgets_config(self, frame, row):
         bitrate = ['96 kbps', '128 kbps', '160 kbps', '192 kbps', '224 kbps', '256 kbps', '320 kbps']
         self.bitrate_mp3 = Combobox(frame, values=bitrate, width=12, state='readonly')
-        self.bitrate_mp3.grid(row=2, column=1, padx=5, sticky='WE')
+        self.bitrate_mp3.grid(row=row, column=1, padx=5, sticky='WE')
         self.bitrate_mp3.current(3)  # 192 kbps
         self.bitrate_mp3.bind('<<ComboboxSelected>>', self.set_bitrate_mp3)
         self.set_bitrate_mp3(None, log=False)
@@ -276,7 +265,7 @@ class MainGUI(Tk):
                          onvalue=1, offvalue=0,
                          command=self.set_writethumbnail
                          )
-        c1.grid(row=2, column=2, padx=3, sticky='W')
+        c1.grid(row=row, column=2, padx=3, sticky='W')
         self.set_writethumbnail()
         Tooltip(c1,
                 text='Сохранять превью изображение',
@@ -284,7 +273,7 @@ class MainGUI(Tk):
 
         self.button_format_custom = Button(frame, text='Указанные:', state=DISABLED,
                                            command=self.download_custom)
-        self.button_format_custom.grid(row=2, column=3, padx=5, sticky='WE')
+        self.button_format_custom.grid(row=row, column=3, padx=5, sticky='WE')
         Tooltip(self.button_format_custom,
                 text='Скачать произвольно заданные форматы video+audio',
                 wraplength=250)
@@ -292,20 +281,20 @@ class MainGUI(Tk):
         self.inserted_format = StringVar()
         self.field_formats = Entry(frame, width=7, font=('consolas', '10', 'normal'),
                                    textvariable=self.inserted_format)
-        self.field_formats.grid(row=2, column=4, padx=5, sticky='W')
+        self.field_formats.grid(row=row, column=4, padx=5, sticky='W')
         Tooltip(self.field_formats,
                 text='Указать id формата или idVideo+idAudio',
                 wraplength=250)
 
-    def create_widgets_control_console(self, frame):
+    def create_widgets_control_console(self, frame, row):
         button_clear_console = Button(frame, text='Очистить', command=self.clear_console)
-        button_clear_console.grid(row=2, column=5, padx=48, pady=3, sticky='ES')
+        button_clear_console.grid(row=row, column=5, padx=48, pady=3, sticky='ES')
         Tooltip(button_clear_console,
                 text='Очистить консоль',
                 wraplength=250)
 
         self.button_toggle_console = Button(frame, text='▲', width=3, command=self.toggle_size_consol)
-        self.button_toggle_console.grid(row=2, column=5, padx=16, pady=3, sticky='ES')
+        self.button_toggle_console.grid(row=row, column=5, padx=16, pady=3, sticky='ES')
 
     def redirect_stdout_elements(self, frame, show=True):
         label_redirect = Label(frame, text='Redirect console:')  # relief=GROOVE
