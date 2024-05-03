@@ -116,7 +116,7 @@ class Validator:
             return filter_link
         return False
 
-    def validate_format(self, _format):
+    def validate_video_format(self, _format):
         if not _format:
             return _format
         _format = _format.replace(' ', '')
@@ -431,7 +431,7 @@ class MainGUI(Tk):
         return self.validator.validate_link(self.inserted_link.get())
 
     def get_valid_format(self):
-        return self.validator.validate_format(self.inserted_format.get())
+        return self.validator.validate_video_format(self.inserted_format.get())
 
     def tick(self):
         input_link = self.inserted_link.get()
