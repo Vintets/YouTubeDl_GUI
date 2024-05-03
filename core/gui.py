@@ -96,6 +96,9 @@ class Validator:
     valid_characters_id = string.ascii_letters + string.digits + '-_'
     pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
 
+    def __init__(self) -> None:
+        self.vhost = VHost.NONE.value
+
     def exclude_substr(self, link, substr):
         if link.startswith(substr):
             link = link.replace(substr, '')
@@ -113,7 +116,9 @@ class Validator:
         link = link.split('?')[0]
         filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
         if len(filter_link) == 11 and filter_link == link:
+            self.vhost = VHost.YT.value
             return filter_link
+        self.vhost = VHost.NONE.value
         return False
 
     def validate_video_format(self, _format):
@@ -131,6 +136,9 @@ class Validator:
                 break
 
         return _format
+
+    def get_vhost(self) -> VHost:
+        return self.vhost
 
 
 class MainGUI(Tk):
@@ -200,11 +208,9 @@ class MainGUI(Tk):
                 wraplength=250)
 
     def videohosting(self, frame, row):
-        self.vhost = VHost.NONE.value
-        # self.hosting = StringVar(value=self.vhost)
-        self.label_vhost = Label(frame, textvariable=self.vhost, state=DISABLED)
+        self.vhost = self.validator.get_vhost()
+        self.label_vhost = Label(frame, textvariable=self.vhost)
         self.label_vhost.grid(row=row, column=0, padx=5, sticky='E')
-        # label_vhost.pack(side='left', padx=10)
         Tooltip(self.label_vhost,
                 text=f'Видеохостинг {self.vhost}',
                 wraplength=150)
@@ -436,7 +442,6 @@ class MainGUI(Tk):
     def tick(self):
         input_link = self.inserted_link.get()
         list_disable = (
-                        # self.label_vhost,
                         self.button_out_info,
                         self.button_list_all_formats,
                         self.button_format_1080mp4,
@@ -449,21 +454,18 @@ class MainGUI(Tk):
         if not input_link:
             self.label_err_link.configure(text='Введите ссылку на видео или id', bg='SystemButtonFace', fg='black')
             buttons_state = 'disabled'
-            self.vhost = VHost.NONE.value
         else:
             valid_id_link = self.get_valid_id_link()
             if valid_id_link:
                 self.label_err_link.config(text=f'Правильный формат ссылки.  id = {valid_id_link}',
                                            bg='SystemButtonFace', fg='green')
                 buttons_state = 'normal'
-                self.vhost = VHost.YT.value
                 self.remove_excess_parameters(input_link)
             else:
                 self.label_err_link.config(text='Неверный формат ссылки', bg='yellow1', fg='red')
                 buttons_state = 'disabled'
-                self.vhost = VHost.NONE.value
 
-        self.label_vhost.config(text=self.vhost)
+        self.label_vhost.config(text=self.validator.get_vhost())
         for widget in list_disable:
             widget.config(state=buttons_state)
         # calls every 500 milliseconds to update
