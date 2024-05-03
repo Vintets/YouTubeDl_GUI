@@ -97,7 +97,7 @@ class Validator:
     pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
 
     def __init__(self) -> None:
-        self.vhost = VHost.NONE.value
+        self.vhost = self.reset_vhost()
 
     def exclude_substr(self, link, substr):
         if link.startswith(substr):
@@ -106,6 +106,7 @@ class Validator:
 
     def validate_link(self, link):
         if not link:
+            self.reset_vhost()
             return link
         link = link.split('&')[0]
         link = self.exclude_substr(link, r'https://')
@@ -139,6 +140,9 @@ class Validator:
 
     def get_vhost(self) -> VHost:
         return self.vhost
+
+    def reset_vhost(self) -> None:
+        self.vhost = VHost.NONE.value
 
 
 class MainGUI(Tk):
@@ -454,6 +458,7 @@ class MainGUI(Tk):
         if not input_link:
             self.label_err_link.configure(text='Введите ссылку на видео или id', bg='SystemButtonFace', fg='black')
             buttons_state = 'disabled'
+            self.validator.reset_vhost()
         else:
             valid_id_link = self.get_valid_id_link()
             if valid_id_link:
