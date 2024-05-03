@@ -13,7 +13,7 @@ from accessory import authorship
 from configs import config
 
 from core.cprint_linux import cprint
-from core.dlp import YoutubeDlExternal, VHost
+from core.dlp import VHost, YoutubeDlExternal
 from core.tooltip import Tooltip
 
 import pyperclip
