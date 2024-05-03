@@ -23,7 +23,7 @@ from yt_dlp.utils import DownloadError, ExtractorError
 
 def validate_link_format(func):
     def wrapper(self, *args, **kwargs):
-        if not self.get_valid_id_link():
+        if not self.get_valid_link():
             print('Формат ссылки неправильный!')
             return
         try:
@@ -437,7 +437,7 @@ class MainGUI(Tk):
         if link:
             self.inserted_link.set(f'https://youtu.be/{link}')
 
-    def get_valid_id_link(self):
+    def get_valid_link(self):
         return self.validator.validate_link(self.inserted_link.get())
 
     def get_valid_format(self):
@@ -460,7 +460,7 @@ class MainGUI(Tk):
             buttons_state = 'disabled'
             self.validator.reset_vhost()
         else:
-            valid_id_link = self.get_valid_id_link()
+            valid_id_link = self.get_valid_link()
             if valid_id_link:
                 self.label_err_link.config(text=f'Правильный формат ссылки.  id = {valid_id_link}',
                                            bg='SystemButtonFace', fg='green')
@@ -483,51 +483,51 @@ class MainGUI(Tk):
 
     @validate_link_format
     def list_all_available_formats(self):
-        # YoutubeDlExternal().listformats(link=self.get_valid_id_link())
+        # YoutubeDlExternal().listformats(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().listformats,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def out_title(self):
-        # YoutubeDlExternal().out_title(link=self.get_valid_id_link())
+        # YoutubeDlExternal().out_title(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().out_title,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def out_info(self):
-        # YoutubeDlExternal().out_info(link=self.get_valid_id_link())
+        # YoutubeDlExternal().out_info(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().out_info,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_1080mp4(self):
-        # YoutubeDlExternal().format1080mp4(link=self.get_valid_id_link())
+        # YoutubeDlExternal().format1080mp4(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format1080mp4,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_1080(self):
-        # YoutubeDlExternal().format1080(link=self.get_valid_id_link())
+        # YoutubeDlExternal().format1080(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format1080,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_best(self):
-        # YoutubeDlExternal().format_best(link=self.get_valid_id_link())
+        # YoutubeDlExternal().format_best(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format_best,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_best_progressive(self):
-        # YoutubeDlExternal().format_best_progressive(link=self.get_valid_id_link())
+        # YoutubeDlExternal().format_best_progressive(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format_best_progressive,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_mp3(self):
-        # YoutubeDlExternal().format_mp3(link=self.get_valid_id_link())
+        # YoutubeDlExternal().format_mp3(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format_mp3,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_custom(self):
@@ -535,7 +535,7 @@ class MainGUI(Tk):
         if valid_format:
             YoutubeDlExternal().set_formats(valid_format)
             threading.Thread(target=YoutubeDlExternal().format_custom,
-                             kwargs={'link': self.get_valid_id_link()}).start()
+                             kwargs={'link': self.get_valid_link()}).start()
         else:
             cprint(f'4Форматы заданы неверно! Введите id формата или idVideo+idAudio, например 137+140')
 
