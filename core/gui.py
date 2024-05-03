@@ -13,7 +13,7 @@ from accessory import authorship
 from configs import config
 
 from core.cprint_linux import cprint
-from core.dlp import YoutubeDlExternal
+from core.dlp import YoutubeDlExternal, VHost
 from core.tooltip import Tooltip
 
 import pyperclip
@@ -181,6 +181,8 @@ class MainGUI(Tk):
     def create_link_frame(self, frame, row):
         """Блок ссылки"""
 
+        self.videohosting(frame=frame, row=row + 1)
+
         self.inserted_link = StringVar()
         self.label_err_link = Label(frame, text='Введите ссылку на видео или id',
                                     bd=2, fg='black', bg='SystemButtonFace',
@@ -196,6 +198,16 @@ class MainGUI(Tk):
         Tooltip(button_enter,
                 text='Вставить из буфера обмена',
                 wraplength=250)
+
+    def videohosting(self, frame, row):
+        self.vhost = VHost.NONE.value
+        self.hosting = StringVar(value=self.vhost)
+        self.label_vhost = Label(frame, textvariable=self.hosting, state=DISABLED)
+        self.label_vhost.grid(row=row, column=0, padx=5, sticky='E')
+        # label_vhost.pack(side='left', padx=10)
+        Tooltip(self.label_vhost,
+                text=f'Видеохостинг {self.vhost}',
+                wraplength=150)
 
     def create_widget_all_formats(self, frame, row):
         self.button_list_all_formats = Button(frame, text='Вывести список всех доступных форматов',

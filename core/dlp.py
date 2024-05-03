@@ -1,5 +1,6 @@
 import json  # noqa: F401
 import subprocess
+from enum import Enum
 
 from configs import config
 
@@ -250,3 +251,12 @@ class YoutubeDlExternal:
             for expected_file in config.PATH_SAVE_WIN.glob(expected_filename):
                 file_out = expected_file.parent / f'{expected_file.stem}.jpg'
                 image_convert(expected_file, file_out)
+
+
+class VHost(Enum):
+    """Verbs specified in RKSOK specs for requests"""
+
+    NONE = ''
+    YT = 'YouTube'
+    RT = 'Rutube'
+    VK = 'ВКонтакте'
