@@ -190,7 +190,7 @@ class MainGUI(Tk):
         self.label_err_link.grid(row=row, column=1, columnspan=4, padx=5, sticky='WE')
 
         self.field_link = Entry(frame, font=('consolas', '10', 'normal'),
-                                textvariable=self.inserted_link)  # width=75
+                                textvariable=self.inserted_link)
         self.field_link.grid(row=row + 1, column=1, columnspan=4, padx=5, sticky='WE')
 
         button_enter = Button(frame, text='Вставить', command=self.buffer2entry)
@@ -201,8 +201,8 @@ class MainGUI(Tk):
 
     def videohosting(self, frame, row):
         self.vhost = VHost.NONE.value
-        self.hosting = StringVar(value=self.vhost)
-        self.label_vhost = Label(frame, textvariable=self.hosting, state=DISABLED)
+        # self.hosting = StringVar(value=self.vhost)
+        self.label_vhost = Label(frame, textvariable=self.vhost, state=DISABLED)
         self.label_vhost.grid(row=row, column=0, padx=5, sticky='E')
         # label_vhost.pack(side='left', padx=10)
         Tooltip(self.label_vhost,
@@ -436,6 +436,7 @@ class MainGUI(Tk):
     def tick(self):
         input_link = self.inserted_link.get()
         list_disable = (
+                        # self.label_vhost,
                         self.button_out_info,
                         self.button_list_all_formats,
                         self.button_format_1080mp4,
@@ -447,21 +448,24 @@ class MainGUI(Tk):
                         )
         if not input_link:
             self.label_err_link.configure(text='Введите ссылку на видео или id', bg='SystemButtonFace', fg='black')
-            for widget in list_disable:
-                widget.config(state='disabled')
+            buttons_state = 'disabled'
+            self.vhost = VHost.NONE.value
         else:
             valid_id_link = self.get_valid_id_link()
             if valid_id_link:
                 self.label_err_link.config(text=f'Правильный формат ссылки.  id = {valid_id_link}',
                                            bg='SystemButtonFace', fg='green')
-                for widget in list_disable:
-                    widget.config(state='normal')
+                buttons_state = 'normal'
+                self.vhost = VHost.YT.value
                 self.remove_excess_parameters(input_link)
             else:
                 self.label_err_link.config(text='Неверный формат ссылки', bg='yellow1', fg='red')
-                for widget in list_disable:
-                    widget.config(state='disabled')
+                buttons_state = 'disabled'
+                self.vhost = VHost.NONE.value
 
+        self.label_vhost.config(text=self.vhost)
+        for widget in list_disable:
+            widget.config(state=buttons_state)
         # calls every 500 milliseconds to update
         self.field_link.after(700, self.tick)
 
