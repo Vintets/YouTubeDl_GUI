@@ -473,7 +473,7 @@ class MainGUI(Tk):
         self.label_vhost.config(text=self.validator.get_vhost())
         for widget in list_disable:
             widget.config(state=buttons_state)
-        # calls every 500 milliseconds to update
+        # calls every 700 milliseconds to update
         self.field_link.after(700, self.tick)
 
     def remove_excess_parameters(self, original_link):
@@ -483,49 +483,41 @@ class MainGUI(Tk):
 
     @validate_link_format
     def list_all_available_formats(self):
-        # YoutubeDlExternal().listformats(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().listformats,
                          kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def out_title(self):
-        # YoutubeDlExternal().out_title(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().out_title,
                          kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def out_info(self):
-        # YoutubeDlExternal().out_info(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().out_info,
                          kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_1080mp4(self):
-        # YoutubeDlExternal().format1080mp4(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format1080mp4,
                          kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_1080(self):
-        # YoutubeDlExternal().format1080(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format1080,
                          kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_best(self):
-        # YoutubeDlExternal().format_best(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format_best,
                          kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_best_progressive(self):
-        # YoutubeDlExternal().format_best_progressive(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format_best_progressive,
                          kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_mp3(self):
-        # YoutubeDlExternal().format_mp3(link=self.get_valid_link())
         threading.Thread(target=YoutubeDlExternal().format_mp3,
                          kwargs={'link': self.get_valid_link()}).start()
 
