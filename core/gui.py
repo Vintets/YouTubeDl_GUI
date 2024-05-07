@@ -570,7 +570,6 @@ class MainGUI(Tk):
                 self.label_err_link.config(text=f'Правильный формат ссылки.  id = {self.validator.video_id}',
                                            bg='SystemButtonFace', fg='green')
                 buttons_state = 'normal'
-                self.remove_excess_parameters(input_link)
             else:
                 self.label_err_link.config(text='Неверный формат ссылки', bg='yellow1', fg='red')
                 buttons_state = 'disabled'
@@ -580,11 +579,6 @@ class MainGUI(Tk):
             widget.config(state=buttons_state)
         # calls every 700 milliseconds to update
         self.field_link.after(700, self.tick)
-
-    def remove_excess_parameters(self, original_link):
-        link = original_link.split('&')[0]
-        if link != original_link:
-            self.inserted_link.set(link)
 
     @validate_link_format
     def list_all_available_formats(self):
