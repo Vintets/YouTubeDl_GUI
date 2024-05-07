@@ -7,6 +7,7 @@ from tkinter import DISABLED
 # from tkinter import GROOVE, OptionMenu
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Button, Checkbutton, Combobox, Entry
+from urllib.parse import ParseResult, parse_qsl, quote, urldefrag, urlencode, urlparse, urlunparse
 
 from accessory import authorship
 
@@ -93,36 +94,123 @@ class TextRedirector():
 
 
 class Validator:
-    valid_characters_id = string.ascii_letters + string.digits + '-_'
+    valid_characters_id_rt = string.ascii_lowercase + string.digits
+    valid_characters_id_yt = string.ascii_letters + string.digits + '-_'
     pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
 
     def __init__(self) -> None:
         self.vhost = self.reset_vhost()
+        self.original_link = ''
+        self.video_id = None
+        self.verified_link = ''
+        self.video_list = ''
 
-    def exclude_substr(self, link, substr):
+    def exclude_substr(self, link: str, substr: str) -> str:
         if link.startswith(substr):
             link = link.replace(substr, '')
         return link
 
-    def validate_link(self, link):
-        if not link:
-            self.reset_vhost()
-            return link
-        link = link.split('&')[0]
-        link = self.exclude_substr(link, r'https://')
-        link = self.exclude_substr(link, r'www.')
-        link = self.exclude_substr(link, r'youtube.com/watch?v=')
-        link = self.exclude_substr(link, r'youtube.com/shorts/')
-        link = self.exclude_substr(link, r'youtu.be/')
-        link = link.split('?')[0]
-        filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
-        if len(filter_link) == 11 and filter_link == link:
-            self.vhost = VHost.YT.value
-            return filter_link
-        self.vhost = VHost.NONE.value
-        return False
+    def validate_link(self, original_link: str) -> bool:
+        if not original_link:
+            self.set_empty_link()
+            return False
+        self.original_link = urldefrag(original_link.strip()).url
+        parsed_link = urlparse(self.normalize_link(self.original_link))
+        query_params = self.get_filtered_query_params(parsed_link)
+        self.set_video_list(query_params.get('list', ''))
 
-    def validate_video_format(self, _format):
+        if self.detection_rutube(parsed_link):
+            correct = self.validate_rutube_link(parsed_link)
+        elif self.detection_vkontakte(parsed_link):
+            ...
+        elif self.detection_youtube(parsed_link):
+            correct = self.validate_youtube_link(parsed_link, query_params)
+        elif self.detection_youtube_clear_id(original_link):
+            correct = True
+            self.vhost = VHost.YT.value
+            self.video_id = original_link
+            self.verified_link = original_link
+        else:
+            correct = False
+            self.set_empty_link()
+        return correct
+
+    def normalize_link(self, link: str) -> str:
+        link = self.exclude_substr(link, r'https://')
+        link = self.exclude_substr(link, r'http://')
+        return f'https://{link}'
+
+    def pruning_link(self, link: str) -> str:
+        link = self.exclude_substr(link, r'https://')
+        link = self.exclude_substr(link, r'http://')
+        link = self.exclude_substr(link, r'www.')
+        return link
+
+    def detection_rutube(self, link: ParseResult) -> bool:
+        return link.netloc == 'rutube.ru'
+
+    def detection_vkontakte(self, link: ParseResult) -> bool:
+        return link.netloc == 'vk.com'
+
+    def detection_youtube(self, link: ParseResult) -> bool:
+        return link.netloc in ('youtu.be', 'www.youtube.com',)
+
+    def detection_youtube_clear_id(self, original_link: str) -> bool:
+        validate_id = self.validate_video_id(original_link, characters=self.valid_characters_id_yt, length=11)
+        result = True if validate_id is not None else False
+        return result
+
+    def validate_rutube_link(self, link: ParseResult) -> bool:
+        str_link = link.path
+        str_link = self.exclude_substr(str_link, r'/video/')
+        str_link = self.exclude_substr(str_link, r'/shorts/')
+        video_id = str_link.rstrip('/')
+        print(f'2  {video_id=}')
+        validate_id = self.validate_video_id(video_id, characters=self.valid_characters_id_rt, length=32)
+        print(f'3  {validate_id=}')
+        if validate_id is not None:
+            result = True
+            self.vhost = VHost.RT.value
+            self.video_id = validate_id
+            self.verified_link = urlunparse(link._replace(query=''))
+        else:
+            result = False
+            self.set_empty_link()
+        return result
+
+    def validate_youtube_link(self, link: ParseResult, query_params: dict) -> bool:
+        if link.netloc == 'youtu.be':
+            video_id = link.path.strip('/')
+        elif link.path.startswith(r'/shorts/'):
+            video_id = self.exclude_substr(link.path, r'/shorts/').strip('/')
+        elif link.path.startswith(r'/watch'):
+            video_id = query_params.get('v', '')
+        else:
+            video_id = ''
+
+        print(f'4  {video_id=}')
+        validate_id = self.validate_video_id(video_id, characters=self.valid_characters_id_yt, length=11)
+        print(f'5  {validate_id=}')
+        if validate_id is not None:
+            result = True
+            self.vhost = VHost.YT.value
+            self.video_id = validate_id
+            new_query = urlencode(query_params, quote_via=quote)
+            self.verified_link = urlunparse(link._replace(query=new_query))
+        else:
+            result = False
+            self.set_empty_link()
+        return result
+
+    def validate_video_id(self, video_id: str, characters: str, length: int = 0) -> (str | None):
+        if len(video_id) != length:
+            return None
+        filter_link = ''.join(list(filter(lambda x: x in characters, video_id)))
+        if len(filter_link) == length and filter_link == video_id:
+            return filter_link
+        return None
+
+    def validate_video_format(self, _format: str) -> (str | None):
         if not _format:
             return _format
         _format = _format.replace(' ', '')
@@ -138,11 +226,26 @@ class Validator:
 
         return _format
 
+    def get_filtered_query_params(self, parsed_link: ParseResult) -> dict:
+        query_params = dict(parse_qsl(parsed_link.query))
+        filtered_query_params = {key: query_params[key] for key in ('v', 'list') if query_params.get(key, False)}
+        return filtered_query_params
+
     def get_vhost(self) -> VHost:
         return self.vhost
 
+    def set_video_list(self, video_list: str) -> None:
+        self.video_list = video_list
+
     def reset_vhost(self) -> None:
         self.vhost = VHost.NONE.value
+
+    def set_empty_link(self) -> None:
+        self.vhost = self.reset_vhost()
+        self.original_link = ''
+        self.video_id = None
+        self.verified_link = ''
+        self.video_list = ''
 
 
 class MainGUI(Tk):
@@ -431,14 +534,17 @@ class MainGUI(Tk):
         sys.stderr.write(f'{text}\n')
 
     def buffer_insert(self):
-        self.insert_link2field(self.validator.validate_link(pyperclip.paste()))
+        if self.validator.validate_link(pyperclip.paste()):
+            self.insert_link2field()
 
-    def insert_link2field(self, link):
-        if link:
-            self.inserted_link.set(f'https://youtu.be/{link}')
+    def insert_link2field(self):
+        print(f'{self.validator.verified_link=}')
+        self.inserted_link.set(self.validator.verified_link)
 
     def get_valid_link(self):
-        return self.validator.validate_link(self.inserted_link.get())
+        if self.validator.validate_link(self.inserted_link.get()):
+            return self.validator.verified_link
+        return ''
 
     def get_valid_format(self):
         return self.validator.validate_video_format(self.inserted_format.get())
@@ -460,9 +566,8 @@ class MainGUI(Tk):
             buttons_state = 'disabled'
             self.validator.reset_vhost()
         else:
-            valid_id_link = self.get_valid_link()
-            if valid_id_link:
-                self.label_err_link.config(text=f'Правильный формат ссылки.  id = {valid_id_link}',
+            if self.get_valid_link():
+                self.label_err_link.config(text=f'Правильный формат ссылки.  id = {self.validator.video_id}',
                                            bg='SystemButtonFace', fg='green')
                 buttons_state = 'normal'
                 self.remove_excess_parameters(input_link)
