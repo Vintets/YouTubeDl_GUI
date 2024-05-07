@@ -100,7 +100,8 @@ class Validator:
     pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
 
     def __init__(self) -> None:
-        self.vhost = self.reset_vhost()
+        self.vhost = ''
+        self.reset_vhost()
         self.original_link = ''
         self.video_id = None
         self.verified_link = ''
@@ -283,7 +284,7 @@ class Validator:
         self.vhost = VHost.NONE.value
 
     def set_empty_link(self) -> None:
-        self.vhost = self.reset_vhost()
+        self.reset_vhost()
         self.original_link = ''
         self.video_id = None
         self.verified_link = ''
