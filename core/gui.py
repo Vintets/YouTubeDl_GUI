@@ -564,12 +564,15 @@ class MainGUI(Tk):
         if not input_link:
             self.label_err_link.configure(text='Введите ссылку на видео или id', bg='SystemButtonFace', fg='black')
             buttons_state = 'disabled'
-            self.validator.reset_vhost()
+            self.validator.set_empty_link()
         else:
-            if self.get_valid_link():
+            valid_link = self.get_valid_link()
+            if valid_link:
                 self.label_err_link.config(text=f'Правильный формат ссылки.  id = {self.validator.video_id}',
                                            bg='SystemButtonFace', fg='green')
                 buttons_state = 'normal'
+                if valid_link != input_link:
+                    self.inserted_link.set(valid_link)
             else:
                 self.label_err_link.config(text='Неверный формат ссылки', bg='yellow1', fg='red')
                 buttons_state = 'disabled'
