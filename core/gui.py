@@ -589,7 +589,7 @@ class MainGUI(Tk):
             return self.validator.verified_link
         return ''
 
-    def get_valid_format(self):
+    def get_valid_video_format(self):
         return self.validator.validate_video_format(self.inserted_format.get())
 
     def tick(self):
@@ -668,7 +668,7 @@ class MainGUI(Tk):
 
     @validate_link_format
     def download_custom(self):
-        valid_format = self.get_valid_format()
+        valid_format = self.get_valid_video_format()
         if valid_format:
             YoutubeDlExternal().set_formats(valid_format)
             threading.Thread(target=YoutubeDlExternal().format_custom,
