@@ -4,6 +4,20 @@ from urllib.parse import ParseResult, parse_qsl, quote, unquote, urldefrag, urle
 
 from core.dlp import VHost
 
+from yt_dlp.utils import DownloadError, ExtractorError
+
+
+def validate_link_format(func):
+    def wrapper(self, *args, **kwargs):
+        if not self.get_valid_link():
+            print('Формат ссылки неправильный!')
+            return
+        try:
+            func(self, *args, **kwargs)
+        except (DownloadError, ExtractorError):
+            print('Не удаётся загрузить ресурс по ссылке!')
+    return wrapper
+
 
 class Validator:
     valid_characters_id_rt = string.ascii_lowercase + string.digits

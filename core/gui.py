@@ -14,23 +14,9 @@ from configs import config
 from core.cprint_linux import cprint
 from core.dlp import YoutubeDlExternal
 from core.tooltip import Tooltip
-from core.validators import Validator
+from core.validators import Validator, validate_link_format
 
 import pyperclip
-
-from yt_dlp.utils import DownloadError, ExtractorError
-
-
-def validate_link_format(func):
-    def wrapper(self, *args, **kwargs):
-        if not self.get_valid_link():
-            print('Формат ссылки неправильный!')
-            return
-        try:
-            func(self, *args, **kwargs)
-        except (DownloadError, ExtractorError):
-            print('Не удаётся загрузить ресурс по ссылке!')
-    return wrapper
 
 
 class TextRedirector():
