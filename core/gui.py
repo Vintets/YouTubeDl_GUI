@@ -156,12 +156,12 @@ class Validator:
 
     def validate_rutube_link(self, link: ParseResult) -> bool:
         str_link = link.path
-        str_link = self.exclude_substr(str_link, r'/video/')
-        str_link = self.exclude_substr(str_link, r'/shorts/')
+        str_link = self.exclude_substr(str_link, '/video/')
+        str_link = self.exclude_substr(str_link, '/shorts/')
         video_id = str_link.rstrip('/')
-        print(f'2  {video_id=}')
         validate_id = self.validate_video_id(video_id, characters=self.valid_characters_id_rt, length=32)
-        print(f'3  {validate_id=}')
+        # print(f'2  {video_id=}')
+        # print(f'3  {validate_id=}')
         if validate_id is not None:
             result = True
             self.vhost = VHost.RT.value
@@ -175,16 +175,16 @@ class Validator:
     def validate_youtube_link(self, link: ParseResult, query_params: dict) -> bool:
         if link.netloc == 'youtu.be':
             video_id = link.path.strip('/')
-        elif link.path.startswith(r'/shorts/'):
-            video_id = self.exclude_substr(link.path, r'/shorts/').strip('/')
-        elif link.path.startswith(r'/watch'):
+        elif link.path.startswith('/shorts/'):
+            video_id = self.exclude_substr(link.path, '/shorts/').strip('/')
+        elif link.path.startswith('/watch'):
             video_id = query_params.get('v', '')
         else:
             video_id = ''
 
-        print(f'4  {video_id=}')
         validate_id = self.validate_video_id(video_id, characters=self.valid_characters_id_yt, length=11)
-        print(f'5  {validate_id=}')
+        # print(f'4  {video_id=}')
+        # print(f'5  {validate_id=}')
         if validate_id is not None:
             result = True
             self.vhost = VHost.YT.value
