@@ -115,8 +115,6 @@ class Validator:
             self.set_empty_link()
             return False
         self.original_link = urldefrag(original_link.strip()).url
-        query_params = self.get_filtered_query_params(parsed_link)
-        self.set_video_list(query_params.get('list', ''))
         parsed_link = urlparse(unquote(self.normalize_link(self.original_link)))
 
         if self.detection_rutube(parsed_link):
@@ -124,6 +122,8 @@ class Validator:
         elif self.detection_vkontakte(parsed_link):
             ...
         elif self.detection_youtube(parsed_link):
+            query_params = self.get_filtered_query_params(parsed_link, allowed_parameters=('v', 'list'))
+            self.set_video_list(query_params.get('list', ''))
             correct = self.validate_youtube_link(parsed_link, query_params)
         elif self.detection_youtube_clear_id(original_link):
             correct = True
@@ -220,9 +220,9 @@ class Validator:
 
         return _format
 
-    def get_filtered_query_params(self, parsed_link: ParseResult) -> dict:
+    def get_filtered_query_params(self, parsed_link: ParseResult, allowed_parameters: tuple = tuple()) -> dict:
         query_params = dict(parse_qsl(parsed_link.query))
-        filtered_query_params = {key: query_params[key] for key in ('v', 'list') if query_params.get(key, False)}
+        filtered_query_params = {key: query_params[key] for key in allowed_parameters if query_params.get(key, False)}
         return filtered_query_params
 
     def get_vhost(self) -> VHost:
