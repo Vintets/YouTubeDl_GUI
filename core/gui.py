@@ -7,7 +7,7 @@ from tkinter import DISABLED
 # from tkinter import GROOVE, OptionMenu
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Button, Checkbutton, Combobox, Entry
-from urllib.parse import ParseResult, parse_qsl, quote, urldefrag, urlencode, urlparse, urlunparse
+from urllib.parse import ParseResult, parse_qsl, quote, unquote, urldefrag, urlencode, urlparse, urlunparse
 
 from accessory import authorship
 
@@ -115,9 +115,9 @@ class Validator:
             self.set_empty_link()
             return False
         self.original_link = urldefrag(original_link.strip()).url
-        parsed_link = urlparse(self.normalize_link(self.original_link))
         query_params = self.get_filtered_query_params(parsed_link)
         self.set_video_list(query_params.get('list', ''))
+        parsed_link = urlparse(unquote(self.normalize_link(self.original_link)))
 
         if self.detection_rutube(parsed_link):
             correct = self.validate_rutube_link(parsed_link)
