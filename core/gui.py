@@ -483,9 +483,9 @@ class MainGUI(Tk):
                 wraplength=250)
 
         self.inserted_format = StringVar()
-        self.field_formats = Entry(frame, width=7, font=('consolas', '10', 'normal'),
+        self.field_formats = Entry(frame, width=16, font=('consolas', '10', 'normal'),
                                    textvariable=self.inserted_format)
-        self.field_formats.grid(row=row, column=4, padx=5, sticky='W')
+        self.field_formats.grid(row=row, column=4, padx=5, sticky='WE')
         Tooltip(self.field_formats,
                 text='Указать id формата или idVideo+idAudio',
                 wraplength=250)
