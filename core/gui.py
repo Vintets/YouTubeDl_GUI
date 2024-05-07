@@ -107,10 +107,10 @@ class Validator:
         self.verified_link = ''
         self.video_list = ''
 
-    def exclude_substr(self, link: str, substr: str) -> str:
-        if link.startswith(substr):
-            link = link.replace(substr, '')
-        return link
+    def exclude_substr(self, full_str: str, substr: str) -> str:
+        if full_str.startswith(substr):
+            full_str = full_str.replace(substr, '')
+        return full_str
 
     def validate_link(self, original_link: str) -> bool:
         if not original_link:
