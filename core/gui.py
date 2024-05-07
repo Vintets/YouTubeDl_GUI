@@ -97,7 +97,9 @@ class Validator:
     valid_characters_id_rt = string.ascii_lowercase + string.digits
     valid_characters_id_yt = string.ascii_letters + string.digits + '-_'
     valid_characters_id_vk = string.digits + '-_'
-    pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
+    pattern_formats_yt = re.compile(r'\d{1,3}(\+\d{1,3})?')
+    pattern_formats_rt = re.compile(r'^\d{1,4}-[01]$')
+    pattern_formats_vk = re.compile(r'^\d{3,4}$')
 
     def __init__(self) -> None:
         self.vhost = ''
@@ -253,21 +255,55 @@ class Validator:
             return video_id
         return None
 
-    def validate_video_format(self, _format: str) -> (str | None):
-        if not _format:
-            return _format
-        _format = _format.replace(' ', '')
-        re_format = self.pattern_formats.match(_format)
-        if re_format is None or re_format.group() != _format:
+    def validate_video_format(self, video_format: str) -> (str | None):
+        if not video_format:
+            return video_format
+
+        video_format = video_format.replace(' ', '')
+        if self.vhost == VHost.RT.value:
+            video_format = self.validate_rutube_vkontakte_video_format(
+                                                                       video_format,
+                                                                       prefixes=('default-', 'm3u8-'),
+                                                                       pattern=self.pattern_formats_rt
+                                                                       )
+        elif self.vhost == VHost.VK.value:
+            video_format = self.validate_rutube_vkontakte_video_format(
+                                                                       video_format,
+                                                                       prefixes=('hls-', 'url'),
+                                                                       pattern=self.pattern_formats_vk
+                                                                       )
+        elif self.vhost == VHost.YT.value:
+            video_format = self.validate_youtube_video_format(video_format)
+        else:
+            video_format = None
+        return video_format
+
+    def validate_rutube_vkontakte_video_format(self,
+                                               video_format: str,
+                                               prefixes: tuple[str],
+                                               pattern: re.Pattern
+                                               ) -> (str | None):
+        analized_format = video_format
+        if not analized_format.startswith(prefixes):
+            return None
+        analized_format = self.exclude_substr(analized_format, prefixes[0])
+        analized_format = self.exclude_substr(analized_format, prefixes[1])
+        re_format = pattern.match(analized_format)
+        if re_format is None or re_format.group() != analized_format:
+            return None
+        return video_format
+
+    def validate_youtube_video_format(self, video_format: str) -> (str | None):
+        re_format = self.pattern_formats_yt.match(video_format)
+        if re_format is None or re_format.group() != video_format:
             return None
 
         # исключаем начало id с 0
         for _f in re_format.group().split('+'):
             if _f.startswith('0'):
-                _format = None
+                video_format = None
                 break
-
-        return _format
+        return video_format
 
     def get_filtered_query_params(self, parsed_link: ParseResult, allowed_parameters: tuple = tuple()) -> dict:
         query_params = dict(parse_qsl(parsed_link.query))
@@ -590,7 +626,7 @@ class MainGUI(Tk):
         return ''
 
     def get_valid_video_format(self):
-        return self.validator.validate_video_format(self.inserted_format.get())
+        return self.validator.validate_video_format(self.inserted_format.get().strip())
 
     def tick(self):
         input_link = self.inserted_link.get()
