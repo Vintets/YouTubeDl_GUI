@@ -1,11 +1,13 @@
 import json  # noqa: F401
 import subprocess
+from enum import Enum
 
 from configs import config
 
 from core.cprint_linux import cprint
 from core.errors import download_error
 from core.logger_ydl import MyLogger
+from core.webp2jpeg import image_convert
 
 from yt_dlp import YoutubeDL
 from yt_dlp.downloader import FileDownloader
@@ -137,6 +139,7 @@ class YoutubeDlExternal:
         self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
+        self.thumbnail_convert(link)
 
     @download_error
     def format1080(self, link=None):
@@ -153,6 +156,7 @@ class YoutubeDlExternal:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
+        self.thumbnail_convert(link)
 
     @download_error
     def format_best(self, link=None):
@@ -169,6 +173,7 @@ class YoutubeDlExternal:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
+        self.thumbnail_convert(link)
 
     @download_error
     def format_best_progressive(self, link=None):
@@ -183,6 +188,7 @@ class YoutubeDlExternal:
         self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
+        self.thumbnail_convert(link)
 
     @download_error
     def format_mp3(self, link=None):
@@ -203,6 +209,7 @@ class YoutubeDlExternal:
         self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
+        self.thumbnail_convert(link)
 
     @download_error
     def format_custom(self, link=None):
@@ -219,6 +226,7 @@ class YoutubeDlExternal:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
+        self.thumbnail_convert(link)
 
     def set_bitrate_mp3(self, bitrate_mp3, log=True):
         self.bitrate_mp3 = bitrate_mp3[:-5]
@@ -233,3 +241,22 @@ class YoutubeDlExternal:
         self.writethumbnail = value
         message = 'включена' if self.writethumbnail else 'выключена'
         print(f'Загрузка картинки превью - {message}')
+
+    def thumbnail_convert(self, link):
+        if self.writethumbnail:
+            info = self.get_listformats_dict(link=link)
+            id_ = info['id']
+            title = info['title']
+            expected_filename = f'{title}_[{id_}?_f*.webp'
+            for expected_file in config.PATH_SAVE_WIN.glob(expected_filename):
+                file_out = expected_file.parent / f'{expected_file.stem}.jpg'
+                image_convert(expected_file, file_out)
+
+
+class VHost(Enum):
+    """Verbs specified in RKSOK specs for requests"""
+
+    NONE = ''
+    YT = 'YouTube'
+    RT = 'Rutube'
+    VK = 'ВКонтакте'

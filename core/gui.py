@@ -7,13 +7,14 @@ from tkinter import DISABLED
 # from tkinter import GROOVE, OptionMenu
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Button, Checkbutton, Combobox, Entry
+from urllib.parse import ParseResult, parse_qsl, quote, unquote, urldefrag, urlencode, urlparse, urlunparse
 
 from accessory import authorship
 
 from configs import config
 
 from core.cprint_linux import cprint
-from core.dlp import YoutubeDlExternal
+from core.dlp import VHost, YoutubeDlExternal
 from core.tooltip import Tooltip
 
 import pyperclip
@@ -23,7 +24,7 @@ from yt_dlp.utils import DownloadError, ExtractorError
 
 def validate_link_format(func):
     def wrapper(self, *args, **kwargs):
-        if not self.get_valid_id_link():
+        if not self.get_valid_link():
             print('Формат ссылки неправильный!')
             return
         try:
@@ -93,44 +94,237 @@ class TextRedirector():
 
 
 class Validator:
-    valid_characters_id = string.ascii_letters + string.digits + '-_'
-    pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
+    valid_characters_id_rt = string.ascii_lowercase + string.digits
+    valid_characters_id_yt = string.ascii_letters + string.digits + '-_'
+    valid_characters_id_vk = string.digits + '-_'
+    pattern_formats_yt = re.compile(r'\d{1,3}(\+\d{1,3})?')
+    pattern_formats_rt = re.compile(r'^\d{1,4}-[01]$')
+    pattern_formats_vk = re.compile(r'^\d{3,4}$')
 
-    def exclude_substr(self, link, substr):
-        if link.startswith(substr):
-            link = link.replace(substr, '')
-        return link
+    def __init__(self) -> None:
+        self.vhost = ''
+        self.reset_vhost()
+        self.original_link = ''
+        self.video_id = None
+        self.verified_link = ''
+        self.video_list = ''
 
-    def validate_link(self, link):
-        if not link:
-            return link
-        link = link.split('&')[0]
+    def exclude_substr(self, full_str: str, substr: str) -> str:
+        if full_str.startswith(substr):
+            full_str = full_str.replace(substr, '')
+        return full_str
+
+    def validate_link(self, original_link: str) -> bool:
+        if not original_link:
+            self.set_empty_link()
+            return False
+        self.original_link = urldefrag(original_link.strip()).url
+        parsed_link = urlparse(unquote(self.normalize_link(self.original_link)))
+
+        if self.detection_rutube(parsed_link):
+            correct = self.validate_rutube_link(parsed_link)
+        elif self.detection_vkontakte(parsed_link):
+            query_params = self.get_filtered_query_params(parsed_link, allowed_parameters=('z', 'oid', 'id'))
+            self.set_video_list('')
+            correct = self.validate_vkontakte_link(parsed_link, query_params)
+        elif self.detection_youtube(parsed_link):
+            query_params = self.get_filtered_query_params(parsed_link, allowed_parameters=('v', 'list'))
+            self.set_video_list(query_params.get('list', ''))
+            correct = self.validate_youtube_link(parsed_link, query_params)
+        elif self.detection_youtube_clear_id(original_link):
+            correct = True
+            self.vhost = VHost.YT.value
+            self.video_id = original_link
+            self.verified_link = original_link
+        else:
+            correct = False
+            self.set_empty_link()
+        return correct
+
+    def normalize_link(self, link: str) -> str:
         link = self.exclude_substr(link, r'https://')
-        link = self.exclude_substr(link, r'www.')
-        link = self.exclude_substr(link, r'youtube.com/watch?v=')
-        link = self.exclude_substr(link, r'youtube.com/shorts/')
-        link = self.exclude_substr(link, r'youtu.be/')
-        link = link.split('?')[0]
-        filter_link = ''.join(list(filter(lambda x: x in self.valid_characters_id, link)))
-        if len(filter_link) == 11 and filter_link == link:
-            return filter_link
-        return False
+        link = self.exclude_substr(link, r'http://')
+        return f'https://{link}'
 
-    def validate_format(self, _format):
-        if not _format:
-            return _format
-        _format = _format.replace(' ', '')
-        re_format = self.pattern_formats.match(_format)
-        if re_format is None or re_format.group() != _format:
+    def detection_rutube(self, link: ParseResult) -> bool:
+        return link.netloc == 'rutube.ru'
+
+    def detection_vkontakte(self, link: ParseResult) -> bool:
+        return link.netloc == 'vk.com'
+
+    def detection_youtube(self, link: ParseResult) -> bool:
+        return link.netloc in ('youtu.be', 'www.youtube.com',)
+
+    def detection_youtube_clear_id(self, original_link: str) -> bool:
+        validate_id = self.validate_video_id(original_link, characters=self.valid_characters_id_yt, length=11)
+        result = True if validate_id is not None else False
+        return result
+
+    def validate_rutube_link(self, link: ParseResult) -> bool:
+        str_link = link.path
+        str_link = self.exclude_substr(str_link, '/video/')
+        str_link = self.exclude_substr(str_link, '/shorts/')
+        video_id = str_link.rstrip('/')
+        validate_id = self.validate_video_id(video_id, characters=self.valid_characters_id_rt, length=32)
+        # print(f'2  {video_id=}')
+        # print(f'3  {validate_id=}')
+        if validate_id is not None:
+            result = True
+            self.vhost = VHost.RT.value
+            self.video_id = validate_id
+            self.verified_link = urlunparse(link._replace(query=''))
+        else:
+            result = False
+            self.set_empty_link()
+        return result
+
+    def validate_vkontakte_link(self, link: ParseResult, query_params: dict) -> bool:
+        if link.path == '/video_ext.php':
+            oid = query_params.get('oid', '')
+            id_ = query_params.get('id', '')
+            video_id = f'{oid}_{id_}'
+        elif link.path.startswith('/video'):
+            video_id = self.exclude_substr(link.path, '/video').strip('/')
+        elif link.path == '/feed':
+            video_id = ''
+            query = query_params.get('z', '')
+            for par in query.split('/'):
+                if par.startswith('video'):
+                    video_id = par[5:]
+                    break
+        else:
+            video_id = ''
+
+        validate_id = self.validate_video_id_vk(video_id, characters=self.valid_characters_id_vk)
+        # print(f'6  {video_id=}')
+        # print(f'7  {validate_id=}')
+        if validate_id is not None:
+            result = True
+            self.vhost = VHost.VK.value
+            self.video_id = validate_id
+            self.verified_link = f'https://vk.com/video{video_id}'
+        else:
+            result = False
+            self.set_empty_link()
+        return result
+
+    def validate_youtube_link(self, link: ParseResult, query_params: dict) -> bool:
+        if link.netloc == 'youtu.be':
+            video_id = link.path.strip('/')
+        elif link.path.startswith('/shorts/'):
+            video_id = self.exclude_substr(link.path, '/shorts/').strip('/')
+        elif link.path.startswith('/watch'):
+            video_id = query_params.get('v', '')
+        else:
+            video_id = ''
+
+        validate_id = self.validate_video_id(video_id, characters=self.valid_characters_id_yt, length=11)
+        # print(f'4  {video_id=}')
+        # print(f'5  {validate_id=}')
+        if validate_id is not None:
+            result = True
+            self.vhost = VHost.YT.value
+            self.video_id = validate_id
+            new_query = urlencode(query_params, quote_via=quote)
+            self.verified_link = urlunparse(link._replace(query=new_query))
+        else:
+            result = False
+            self.set_empty_link()
+        return result
+
+    def validate_video_id(self, video_id: str, characters: str, length: int = 0) -> (str | None):
+        if len(video_id) != length:
+            return None
+        filter_link = ''.join(list(filter(lambda x: x in characters, video_id)))
+        if len(filter_link) == length and filter_link == video_id:
+            return filter_link
+        return None
+
+    def validate_video_id_vk(self, video_id: str, characters: str) -> (str | None):
+        # -215588860_456239958
+        filter_link = ''.join(list(filter(lambda x: x in characters, video_id)))
+        if len(filter_link) < 12 and filter_link != video_id:
+            return None
+        id_component = video_id.split('_')
+        if id_component[0].startswith('-'):
+            id_component[0] = id_component[0][1:]
+        if (len(id_component) == 2 and
+                id_component[0].isdigit() and
+                id_component[1].isdigit() and
+                len(id_component[1]) == 9):
+            return video_id
+        return None
+
+    def validate_video_format(self, video_format: str) -> (str | None):
+        if not video_format:
+            return video_format
+
+        video_format = video_format.replace(' ', '')
+        if self.vhost == VHost.RT.value:
+            video_format = self.validate_rutube_vkontakte_video_format(
+                                                                       video_format,
+                                                                       prefixes=('default-', 'm3u8-'),
+                                                                       pattern=self.pattern_formats_rt
+                                                                       )
+        elif self.vhost == VHost.VK.value:
+            video_format = self.validate_rutube_vkontakte_video_format(
+                                                                       video_format,
+                                                                       prefixes=('hls-', 'url'),
+                                                                       pattern=self.pattern_formats_vk
+                                                                       )
+        elif self.vhost == VHost.YT.value:
+            video_format = self.validate_youtube_video_format(video_format)
+        else:
+            video_format = None
+        return video_format
+
+    def validate_rutube_vkontakte_video_format(self,
+                                               video_format: str,
+                                               prefixes: tuple[str],
+                                               pattern: re.Pattern
+                                               ) -> (str | None):
+        analized_format = video_format
+        if not analized_format.startswith(prefixes):
+            return None
+        analized_format = self.exclude_substr(analized_format, prefixes[0])
+        analized_format = self.exclude_substr(analized_format, prefixes[1])
+        re_format = pattern.match(analized_format)
+        if re_format is None or re_format.group() != analized_format:
+            return None
+        return video_format
+
+    def validate_youtube_video_format(self, video_format: str) -> (str | None):
+        re_format = self.pattern_formats_yt.match(video_format)
+        if re_format is None or re_format.group() != video_format:
             return None
 
         # исключаем начало id с 0
         for _f in re_format.group().split('+'):
             if _f.startswith('0'):
-                _format = None
+                video_format = None
                 break
+        return video_format
 
-        return _format
+    def get_filtered_query_params(self, parsed_link: ParseResult, allowed_parameters: tuple = tuple()) -> dict:
+        query_params = dict(parse_qsl(parsed_link.query))
+        filtered_query_params = {key: query_params[key] for key in allowed_parameters if query_params.get(key, False)}
+        return filtered_query_params
+
+    def get_vhost(self) -> VHost:
+        return self.vhost
+
+    def set_video_list(self, video_list: str) -> None:
+        self.video_list = video_list
+
+    def reset_vhost(self) -> None:
+        self.vhost = VHost.NONE.value
+
+    def set_empty_link(self) -> None:
+        self.reset_vhost()
+        self.original_link = ''
+        self.video_id = None
+        self.verified_link = ''
+        self.video_list = ''
 
 
 class MainGUI(Tk):
@@ -143,7 +337,6 @@ class MainGUI(Tk):
         self.geometry('+490+150')
         self.iconbitmap('YT-DLP.ico')
 
-        self.create_link_frame()
         self.create_buttons_frame()
         self.create_consol_frame()
 
@@ -160,82 +353,92 @@ class MainGUI(Tk):
         self.after(1500, self.clear_console)
         self.tick()
 
-    def create_link_frame(self):
-        """Блок ссылки"""
-
-        link_block = Frame(self)  # bd=5, bg='ivory2'
-        # link_block.pack(side='top', fill='x')
-        link_block.grid(row=0, column=0, padx=5, pady=5)
-
-        self.inserted_link = StringVar()
-        self.label_err_link = Label(link_block, text='Введите ссылку на видео или id',
-                                    bd=2, padx=12, pady=3, fg='black', bg='SystemButtonFace',
-                                    font=('Arial', 8, 'bold'))
-        self.label_err_link.pack()
-        self.field_link = Entry(link_block, width=75, font=('consolas', '10', 'normal'),
-                                textvariable=self.inserted_link)
-        self.field_link.pack(side='left', padx=3)
-
-        button_enter = Button(link_block, text='Вставить', command=self.buffer2entry)
-        button_enter.pack(side='left', padx=3)
-        Tooltip(button_enter,
-                text='Вставить из буфера обмена',
-                wraplength=250)
-
-        self.button_out_info = Button(link_block, text='i', state=DISABLED, width=3, command=self.out_info)
-        self.button_out_info.pack(side='right', padx=3)
-        Tooltip(self.button_out_info,
-                text='Показать информацию по видео',
-                wraplength=250)
-
     def create_buttons_frame(self):
         """Блок основных кнопок"""
 
         widget_control = Frame(self)
         widget_control.grid(row=1, column=0, padx=3, pady=5, sticky='WE')
-        self.columnconfigure(0, weight=1)
+        # self.columnconfigure(0, weight=1)
         # self.rowconfigure(1, weight=1)
         widget_control.columnconfigure((0, 1), weight=1)
         widget_control.columnconfigure((2, 3, 4, 5), weight=1)
         # widget_control.rowconfigure((0, 1, 2), weight=1)
 
-        self.create_widget_all_formats(frame=widget_control)
-        self.create_widgets_download(frame=widget_control)
-        self.create_widgets_config(frame=widget_control)
-        self.create_widgets_control_console(frame=widget_control)
+        self.create_link_frame(frame=widget_control, row=0)
+        self.create_widget_all_formats(frame=widget_control, row=2)
+        self.create_widget_out_info(frame=widget_control, row=2)
+        self.create_widgets_download(frame=widget_control, row=3)
+        self.create_widgets_config(frame=widget_control, row=4)
+        self.create_widgets_control_console(frame=widget_control, row=4)
         self.redirect_stdout_elements(frame=widget_control, show=False)
 
-    def create_widget_all_formats(self, frame):
+    def create_link_frame(self, frame, row):
+        """Блок ссылки"""
+
+        self.videohosting(frame=frame, row=row + 1)
+
+        self.inserted_link = StringVar()
+        self.label_err_link = Label(frame, text='Введите ссылку на видео или id',
+                                    bd=2, fg='black', bg='SystemButtonFace',
+                                    font=('Arial', 8, 'bold'))
+        self.label_err_link.grid(row=row, column=1, columnspan=4, padx=5, sticky='WE')
+
+        self.field_link = Entry(frame, font=('consolas', '10', 'normal'),
+                                textvariable=self.inserted_link)
+        self.field_link.grid(row=row + 1, column=1, columnspan=4, padx=5, sticky='WE')
+
+        button_enter = Button(frame, text='Вставить', command=self.buffer2entry)
+        button_enter.grid(row=row + 1, column=5, padx=5, pady=3, sticky='WS')
+        Tooltip(button_enter,
+                text='Вставить из буфера обмена',
+                wraplength=250)
+
+    def videohosting(self, frame, row):
+        self.vhost = self.validator.get_vhost()
+        self.label_vhost = Label(frame, textvariable=self.vhost)
+        self.label_vhost.grid(row=row, column=0, padx=5, sticky='E')
+        Tooltip(self.label_vhost,
+                text=f'Видеохостинг',
+                wraplength=150)
+
+    def create_widget_all_formats(self, frame, row):
         self.button_list_all_formats = Button(frame, text='Вывести список всех доступных форматов',
                                               state=DISABLED,
                                               command=self.list_all_available_formats)
-        self.button_list_all_formats.grid(row=0, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
+        self.button_list_all_formats.grid(row=row, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
 
-    def create_widgets_download(self, frame):
+    def create_widget_out_info(self, frame, row):
+        self.button_out_info = Button(frame, text='i', state=DISABLED, width=3, command=self.out_info)
+        self.button_out_info.grid(row=row, column=5, padx=5, sticky='W')
+        Tooltip(self.button_out_info,
+                text='Показать информацию по видео',
+                wraplength=250)
+
+    def create_widgets_download(self, frame, row):
         label_download = Label(frame, text='Скачать:')
-        label_download.grid(row=1, column=0, padx=5, pady=5, sticky='E')
+        label_download.grid(row=row, column=0, padx=5, pady=5, sticky='E')
 
         self.button_format_mp3 = Button(frame, text='mp3', state=DISABLED,
                                         command=self.download_mp3)
-        self.button_format_mp3.grid(row=1, column=1, padx=5, sticky='WE')
+        self.button_format_mp3.grid(row=row, column=1, padx=5, sticky='WE')
 
         self.button_format_1080mp4 = Button(frame, text='Видео mp4 <=1080p', state=DISABLED,
                                             command=self.download_1080mp4)  # font=('Arial', 8, 'bold')
-        self.button_format_1080mp4.grid(row=1, column=2, padx=5, sticky='WE')
+        self.button_format_1080mp4.grid(row=row, column=2, padx=5, sticky='WE')
         Tooltip(self.button_format_1080mp4,
                 text='Формат mp4\nЛучшее качество\nРазрешение до 1080p\nСборка: быстро',
                 wraplength=250)
 
         self.button_format_1080 = Button(frame, text='Видео <=1080p', state=DISABLED,
                                          command=self.download_1080)
-        self.button_format_1080.grid(row=1, column=3, padx=5, sticky='WE')
+        self.button_format_1080.grid(row=row, column=3, padx=5, sticky='WE')
         Tooltip(self.button_format_1080,
                 text='Формат любой\nЛучшее качество\nРазрешение до 1080p\nСборка: медленно',
                 wraplength=250)
 
         self.button_format_best = Button(frame, text='Видео наилучшее', state=DISABLED,
                                          command=self.download_best)
-        self.button_format_best.grid(row=1, column=4, padx=5, sticky='WE')
+        self.button_format_best.grid(row=row, column=4, padx=5, sticky='WE')
         Tooltip(self.button_format_best,
                 text='Формат любой\nЛучшее качество\nРазрешение максимальное\nСборка: медленно',
                 wraplength=250)
@@ -243,15 +446,15 @@ class MainGUI(Tk):
         self.button_format_best_progressive = Button(frame, text='Видео без кодирования',
                                                      state=DISABLED,
                                                      command=self.download_best_progressive)
-        self.button_format_best_progressive.grid(row=1, column=5, padx=5, sticky='W')
+        self.button_format_best_progressive.grid(row=row, column=5, padx=5, sticky='W')
         Tooltip(self.button_format_best_progressive,
                 text='Видео в наилучшем качестве (до 720p) без перекодирования! (progressive).\nСразу video+audio формат\nСборка: нет',
                 wraplength=250)
 
-    def create_widgets_config(self, frame):
+    def create_widgets_config(self, frame, row):
         bitrate = ['96 kbps', '128 kbps', '160 kbps', '192 kbps', '224 kbps', '256 kbps', '320 kbps']
         self.bitrate_mp3 = Combobox(frame, values=bitrate, width=12, state='readonly')
-        self.bitrate_mp3.grid(row=2, column=1, padx=5, sticky='WE')
+        self.bitrate_mp3.grid(row=row, column=1, padx=5, sticky='WE')
         self.bitrate_mp3.current(3)  # 192 kbps
         self.bitrate_mp3.bind('<<ComboboxSelected>>', self.set_bitrate_mp3)
         self.set_bitrate_mp3(None, log=False)
@@ -266,7 +469,7 @@ class MainGUI(Tk):
                          onvalue=1, offvalue=0,
                          command=self.set_writethumbnail
                          )
-        c1.grid(row=2, column=2, padx=3, sticky='W')
+        c1.grid(row=row, column=2, padx=3, sticky='W')
         self.set_writethumbnail()
         Tooltip(c1,
                 text='Сохранять превью изображение',
@@ -274,28 +477,28 @@ class MainGUI(Tk):
 
         self.button_format_custom = Button(frame, text='Указанные:', state=DISABLED,
                                            command=self.download_custom)
-        self.button_format_custom.grid(row=2, column=3, padx=5, sticky='WE')
+        self.button_format_custom.grid(row=row, column=3, padx=5, sticky='WE')
         Tooltip(self.button_format_custom,
                 text='Скачать произвольно заданные форматы video+audio',
                 wraplength=250)
 
         self.inserted_format = StringVar()
-        self.field_formats = Entry(frame, width=7, font=('consolas', '10', 'normal'),
+        self.field_formats = Entry(frame, width=16, font=('consolas', '10', 'normal'),
                                    textvariable=self.inserted_format)
-        self.field_formats.grid(row=2, column=4, padx=5, sticky='W')
+        self.field_formats.grid(row=row, column=4, padx=5, sticky='WE')
         Tooltip(self.field_formats,
                 text='Указать id формата или idVideo+idAudio',
                 wraplength=250)
 
-    def create_widgets_control_console(self, frame):
+    def create_widgets_control_console(self, frame, row):
         button_clear_console = Button(frame, text='Очистить', command=self.clear_console)
-        button_clear_console.grid(row=2, column=5, padx=48, pady=3, sticky='ES')
+        button_clear_console.grid(row=row, column=5, padx=48, pady=3, sticky='ES')
         Tooltip(button_clear_console,
                 text='Очистить консоль',
                 wraplength=250)
 
         self.button_toggle_console = Button(frame, text='▲', width=3, command=self.toggle_size_consol)
-        self.button_toggle_console.grid(row=2, column=5, padx=16, pady=3, sticky='ES')
+        self.button_toggle_console.grid(row=row, column=5, padx=16, pady=3, sticky='ES')
 
     def redirect_stdout_elements(self, frame, show=True):
         label_redirect = Label(frame, text='Redirect console:')  # relief=GROOVE
@@ -410,17 +613,20 @@ class MainGUI(Tk):
         sys.stderr.write(f'{text}\n')
 
     def buffer_insert(self):
-        self.insert_link2field(self.validator.validate_link(pyperclip.paste()))
+        if self.validator.validate_link(pyperclip.paste()):
+            self.insert_link2field()
 
-    def insert_link2field(self, link):
-        if link:
-            self.inserted_link.set(f'https://youtu.be/{link}')
+    def insert_link2field(self):
+        print(f'{self.validator.verified_link=}')
+        self.inserted_link.set(self.validator.verified_link)
 
-    def get_valid_id_link(self):
-        return self.validator.validate_link(self.inserted_link.get())
+    def get_valid_link(self):
+        if self.validator.validate_link(self.inserted_link.get()):
+            return self.validator.verified_link
+        return ''
 
-    def get_valid_format(self):
-        return self.validator.validate_format(self.inserted_format.get())
+    def get_valid_video_format(self):
+        return self.validator.validate_video_format(self.inserted_format.get().strip())
 
     def tick(self):
         input_link = self.inserted_link.get()
@@ -436,84 +642,73 @@ class MainGUI(Tk):
                         )
         if not input_link:
             self.label_err_link.configure(text='Введите ссылку на видео или id', bg='SystemButtonFace', fg='black')
-            for widget in list_disable:
-                widget.config(state='disabled')
+            buttons_state = 'disabled'
+            self.validator.set_empty_link()
         else:
-            valid_id_link = self.get_valid_id_link()
-            if valid_id_link:
-                self.label_err_link.config(text=f'Правильный формат ссылки.  id = {valid_id_link}',
+            valid_link = self.get_valid_link()
+            if valid_link:
+                self.label_err_link.config(text=f'Правильный формат ссылки.  id = {self.validator.video_id}',
                                            bg='SystemButtonFace', fg='green')
-                for widget in list_disable:
-                    widget.config(state='normal')
-                self.remove_excess_parameters(input_link)
+                buttons_state = 'normal'
+                if valid_link != input_link:
+                    self.inserted_link.set(valid_link)
             else:
                 self.label_err_link.config(text='Неверный формат ссылки', bg='yellow1', fg='red')
-                for widget in list_disable:
-                    widget.config(state='disabled')
+                buttons_state = 'disabled'
 
-        # calls every 500 milliseconds to update
+        self.label_vhost.config(text=self.validator.get_vhost())
+        for widget in list_disable:
+            widget.config(state=buttons_state)
+        # calls every 700 milliseconds to update
         self.field_link.after(700, self.tick)
-
-    def remove_excess_parameters(self, original_link):
-        link = original_link.split('&')[0]
-        if link != original_link:
-            self.inserted_link.set(link)
 
     @validate_link_format
     def list_all_available_formats(self):
-        # YoutubeDlExternal().listformats(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().listformats,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def out_title(self):
-        # YoutubeDlExternal().out_title(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().out_title,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def out_info(self):
-        # YoutubeDlExternal().out_info(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().out_info,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_1080mp4(self):
-        # YoutubeDlExternal().format1080mp4(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format1080mp4,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_1080(self):
-        # YoutubeDlExternal().format1080(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format1080,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_best(self):
-        # YoutubeDlExternal().format_best(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format_best,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_best_progressive(self):
-        # YoutubeDlExternal().format_best_progressive(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format_best_progressive,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_mp3(self):
-        # YoutubeDlExternal().format_mp3(link=self.get_valid_id_link())
         threading.Thread(target=YoutubeDlExternal().format_mp3,
-                         kwargs={'link': self.get_valid_id_link()}).start()
+                         kwargs={'link': self.get_valid_link()}).start()
 
     @validate_link_format
     def download_custom(self):
-        valid_format = self.get_valid_format()
+        valid_format = self.get_valid_video_format()
         if valid_format:
             YoutubeDlExternal().set_formats(valid_format)
             threading.Thread(target=YoutubeDlExternal().format_custom,
-                             kwargs={'link': self.get_valid_id_link()}).start()
+                             kwargs={'link': self.get_valid_link()}).start()
         else:
             cprint(f'4Форматы заданы неверно! Введите id формата или idVideo+idAudio, например 137+140')
 
