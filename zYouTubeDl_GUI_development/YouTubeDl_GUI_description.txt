@@ -372,11 +372,12 @@ https://phantomjs.org/download.html
 # ==================================================================================================
             *** Type links ***
 
+
 YouTube
-https://youtu.be/b_tdqGM4_sE
-https://youtu.be/ICHHPREzNs0?si=C6yU1X14VlBU7foj
-https://www.youtube.com/watch?v=gc1Oqq9rBhQ
-https://www.youtube.com/shorts/FpDR8Ji4c9g
+https://youtu.be/b_tdqGM4_sE?t=7
+https://youtu.be/ICHHPREzNs0?si=C6yU1X14VlBU7foj&t=7
+https://www.youtube.com/watch?v=gc1Oqq9rBhQ&t=7
+https://www.youtube.com/shorts/FpDR8Ji4c9g?t=7
 
 list
 https://www.youtube.com/watch?v=NrBFxnDsJGc&list=PLuWVb9xPcMHdyVpQDz4tPK-y40eMb1LQV
