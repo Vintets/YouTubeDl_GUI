@@ -140,12 +140,6 @@ class Validator:
         link = self.exclude_substr(link, r'http://')
         return f'https://{link}'
 
-    def pruning_link(self, link: str) -> str:
-        link = self.exclude_substr(link, r'https://')
-        link = self.exclude_substr(link, r'http://')
-        link = self.exclude_substr(link, r'www.')
-        return link
-
     def detection_rutube(self, link: ParseResult) -> bool:
         return link.netloc == 'rutube.ru'
 
