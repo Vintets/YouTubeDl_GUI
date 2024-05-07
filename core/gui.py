@@ -96,6 +96,7 @@ class TextRedirector():
 class Validator:
     valid_characters_id_rt = string.ascii_lowercase + string.digits
     valid_characters_id_yt = string.ascii_letters + string.digits + '-_'
+    valid_characters_id_vk = string.digits + '-_'
     pattern_formats = re.compile(r'\d{1,3}(\+\d{1,3})?')
 
     def __init__(self) -> None:
@@ -120,7 +121,9 @@ class Validator:
         if self.detection_rutube(parsed_link):
             correct = self.validate_rutube_link(parsed_link)
         elif self.detection_vkontakte(parsed_link):
-            ...
+            query_params = self.get_filtered_query_params(parsed_link, allowed_parameters=('z', 'oid', 'id'))
+            self.set_video_list('')
+            correct = self.validate_vkontakte_link(parsed_link, query_params)
         elif self.detection_youtube(parsed_link):
             query_params = self.get_filtered_query_params(parsed_link, allowed_parameters=('v', 'list'))
             self.set_video_list(query_params.get('list', ''))
@@ -172,6 +175,36 @@ class Validator:
             self.set_empty_link()
         return result
 
+    def validate_vkontakte_link(self, link: ParseResult, query_params: dict) -> bool:
+        if link.path == '/video_ext.php':
+            oid = query_params.get('oid', '')
+            id_ = query_params.get('id', '')
+            video_id = f'{oid}_{id_}'
+        elif link.path.startswith('/video'):
+            video_id = self.exclude_substr(link.path, '/video').strip('/')
+        elif link.path == '/feed':
+            video_id = ''
+            query = query_params.get('z', '')
+            for par in query.split('/'):
+                if par.startswith('video'):
+                    video_id = par[5:]
+                    break
+        else:
+            video_id = ''
+
+        validate_id = self.validate_video_id_vk(video_id, characters=self.valid_characters_id_vk)
+        # print(f'6  {video_id=}')
+        # print(f'7  {validate_id=}')
+        if validate_id is not None:
+            result = True
+            self.vhost = VHost.VK.value
+            self.video_id = validate_id
+            self.verified_link = f'https://vk.com/video{video_id}'
+        else:
+            result = False
+            self.set_empty_link()
+        return result
+
     def validate_youtube_link(self, link: ParseResult, query_params: dict) -> bool:
         if link.netloc == 'youtu.be':
             video_id = link.path.strip('/')
@@ -202,6 +235,21 @@ class Validator:
         filter_link = ''.join(list(filter(lambda x: x in characters, video_id)))
         if len(filter_link) == length and filter_link == video_id:
             return filter_link
+        return None
+
+    def validate_video_id_vk(self, video_id: str, characters: str) -> (str | None):
+        # -215588860_456239958
+        filter_link = ''.join(list(filter(lambda x: x in characters, video_id)))
+        if len(filter_link) < 12 and filter_link != video_id:
+            return None
+        id_component = video_id.split('_')
+        if id_component[0].startswith('-'):
+            id_component[0] = id_component[0][1:]
+        if (len(id_component) == 2 and
+                id_component[0].isdigit() and
+                id_component[1].isdigit() and
+                len(id_component[1]) == 9):
+            return video_id
         return None
 
     def validate_video_format(self, _format: str) -> (str | None):
