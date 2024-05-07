@@ -361,7 +361,7 @@ class MainGUI(Tk):
         self.label_vhost = Label(frame, textvariable=self.vhost)
         self.label_vhost.grid(row=row, column=0, padx=5, sticky='E')
         Tooltip(self.label_vhost,
-                text=f'Видеохостинг {self.vhost}',
+                text=f'Видеохостинг',
                 wraplength=150)
 
     def create_widget_all_formats(self, frame, row):
