@@ -89,7 +89,7 @@ ver 1.5.3
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-24-24_v1.5.3_screenshot_3.png)
 
 clear open  
-![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-13-39_v1.5.3_screenshot_4.png)
+![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2024-05-08_15-15-51_v2.1.0_screenshot_6.png)
 
 
 ____
