@@ -1,0 +1,18 @@
+# requirements-dev.in
+-c requirements_venv_YTDL312.txt
+pip-tools
+flake8
+flake8-annotations-coverage
+flake8-bugbear
+flake8-builtins
+flake8-functions
+flake8-import-order
+flake8-polyfill
+flake8-print
+flake8-quotes
+flake8-variables-names
+pep8-naming
+# memory-profiler
+# psutil
+# pylint
+# pytest

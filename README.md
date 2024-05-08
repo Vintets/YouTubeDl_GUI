@@ -21,18 +21,18 @@ https://github.com/yt-dlp/yt-dlp
 
 ## Зависимости
 
-> Требуется Python 3.9.7+
+> Требуется Python 3.12.0+
 
 Установка зависимостей:
 ```sh
-pip3 install -r requirements.txt
+pip install -r requirements_venv_YTDL312.txt
 ```
 включает:
-> pip3 install yt-dlp==2024.4.9
+> pip install loguru
 
-> pip3 install pyperclip
+> pip install pyperclip
 
-> pip3 install loguru
+> pip install yt-dlp==2024.4.9
 
 + ffmpeg-master-latest-win64-gpl_fix
 
