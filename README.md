@@ -65,6 +65,11 @@ D:\YandexDisk\_Python\_Python_Projects\YouTubeDl_GUI\yt-dlp
 
 ## Запуск
 
+Обычный через ярлык. Ярлык должен вести на launcher_YTDL.cmd
+```cmd
+YouTubeDl_GUI
+```
+
 ```cmd
 \venv\Scripts\activate.bat
 python3 YouTubeDl_GUI.py
@@ -76,6 +81,9 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 ```
 
 ## Скриншоты
+
+ver 2.1.0  
+![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2024-05-08_14-56-08_v2.1.0_screenshot_5.png)
 
 ver 1.5.3  
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-24-24_v1.5.3_screenshot_3.png)
