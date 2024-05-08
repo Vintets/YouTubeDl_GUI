@@ -1,6 +1,5 @@
 import re
 import sys
-import threading
 from tkinter import BooleanVar, Frame, Label, StringVar, Tk
 from tkinter import DISABLED
 # from tkinter import GROOVE, OptionMenu
@@ -11,15 +10,15 @@ from accessory import authorship
 
 from configs import config
 
-from core.cprint_linux import cprint
+from core.commands import Commands
 from core.dlp import YoutubeDlExternal
 from core.tooltip import Tooltip
-from core.validators import Validator, validate_link_format
+from core.validators import Validator
 
 import pyperclip
 
 
-class TextRedirector():
+class TextRedirector:
     def __init__(self, widget, tag='stdout'):
         self.widget = widget
         self.tag = tag
@@ -81,6 +80,7 @@ class TextRedirector():
 class MainGUI(Tk):
     def __init__(self, author: str, title: str, version: str, copyright_: str) -> None:
         self.validator = Validator()
+        self.commands = Commands(validator=self.validator, gui=self)
         self.height_console = 48
 
         Tk.__init__(self)
@@ -155,11 +155,11 @@ class MainGUI(Tk):
     def create_widget_all_formats(self, frame, row):
         self.button_list_all_formats = Button(frame, text='Вывести список всех доступных форматов',
                                               state=DISABLED,
-                                              command=self.list_all_available_formats)
+                                              command=self.commands.list_all_available_formats)
         self.button_list_all_formats.grid(row=row, column=1, columnspan=4, padx=5, pady=3, sticky='WE')
 
     def create_widget_out_info(self, frame, row):
-        self.button_out_info = Button(frame, text='i', state=DISABLED, width=3, command=self.out_info)
+        self.button_out_info = Button(frame, text='i', state=DISABLED, width=3, command=self.commands.out_info)
         self.button_out_info.grid(row=row, column=5, padx=5, sticky='W')
         Tooltip(self.button_out_info,
                 text='Показать информацию по видео',
@@ -170,25 +170,25 @@ class MainGUI(Tk):
         label_download.grid(row=row, column=0, padx=5, pady=5, sticky='E')
 
         self.button_format_mp3 = Button(frame, text='mp3', state=DISABLED,
-                                        command=self.download_mp3)
+                                        command=self.commands.download_mp3)
         self.button_format_mp3.grid(row=row, column=1, padx=5, sticky='WE')
 
         self.button_format_1080mp4 = Button(frame, text='Видео mp4 <=1080p', state=DISABLED,
-                                            command=self.download_1080mp4)  # font=('Arial', 8, 'bold')
+                                            command=self.commands.download_1080mp4)  # font=('Arial', 8, 'bold')
         self.button_format_1080mp4.grid(row=row, column=2, padx=5, sticky='WE')
         Tooltip(self.button_format_1080mp4,
                 text='Формат mp4\nЛучшее качество\nРазрешение до 1080p\nСборка: быстро',
                 wraplength=250)
 
         self.button_format_1080 = Button(frame, text='Видео <=1080p', state=DISABLED,
-                                         command=self.download_1080)
+                                         command=self.commands.download_1080)
         self.button_format_1080.grid(row=row, column=3, padx=5, sticky='WE')
         Tooltip(self.button_format_1080,
                 text='Формат любой\nЛучшее качество\nРазрешение до 1080p\nСборка: медленно',
                 wraplength=250)
 
         self.button_format_best = Button(frame, text='Видео наилучшее', state=DISABLED,
-                                         command=self.download_best)
+                                         command=self.commands.download_best)
         self.button_format_best.grid(row=row, column=4, padx=5, sticky='WE')
         Tooltip(self.button_format_best,
                 text='Формат любой\nЛучшее качество\nРазрешение максимальное\nСборка: медленно',
@@ -196,7 +196,7 @@ class MainGUI(Tk):
 
         self.button_format_best_progressive = Button(frame, text='Видео без кодирования',
                                                      state=DISABLED,
-                                                     command=self.download_best_progressive)
+                                                     command=self.commands.download_best_progressive)
         self.button_format_best_progressive.grid(row=row, column=5, padx=5, sticky='W')
         Tooltip(self.button_format_best_progressive,
                 text='Видео в наилучшем качестве (до 720p) без перекодирования! (progressive).\nСразу video+audio формат\nСборка: нет',
@@ -227,7 +227,7 @@ class MainGUI(Tk):
                 wraplength=250)
 
         self.button_format_custom = Button(frame, text='Указанные:', state=DISABLED,
-                                           command=self.download_custom)
+                                           command=self.commands.download_custom)
         self.button_format_custom.grid(row=row, column=3, padx=5, sticky='WE')
         Tooltip(self.button_format_custom,
                 text='Скачать произвольно заданные форматы video+audio',
@@ -368,16 +368,7 @@ class MainGUI(Tk):
             self.insert_link2field()
 
     def insert_link2field(self):
-        print(f'{self.validator.verified_link=}')
         self.inserted_link.set(self.validator.verified_link)
-
-    def get_valid_link(self):
-        if self.validator.validate_link(self.inserted_link.get()):
-            return self.validator.verified_link
-        return ''
-
-    def get_valid_video_format(self):
-        return self.validator.validate_video_format(self.inserted_format.get().strip())
 
     def tick(self):
         input_link = self.inserted_link.get()
@@ -396,7 +387,7 @@ class MainGUI(Tk):
             buttons_state = 'disabled'
             self.validator.set_empty_link()
         else:
-            valid_link = self.get_valid_link()
+            valid_link = self.commands.get_valid_link()
             if valid_link:
                 self.label_err_link.config(text=f'Правильный формат ссылки.  id = {self.validator.video_id}',
                                            bg='SystemButtonFace', fg='green')
@@ -412,56 +403,6 @@ class MainGUI(Tk):
             widget.config(state=buttons_state)
         # calls every 700 milliseconds to update
         self.field_link.after(700, self.tick)
-
-    @validate_link_format
-    def list_all_available_formats(self):
-        threading.Thread(target=YoutubeDlExternal().listformats,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def out_title(self):
-        threading.Thread(target=YoutubeDlExternal().out_title,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def out_info(self):
-        threading.Thread(target=YoutubeDlExternal().out_info,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def download_1080mp4(self):
-        threading.Thread(target=YoutubeDlExternal().format1080mp4,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def download_1080(self):
-        threading.Thread(target=YoutubeDlExternal().format1080,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def download_best(self):
-        threading.Thread(target=YoutubeDlExternal().format_best,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def download_best_progressive(self):
-        threading.Thread(target=YoutubeDlExternal().format_best_progressive,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def download_mp3(self):
-        threading.Thread(target=YoutubeDlExternal().format_mp3,
-                         kwargs={'link': self.get_valid_link()}).start()
-
-    @validate_link_format
-    def download_custom(self):
-        valid_format = self.get_valid_video_format()
-        if valid_format:
-            YoutubeDlExternal().set_formats(valid_format)
-            threading.Thread(target=YoutubeDlExternal().format_custom,
-                             kwargs={'link': self.get_valid_link()}).start()
-        else:
-            cprint(f'4Форматы заданы неверно! Введите id формата или idVideo+idAudio, например 137+140')
 
     def set_bitrate_mp3(self, event, log=True):
         # print(f'{event = }')
