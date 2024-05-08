@@ -184,12 +184,12 @@ yt-dlp -f bestvideo+bestaudio/best https://youtu.be/b_tdqGM4_sE
 yt-dlp -f mp4/bestvideo+m4a/bestaudio https://youtu.be/b_tdqGM4_sE
 
 # видео 299 или 303, аудио 140 или 251
-yt-dlp --write-thumbnail -f 299/303,140/251 
-yt-dlp --write-thumbnail -f best 
-yt-dlp --write-thumbnail -f bestvideo 
-yt-dlp --write-thumbnail -f bestaudio 
+yt-dlp --write-thumbnail -f 299/303,140/251
+yt-dlp --write-thumbnail -f best
+yt-dlp --write-thumbnail -f bestvideo
+yt-dlp --write-thumbnail -f bestaudio
 
-yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio 
+yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -368,6 +368,36 @@ print('\033[31mText\033[0m')
 Warning : nsig extraction failed: You may experience throttling for some formats
 Install PhantomJS to workaround the issue. Please download it from
 https://phantomjs.org/download.html
+
+# ==================================================================================================
+            *** Type links ***
+
+
+YouTube
+https://youtu.be/b_tdqGM4_sE?t=7
+https://youtu.be/ICHHPREzNs0?si=C6yU1X14VlBU7foj&t=7
+https://www.youtube.com/watch?v=gc1Oqq9rBhQ&t=7
+https://www.youtube.com/shorts/FpDR8Ji4c9g?t=7
+
+list
+https://www.youtube.com/watch?v=NrBFxnDsJGc&list=PLuWVb9xPcMHdyVpQDz4tPK-y40eMb1LQV
+https://www.youtube.com/playlist?list=PLuWVb9xPcMHdyVpQDz4tPK-y40eMb1LQV
+
+
+Rutube
+https://rutube.ru/video/ed6628db75f766ff95b6683d214caed0/?r=a
+https://rutube.ru/video/ed44d6b483b40317cc3603940aea2d5c/
+https://rutube.ru/shorts/07067e3e9ffc258c8d544839751be1ea/
+list
+https://rutube.ru/plst/139621/      # ERROR: Unsupported URL
+
+
+ВКонтакте
+https://vk.com/video-3156562_456244281?pl_post_-215588860_2737
+https://vk.com/video-215588860_456239958
+https://vk.com/feed?z=video-215588860_456239958%2Fa02311fcac0970b18c%2Fpl_post_-215588860_2737
+https://vk.com/video_ext.php?oid=-3156562&id=456244281&hash=4e58196736fa2b37
+
 
 # ==================================================================================================
             *** Video Vkontakte (Вконтакте) ***
