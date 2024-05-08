@@ -38,7 +38,7 @@
         //".vscode/": true,
         "**/__pycache__/": true,
         "env/": true,
-        "env2/": true,
+        "venv/": true,
         "logs/": true,
         "**/*.ico": true,
         "**/*.bat": true,
@@ -71,7 +71,7 @@
     "search.exclude": {
         "**/__pycache__/": true,
         "env/": true,
-        "env2/": true,
+        "venv/": true,
         ".vscode/": true,
         "logs/": true,
         "**/*.ico": true,
