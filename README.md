@@ -108,7 +108,7 @@ ____
  *
  * This file is part of YouTubeDl_GUI project.
  * YouTubeDl_GUI can not be copied and/or distributed without the express
- * permission of Vintets
+ * permission of Vintets  
 *******************************************************/
 
 ____
