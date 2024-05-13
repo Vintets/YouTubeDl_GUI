@@ -9,11 +9,11 @@ MOUSEEVENTF_LEFTUP = 4
 
 
 def check_version() -> None:
-    if sys.version_info < (3, 9, 7):
-        print(u'Для работы требуется версия Python 3.9.7 и выше')
+    if sys.version_info < (3, 12, 0):
+        print(u'Для работы требуется версия Python 3.12.0 и выше')
         time.sleep(4)
         exit()
-        raise Exception(u'Для работы требуется версия Python 3.9.7 и выше')
+        raise Exception(u'Для работы требуется версия Python 3.12.0 и выше')
 
 
 """
