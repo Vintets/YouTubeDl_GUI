@@ -30,7 +30,7 @@ from configs import config
 from core.gui import MainGUI
 
 
-__version_info__ = ('2', '2', '1')
+__version_info__ = ('2', '2', '2')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
