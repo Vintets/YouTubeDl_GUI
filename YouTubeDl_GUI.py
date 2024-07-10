@@ -36,7 +36,7 @@ __version_info__ = ('2', '2', '0')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
-__copyright__ = 'Copyright 2022 (c)  bitbucket.org/Vintets'
+__copyright__ = 'Copyright 2022-2024 (c)  bitbucket.org/Vintets'
 
 
 def exit_from_program(code: int = 0) -> None:
