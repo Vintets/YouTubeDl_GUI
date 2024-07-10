@@ -26,13 +26,11 @@ import sys
 import time
 
 from accessory import authorship, check_version, clear_console, logger
-
 from configs import config
-
 from core.gui import MainGUI
 
 
-__version_info__ = ('2', '2', '0')
+__version_info__ = ('2', '2', '1')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'

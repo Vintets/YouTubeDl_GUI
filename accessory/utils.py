@@ -1,7 +1,7 @@
 import ctypes
+from enum import Enum
 import sys
 import time
-from enum import Enum
 
 
 MOUSEEVENTF_LEFTDOWN = 2

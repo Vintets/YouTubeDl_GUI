@@ -1,9 +1,8 @@
 import re
 import string
-from urllib.parse import ParseResult, parse_qsl, quote, unquote, urldefrag, urlencode, urlparse, urlunparse
+from urllib.parse import parse_qsl, ParseResult, quote, unquote, urldefrag, urlencode, urlparse, urlunparse
 
 from core.dlp import VHost
-
 from yt_dlp.utils import DownloadError, ExtractorError
 
 

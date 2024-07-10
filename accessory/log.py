@@ -3,7 +3,6 @@
 import sys
 
 from configs.config import LOGGER_NAME_MODULE, PATH_LOGS
-
 from loguru import logger
 
 

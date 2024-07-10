@@ -2,7 +2,7 @@ import threading
 
 from core.cprint_linux import cprint
 from core.dlp import YoutubeDlExternal
-from core.validators import Validator, validate_link_format
+from core.validators import validate_link_format, Validator
 
 
 class Commands:

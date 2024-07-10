@@ -1,6 +1,13 @@
 [flake8]
 max-line-length = 100
 max-complexity = 7
+import-order-style = google
+
+
+# max_function_length = 25
+max_parameters_amount = 7
+# max_returns_amount = 5
+
 ignore =
     # E123 closing bracket does not match indentation of opening bracket's
     E123,
@@ -21,3 +28,7 @@ ignore =
     # print found
     T201
 exclude = .git,.vscode,__pycache__,env,venv,logs,zYouTubeDl_GUI_development,*.db,*.bat,*.exe,*.png,*.jpg,*.webm,*.mp4,*.mkv,*.mp3,*.m4a
+
+inline-quotes = '
+
+# noqa:

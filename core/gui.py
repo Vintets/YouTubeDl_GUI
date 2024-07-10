@@ -7,14 +7,11 @@ from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Button, Checkbutton, Combobox, Entry
 
 from accessory import authorship
-
 from configs import config
-
 from core.commands import Commands
 from core.dlp import YoutubeDlExternal
 from core.tooltip import Tooltip
 from core.validators import Validator
-
 import pyperclip
 
 

@@ -1,14 +1,12 @@
+from enum import Enum
 import json  # noqa: F401
 import subprocess
-from enum import Enum
 
 from configs import config
-
 from core.cprint_linux import cprint
 from core.errors import download_error
 from core.logger_ydl import MyLogger
 from core.webp2jpeg import image_convert
-
 from yt_dlp import YoutubeDL
 from yt_dlp.downloader import FileDownloader
 

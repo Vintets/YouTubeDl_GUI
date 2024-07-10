@@ -1,7 +1,6 @@
 import functools
 
 from accessory import cprint
-
 from configs import config
 
 
