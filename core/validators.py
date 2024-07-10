@@ -104,13 +104,17 @@ class Validator:
             self.set_empty_link()
         return result
 
-    def validate_vkontakte_link(self, link: ParseResult, query_params: dict) -> bool:
+    def validate_vkontakte_link(self, link: ParseResult, query_params: dict) -> bool:  # noqa: C901
+        __clip = False
         if link.path == '/video_ext.php':
             oid = query_params.get('oid', '')
             id_ = query_params.get('id', '')
             video_id = f'{oid}_{id_}'
         elif link.path.startswith('/video'):
             video_id = self.exclude_substr(link.path, '/video').strip('/')
+        elif link.path.startswith('/clip'):
+            video_id = self.exclude_substr(link.path, '/clip').strip('/')
+            __clip = True
         elif link.path == '/feed':
             video_id = ''
             query = query_params.get('z', '')
@@ -128,7 +132,10 @@ class Validator:
             result = True
             self.vhost = VHost.VK.value
             self.video_id = validate_id
-            self.verified_link = f'https://vk.com/video{video_id}'
+            if __clip:
+                self.verified_link = urlunparse(link._replace(query=''))
+            else:
+                self.verified_link = f'https://vk.com/video{video_id}'
         else:
             result = False
             self.set_empty_link()
