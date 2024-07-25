@@ -133,6 +133,7 @@ class YoutubeDlExternal:
             'format': '(bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a])[protocol^=http]/best[ext=mp4][protocol^=http]/best',
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
+            # 'ratelimit': 307200,  # bytes/s
         }
         self.append_cookies(ydl_opts)
         with self.youtube_dl(ydl_opts) as ydl:
