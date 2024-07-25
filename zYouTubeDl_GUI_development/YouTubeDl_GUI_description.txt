@@ -287,6 +287,18 @@ yt-dlp --config-location yt-dl-1080-mp4.conf PLqGS6O1-DZLpVl2ks4S_095efPUgunsJo
 --get-title
 
 
+аргументы в python скрипте (опции)
+    'writethumbnail': self.writethumbnail,
+    'nocheckcertificate': self.nocheckcertificate,
+    # 'forcetitle': True,
+    # [vcodec~="^((he|a)vc|h26[45])"]   # с кодеком h264 или h265
+    # [protocol^=http]                  # по прямой ссылке по протоколу HTTP/HTTPS
+    'format': '(bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a])[protocol^=http]/best[ext=mp4][protocol^=http]/best',
+    'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
+    # 'logger': MyLogger(),
+    # 'ratelimit': 307200,  # bytes/s
+
+
 # ======================================================================================================================
             *** передать файлы cookie в yt-dlp ***
 
@@ -393,6 +405,66 @@ print('\033[31mText\033[0m')
 Warning : nsig extraction failed: You may experience throttling for some formats
 Install PhantomJS to workaround the issue. Please download it from
 https://phantomjs.org/download.html
+
+
+# ==================================================================================================
+
+У меня вот такая шпора форматов для mp4 (порядок по убыванию удобства прокрутки больших файлов):
+
+301 -- 1080.60 Live
+312 -- 1080.60 stream
+299 -- 1080.60
+300 --  720.60 Live
+311 --  720.60 stream
+298 --  720.60
+96  -- 1080.30 Live
+270 -- 1080.30 stream
+137 -- 1080.30
+22  --  720.30 (with audio)
+95  --  720.30 Live
+232 --  720.30 stream
+136 --  720.30
+94  --  480.30 Live
+231 --  480.30 stream
+135 --  480.30
+18  --  360.30 (with audio)
+93  --  360.30 Live
+230 --  360.30 stream
+134 --  360.30
+92  --  240.30 Live
+229 --  240.30 stream
+133 --  240.30
+91  --  144.30 Live
+269 --  144.30 stream
+160 --  144.30
+597 --  144.15
+
+
+# ==================================================================================================
+            *** Замедление скорости ***
+
+Почитал обсуждения на разных площадках - помогает ipv6, http/3 (QUIC), и, само собой, proxy.
+Так что,
+    у кого есть смысл, включайте --force-ipv6.
+    с QUIC х.з., если только --downloader curl --downloader-args "curl:--http3-only".
+    ну и, в крайнем случае, незаменимый tor - --proxy 'socks5://localhost:9050'
+
+
+Если коротко, хорошо показали себя:
+    --force-ipv6
+    aria2c в 10 потоков, типа такого
+    --extractor-args "youtube:formats=dashy" -N 4.
+
+
+
+yt-dlp --downloader curl --downloader-args "curl:--http3-only" -f "bestvideo+bestaudio" "https://www.youtube.com/watch?v=41CKir6wRFY"
+
+Ну и это, разве с помощью --ytdl-raw-options=downloader=curl,downloader-args=curl:--http3-only не покатит?
+
+#-----------------------------------------------------------------------------------------------------------------------
+Ошибка:
+WARNING: [youtube] PTdUmkT-yas: Native nsig extraction failed: Trying with PhantomJS
+         n = Cr1-2HkuGADChIS ; player = https://www.youtube.com/s/player/5604538d/player_ias.vflset/en_US/base.js
 
 
 # ======================================================================================================================
