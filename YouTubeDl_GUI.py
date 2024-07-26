@@ -22,15 +22,19 @@
 """
 
 import os
+from pathlib import Path
 import sys
 import time
 
-from accessory import authorship, check_version, clear_console, logger
-from configs import config
-from core.gui import MainGUI
+PATH_SCRIPT = Path(__file__).parent
+os.chdir(PATH_SCRIPT)
+
+from accessory import authorship, check_version, clear_console, logger  # noqa: E402
+from configs import config  # noqa: E402
+from core.gui import MainGUI  # noqa: E402
 
 
-__version_info__ = ('2', '2', '2')
+__version_info__ = ('2', '2', '3')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -65,9 +69,8 @@ if __name__ == '__main__':
         os.system('setterm -background white -foreground white -store')
         # ubuntu terminal
         os.system('setterm -term linux -back $blue -fore white -clear')
-    cur_script = __file__
-    PATH_SCRIPT = os.path.abspath(os.path.dirname(cur_script))
-    os.chdir(PATH_SCRIPT)
+    # PATH_SCRIPT = Path(__file__).parent
+    # os.chdir(PATH_SCRIPT)
     clear_console()
     check_version()
 
