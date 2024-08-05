@@ -64,6 +64,15 @@ class YoutubeDlExternal:
         else:
             self.youtube_dl = YoutubeDL
         self.filename_sample = '%(title)s_[%(id)s]_f%(format_id)s.%(ext)s'
+        self.base_opts = {
+            'writethumbnail': self.writethumbnail,
+            'nocheckcertificate': self.nocheckcertificate,
+            # 'forcetitle': True,
+            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
+            # 'logger': MyLogger(),
+            # 'ratelimit': 307200,  # bytes/s
+        }
+        self.append_cookies(self.base_opts)
 
     def external_list_all_available_formats_(self, link=None):
         if link:
@@ -125,17 +134,11 @@ class YoutubeDlExternal:
     @download_error
     def format1080mp4(self, link=None):
         ydl_opts = {
-            'writethumbnail': self.writethumbnail,
-            'nocheckcertificate': self.nocheckcertificate,
-            # 'forcetitle': True,
             # [vcodec~="^((he|a)vc|h26[45])"]   # с кодеком h264 или h265
             # [protocol^=http]                  # по прямой ссылке по протоколу HTTP/HTTPS
             'format': '(bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a])[protocol^=http]/best[ext=mp4][protocol^=http]/best',
-            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
-            # 'logger': MyLogger(),
-            # 'ratelimit': 307200,  # bytes/s
         }
-        self.append_cookies(ydl_opts)
+        ydl_opts.update(self.base_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
         self.thumbnail_convert(link)
@@ -143,14 +146,9 @@ class YoutubeDlExternal:
     @download_error
     def format1080(self, link=None):
         ydl_opts = {
-            'writethumbnail': self.writethumbnail,
-            'nocheckcertificate': self.nocheckcertificate,
-            # 'forcetitle': True,
             'format': 'bestvideo[height<=?1080]+bestaudio/best',
-            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
-            # 'logger': MyLogger(),
         }
-        self.append_cookies(ydl_opts)
+        ydl_opts.update(self.base_opts)
         if self.out_format:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
@@ -160,14 +158,9 @@ class YoutubeDlExternal:
     @download_error
     def format_best(self, link=None):
         ydl_opts = {
-            'writethumbnail': self.writethumbnail,
-            'nocheckcertificate': self.nocheckcertificate,
-            # 'forcetitle': True,
             'format': 'bestvideo+bestaudio/best',
-            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
-            # 'logger': MyLogger(),
         }
-        self.append_cookies(ydl_opts)
+        ydl_opts.update(self.base_opts)
         if self.out_format:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
@@ -177,14 +170,9 @@ class YoutubeDlExternal:
     @download_error
     def format_best_progressive(self, link=None):
         ydl_opts = {
-            'writethumbnail': self.writethumbnail,
-            'nocheckcertificate': self.nocheckcertificate,
-            # 'forcetitle': True,
             'format': 'best',
-            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
-            # 'logger': MyLogger(),
         }
-        self.append_cookies(ydl_opts)
+        ydl_opts.update(self.base_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
         self.thumbnail_convert(link)
@@ -193,8 +181,6 @@ class YoutubeDlExternal:
     def format_mp3(self, link=None):
         print(f'Загрузка аудио дорожки и конвертация в mp3 с битрейтом {self.bitrate_mp3} kbps')
         ydl_opts = {
-            'writethumbnail': self.writethumbnail,
-            'nocheckcertificate': self.nocheckcertificate,
             'forcetitle': True,
             'format': 'bestaudio/best[ext=m4a]/best',  # m4a/bestaudio/best
             'postprocessors': [{
@@ -202,10 +188,8 @@ class YoutubeDlExternal:
                 'preferredcodec': 'mp3',
                 'preferredquality': self.bitrate_mp3,
             }],
-            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
-            # 'logger': MyLogger(),
         }
-        self.append_cookies(ydl_opts)
+        ydl_opts.update(self.base_opts)
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
         self.thumbnail_convert(link)
@@ -213,14 +197,9 @@ class YoutubeDlExternal:
     @download_error
     def format_custom(self, link=None):
         ydl_opts = {
-            'writethumbnail': self.writethumbnail,
-            'nocheckcertificate': self.nocheckcertificate,
-            # 'forcetitle': True,
             'format': self.formats,
-            'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
-            # 'logger': MyLogger(),
         }
-        self.append_cookies(ydl_opts)
+        ydl_opts.update(self.base_opts)
         if self.out_format:
             ydl_opts['merge_output_format'] = self.out_format
         with self.youtube_dl(ydl_opts) as ydl:
