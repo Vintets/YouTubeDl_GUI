@@ -1,7 +1,7 @@
 
 # Проект YouTubeDl_GUI
 
-GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2024.4.9
+GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2024.8.1
 
 <div align="center">
 <!-- ![YouTubeDl_GUI](https://github.com/Vintets/YouTubeDl_GUI/raw/master/zYouTubeDl_GUI_development/YT-DLP_128.png)  -->
