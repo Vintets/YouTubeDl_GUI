@@ -279,6 +279,8 @@ yt-dlp --config-location yt-dl-1080-mp4.conf PLqGS6O1-DZLpVl2ks4S_095efPUgunsJo
 
 --socket-timeout SECONDS
 
+--retries RETRIES               Количество повторов (по умолчанию 0 для API, и 10 для CLI)
+
 --retry-sleep                   retry_sleep_functions = {'http'}
                                 Время сна между повторными попытками в секундах
                                 (необязательно) с префиксом типа повтора
@@ -311,7 +313,7 @@ yt-dlp --config-location yt-dl-1080-mp4.conf PLqGS6O1-DZLpVl2ks4S_095efPUgunsJo
     # 'logger': MyLogger(),
     # 'ratelimit': 307200,  # bytes/s
     # 'socket_timeout': 3.5,
-    #
+    # 'retries': 15,
 
 
 # ======================================================================================================================
