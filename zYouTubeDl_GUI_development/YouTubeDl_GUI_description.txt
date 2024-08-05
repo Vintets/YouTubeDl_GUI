@@ -418,11 +418,11 @@ https://phantomjs.org/download.html
 311 --  720.60 stream
 298 --  720.60
 96  -- 1080.30 Live
-270 -- 1080.30 stream
+270 -- 1080.30 stream [плохо прокручивается большой файл]
 137 -- 1080.30
 22  --  720.30 (with audio)
 95  --  720.30 Live
-232 --  720.30 stream
+232 --  720.30 stream [плохо прокручивается большой файл]
 136 --  720.30
 94  --  480.30 Live
 231 --  480.30 stream
@@ -453,6 +453,7 @@ https://phantomjs.org/download.html
 Если коротко, хорошо показали себя:
     --force-ipv6
     aria2c в 10 потоков, типа такого
+        --downloader aria2c --downloader-args 'aria2c:--continue --max-concurrent-downloads=30 --max-connection-per-server=16 --split=30 --min-split-size=1M'
     --extractor-args "youtube:formats=dashy" -N 4.
 
 
@@ -460,6 +461,11 @@ https://phantomjs.org/download.html
 yt-dlp --downloader curl --downloader-args "curl:--http3-only" -f "bestvideo+bestaudio" "https://www.youtube.com/watch?v=41CKir6wRFY"
 
 Ну и это, разве с помощью --ytdl-raw-options=downloader=curl,downloader-args=curl:--http3-only не покатит?
+
+
+Попробуй вариант с aria2c для параллельной загрузки, некоторым это помогает (команда с issues/7716, что давал выше):
+--downloader aria2c --downloader-args 'aria2c:--continue --max-concurrent-downloads=30 --max-connection-per-server=16 --split=30 --min-split-size=1M'
+
 
 #-----------------------------------------------------------------------------------------------------------------------
 Ошибка:
