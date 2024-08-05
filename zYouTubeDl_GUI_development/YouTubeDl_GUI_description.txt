@@ -277,6 +277,19 @@ yt-dlp --config-location yt-dl-1080-mp4.conf PLqGS6O1-DZLpVl2ks4S_095efPUgunsJo
                                  ("inf" - значит до конца видео)
 --download-sections "*6:02:95-inf" --force-keyframes-at-cuts
 
+--socket-timeout SECONDS
+
+--retry-sleep                   retry_sleep_functions = {'http'}
+                                Время сна между повторными попытками в секундах
+                                (необязательно) с префиксом типа повтора
+                                (http (по умолчанию), фрагмент, доступ к файлу, экстрактор)
+                                (http (default), fragment, file_access, extractor)
+                                для применения сна.
+                                EXPR может быть числом,
+                                linear=START[:END[:STEP=1]] or
+                                exp=START[:END[:BASE=2]]
+                                например, --retry-sleep linear=1::2 --retry-sleep fragment:exp=1:20
+
 
 вы можете использовать загрузчик aria2.
 он может загружать файлы с несколькими подключениями, например, с 16 подключений
@@ -297,6 +310,8 @@ yt-dlp --config-location yt-dl-1080-mp4.conf PLqGS6O1-DZLpVl2ks4S_095efPUgunsJo
     'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
     # 'logger': MyLogger(),
     # 'ratelimit': 307200,  # bytes/s
+    # 'socket_timeout': 3.5,
+    #
 
 
 # ======================================================================================================================

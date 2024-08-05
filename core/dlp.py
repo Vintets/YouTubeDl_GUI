@@ -71,6 +71,7 @@ class YoutubeDlExternal:
             'outtmpl': f'{config.PATH_SAVE}{self.filename_sample}',
             # 'logger': MyLogger(),
             # 'ratelimit': 307200,  # bytes/s
+            'socket_timeout': 3.5,
         }
         self.append_cookies(self.base_opts)
 
