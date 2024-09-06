@@ -24,7 +24,8 @@ class Validator:
     valid_characters_id_vk = string.digits + '-_'
     pattern_formats_yt = re.compile(r'\d{1,3}(\+\d{1,3})?')
     pattern_formats_rt = re.compile(r'^\d{1,4}-[01]$')
-    pattern_formats_vk = re.compile(r'^\d{3,4}$')
+    # pattern_formats_vk = re.compile(r'^\d{3,4}$')
+    pattern_formats_vk = re.compile(r'\d{1,4}(\+\d{1,2})?')
 
     def __init__(self) -> None:
         self.vhost = ''
@@ -201,7 +202,7 @@ class Validator:
         elif self.vhost == VHost.VK.value:
             video_format = self.validate_rutube_vkontakte_video_format(
                                                                        video_format,
-                                                                       prefixes=('hls-', 'url'),
+                                                                       prefixes=('hls-', 'url', 'dash_sep-'),
                                                                        pattern=self.pattern_formats_vk
                                                                        )
         elif self.vhost == VHost.YT.value:
@@ -218,8 +219,9 @@ class Validator:
         analized_format = video_format
         if not analized_format.startswith(prefixes):
             return None
-        analized_format = self.exclude_substr(analized_format, prefixes[0])
-        analized_format = self.exclude_substr(analized_format, prefixes[1])
+        for prefix in prefixes:
+            analized_format = self.exclude_substr(analized_format, prefix)
+            analized_format.replace(prefix, '', 2)
         re_format = pattern.match(analized_format)
         if re_format is None or re_format.group() != analized_format:
             return None
