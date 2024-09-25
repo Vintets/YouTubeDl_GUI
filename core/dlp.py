@@ -72,7 +72,7 @@ class YoutubeDlExternal:
             # 'logger': MyLogger(),
             # 'ratelimit': 307200,  # bytes/s
             'socket_timeout': 3.5,
-            'retries': 15,
+            'retries': 300,
         }
         self.append_cookies(self.base_opts)
 
