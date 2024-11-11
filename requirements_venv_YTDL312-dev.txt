@@ -4,9 +4,9 @@
 #
 #    pip-compile --output-file=requirements_venv_YTDL312-dev.txt requirements_venv_YTDL312-dev.in
 #
-attrs==24.1.0
+attrs==24.2.0
     # via flake8-bugbear
-build==1.2.1
+build==1.2.2.post1
     # via pip-tools
 click==8.1.7
     # via
@@ -29,7 +29,7 @@ flake8==7.1.1
     #   pep8-naming
 flake8-annotations-coverage==0.0.6
     # via -r requirements_venv_YTDL312-dev.in
-flake8-bugbear==24.4.26
+flake8-bugbear==24.10.31
     # via -r requirements_venv_YTDL312-dev.in
 flake8-builtins==2.5.0
     # via -r requirements_venv_YTDL312-dev.in
@@ -49,7 +49,7 @@ mccabe==0.7.0
     # via flake8
 mr-proper==0.0.7
     # via flake8-functions
-packaging==24.1
+packaging==24.2
     # via build
 pep8-naming==0.14.1
     # via -r requirements_venv_YTDL312-dev.in
@@ -62,13 +62,13 @@ pycodestyle==2.12.1
     #   flake8-print
 pyflakes==3.2.0
     # via flake8
-pyproject-hooks==1.1.0
+pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-stdlib-list==0.10.0
+stdlib-list==0.11.0
     # via mr-proper
-wheel==0.44.0
+wheel==0.45.0
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:

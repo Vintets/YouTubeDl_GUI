@@ -1,7 +1,7 @@
 
 # Проект YouTubeDl_GUI
 
-GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2024.8.1
+GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2024.11.4
 
 <div align="center">
 <!-- ![YouTubeDl_GUI](https://github.com/Vintets/YouTubeDl_GUI/raw/master/zYouTubeDl_GUI_development/YT-DLP_128.png)  -->
@@ -32,7 +32,7 @@ pip install -r requirements_venv_YTDL312.txt
 
 > pip install pyperclip
 
-> pip install yt-dlp==2024.4.9
+> pip install yt-dlp==2024.11.4
 
 + ffmpeg-master-latest-win64-gpl_fix
 
@@ -82,13 +82,13 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 
 ## Скриншоты
 
-ver 2.1.0  
+ver 2.1.0
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2024-05-08_14-56-08_v2.1.0_screenshot_5.png)
 
-ver 1.5.3  
+ver 1.5.3
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2023-02-28_17-24-24_v1.5.3_screenshot_3.png)
 
-clear open  
+clear open
 ![Скриншот работы скрипта](https://github.com/Vintets/YouTubeDl_GUI/raw/master/screenshots/2024-05-08_15-15-51_v2.1.0_screenshot_6.png)
 
 
@@ -98,7 +98,7 @@ ____
 
 ## License
 
-:license:  
+:license:
 /*******************************************************
  * Copyright 2022 Vintets <programmer@vintets.ru> - All Rights Reserved
  *
@@ -108,7 +108,7 @@ ____
  *
  * This file is part of YouTubeDl_GUI project.
  * YouTubeDl_GUI can not be copied and/or distributed without the express
- * permission of Vintets  
+ * permission of Vintets
 *******************************************************/
 
 ____
