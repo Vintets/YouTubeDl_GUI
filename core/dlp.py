@@ -228,7 +228,9 @@ class YoutubeDlExternal:
             id_ = info['id']
             title = info['title']
             expected_filename = f'{title}_[{id_}?_f*.webp'
+            print('Файл webp', expected_filename)
             for expected_file in config.PATH_SAVE_WIN.glob(expected_filename):
+                cprint(f'2Конвертация webp ^20_{expected_file}')
                 file_out = expected_file.parent / f'{expected_file.stem}.jpg'
                 image_convert(expected_file, file_out)
 
