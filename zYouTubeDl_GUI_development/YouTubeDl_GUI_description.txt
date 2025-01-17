@@ -509,6 +509,7 @@ Rutube
 https://rutube.ru/video/ed6628db75f766ff95b6683d214caed0/?r=a
 https://rutube.ru/video/ed44d6b483b40317cc3603940aea2d5c/
 https://rutube.ru/shorts/07067e3e9ffc258c8d544839751be1ea/
+https://rutube.ru/play/embed/fcabdb49d55d23d654bd6708941cff8d
 list
 https://rutube.ru/plst/139621/      # ERROR: Unsupported URL
 
@@ -580,6 +581,10 @@ yt-dlp --write-thumbnail -f hls-702 https://vk.com/video175062719_456239338
 https://vk.com/clip-152111071_456254458
 
 
+# prefixes=('hls-', 'url', 'dash_sep-')
+dash_sep-5+dash_sep-9
+
+
 # ======================================================================================================================
             *** Video Rutube (Рутуб) ***
 
@@ -597,3 +602,16 @@ yt-dlp --write-thumbnail -f default-892-0 https://rutube.ru/video/ed6628db75f766
 
 yt-dlp --get-title -F https://node.thebadcomedian.ru/hls/chuk_review_hd/index_hd.m3u8
 yt-dlp --write-thumbnail -f 0 https://node.thebadcomedian.ru/hls/chuk_review_hd/index_hd.m3u8
+
+
+# ==================================================================================================
+            *** Проблемные символы YouTube ***
+
+
+ ｜ 
+？
+＂Слово＂
+Эйфория
+
+
+# ==================================================================================================
