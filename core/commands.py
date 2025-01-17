@@ -1,7 +1,7 @@
 import threading
 
 from core.cprint_linux import cprint
-from core.dlp import YoutubeDlExternal
+from core.dlp import YoutubeDlExternal, VHost
 from core.validators import validate_link_format, Validator
 
 
@@ -66,4 +66,12 @@ class Commands:
             threading.Thread(target=YoutubeDlExternal().format_custom,
                              kwargs={'link': self.get_valid_link()}).start()
         else:
-            cprint(f'4Форматы заданы неверно! Введите id формата или idVideo+idAudio, например 137+140')
+            if self.validator.get_vhost() == VHost.RT.value:
+                sample = 'default-1614-0'
+            elif self.validator.get_vhost() == VHost.VK.value:
+                sample = 'hls-702+dash_sep-9'
+            elif self.validator.get_vhost() == VHost.YT.value:
+                sample = '137+140'
+            else:
+                sample = '137+140'
+            cprint(f'4Форматы заданы неверно! Введите id формата или idVideo+idAudio, например {sample}')
