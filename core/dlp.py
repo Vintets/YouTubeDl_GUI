@@ -236,7 +236,7 @@ class YoutubeDlExternal:
 
 
 class VHost(Enum):
-    """Verbs specified in RKSOK specs for requests"""
+    """Video hosting name"""
 
     NONE = ''
     YT = 'YouTube'
