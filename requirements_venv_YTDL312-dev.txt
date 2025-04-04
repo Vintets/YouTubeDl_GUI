@@ -4,20 +4,20 @@
 #
 #    pip-compile --output-file=requirements_venv_YTDL312-dev.txt requirements_venv_YTDL312-dev.in
 #
-attrs==24.2.0
+attrs==25.3.0
     # via flake8-bugbear
 build==1.2.2.post1
     # via pip-tools
-click==8.1.7
+click==8.1.8
     # via
     #   mr-proper
     #   pip-tools
 colorama==0.4.6
     # via
-    #   -c requirements_venv_YTDL312.txt
+    #   -c D:\YandexDisk\_Projects_Py\YouTubeDl_GUI\requirements_venv_YTDL312.txt
     #   build
     #   click
-flake8==7.1.1
+flake8==7.2.0
     # via
     #   -r requirements_venv_YTDL312-dev.in
     #   flake8-annotations-coverage
@@ -29,7 +29,7 @@ flake8==7.1.1
     #   pep8-naming
 flake8-annotations-coverage==0.0.6
     # via -r requirements_venv_YTDL312-dev.in
-flake8-bugbear==24.10.31
+flake8-bugbear==24.12.12
     # via -r requirements_venv_YTDL312-dev.in
 flake8-builtins==2.5.0
     # via -r requirements_venv_YTDL312-dev.in
@@ -55,20 +55,20 @@ pep8-naming==0.14.1
     # via -r requirements_venv_YTDL312-dev.in
 pip-tools==7.4.1
     # via -r requirements_venv_YTDL312-dev.in
-pycodestyle==2.12.1
+pycodestyle==2.13.0
     # via
     #   flake8
     #   flake8-import-order
     #   flake8-print
-pyflakes==3.2.0
+pyflakes==3.3.2
     # via flake8
 pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-stdlib-list==0.11.0
+stdlib-list==0.11.1
     # via mr-proper
-wheel==0.45.0
+wheel==0.45.1
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:

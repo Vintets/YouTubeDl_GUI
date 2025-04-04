@@ -1,4 +1,4 @@
 # requirements.in
 loguru
 pyperclip
-yt-dlp==2024.8.1
+yt-dlp==2025.3.31

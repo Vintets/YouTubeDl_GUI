@@ -4,35 +4,13 @@
 #
 #    pip-compile --output-file=requirements_venv_YTDL312.txt requirements_venv_YTDL312.in
 #
-brotli==1.1.0
-    # via yt-dlp
-certifi==2024.8.30
-    # via
-    #   requests
-    #   yt-dlp
-charset-normalizer==3.4.0
-    # via requests
 colorama==0.4.6
     # via loguru
-idna==3.10
-    # via requests
-loguru==0.7.2
+loguru==0.7.3
     # via -r requirements_venv_YTDL312.in
-mutagen==1.47.0
-    # via yt-dlp
-pycryptodomex==3.21.0
-    # via yt-dlp
 pyperclip==1.9.0
     # via -r requirements_venv_YTDL312.in
-requests==2.32.3
-    # via yt-dlp
-urllib3==2.2.3
-    # via
-    #   requests
-    #   yt-dlp
-websockets==14.0
-    # via yt-dlp
-win32-setctime==1.1.0
+win32-setctime==1.2.0
     # via loguru
-yt-dlp==2024.8.1
+yt-dlp==2025.3.31
     # via -r requirements_venv_YTDL312.in
