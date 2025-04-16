@@ -220,8 +220,7 @@ class Validator:
         if not analized_format.startswith(prefixes):
             return None
         for prefix in prefixes:
-            analized_format = self.exclude_substr(analized_format, prefix)
-            analized_format.replace(prefix, '', 2)
+            analized_format = analized_format.replace(prefix, '', 2)
         re_format = pattern.match(analized_format)
         if re_format is None or re_format.group() != analized_format:
             return None
