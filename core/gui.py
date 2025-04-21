@@ -94,6 +94,8 @@ class MainGUI(Tk):
         # 'tomato', 'blue4', 'orange red', 'dodger blue', 'yellow2', 'yellow3', 'dodger bluedeep sky blue'
         # 'snow', 'snow3','ivory2'
 
+        self.bind('<Control-Key>', self.copy_paste)
+
         self.buffer_insert()
         self.redirect_logging()
         authorship(author, title, version, copyright_, width=130)
@@ -407,3 +409,12 @@ class MainGUI(Tk):
 
     def set_writethumbnail(self):
         YoutubeDlExternal().set_writethumbnail(self.preview.get())
+
+    @staticmethod
+    def copy_paste(event):
+        if event.keycode == 86 and event.keysym != 'v':
+            event.widget.event_generate('<<Paste>>')
+        elif event.keycode == 67 and event.keysym != 'c':
+            event.widget.event_generate('<<Copy>>')
+        elif event.keycode == 88 and event.keysym != 'x':
+            event.widget.event_generate('<<Cut>>')
