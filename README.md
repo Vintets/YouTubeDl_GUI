@@ -30,6 +30,8 @@ pip install -r requirements_venv_YTDL312.txt
 включает:
 > pip install loguru
 
+> pip install pillow
+
 > pip install pyperclip
 
 > pip install yt-dlp==2025.3.31

@@ -8,7 +8,7 @@ attrs==25.3.0
     # via flake8-bugbear
 build==1.2.2.post1
     # via pip-tools
-click==8.1.8
+click==8.2.1
     # via
     #   mr-proper
     #   pip-tools
@@ -49,9 +49,9 @@ mccabe==0.7.0
     # via flake8
 mr-proper==0.0.7
     # via flake8-functions
-packaging==24.2
+packaging==25.0
     # via build
-pep8-naming==0.14.1
+pep8-naming==0.15.1
     # via -r requirements_venv_YTDL312-dev.in
 pip-tools==7.4.1
     # via -r requirements_venv_YTDL312-dev.in

@@ -8,6 +8,8 @@ colorama==0.4.6
     # via loguru
 loguru==0.7.3
     # via -r requirements_venv_YTDL312.in
+pillow==11.2.1
+    # via -r requirements_venv_YTDL312.in
 pyperclip==1.9.0
     # via -r requirements_venv_YTDL312.in
 win32-setctime==1.2.0
