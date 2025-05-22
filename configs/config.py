@@ -4,6 +4,7 @@ from pathlib import Path
 PATH_SAVE = '%HOMEDRIVE%\\%HOMEPATH%\\Desktop\\'
 PATH_SAVE_WIN = Path.home() / 'Desktop'
 PATH_LOGS = Path('logs')
+LOGGER_PREFIX = 'YouTubeDl_GUI'
 COLOR_TK_CONSOLE = True
 
 # Контейнеры, которые можно использовать при слиянии, например 'mp4/mkv' (avi, flv, mkv, mov, mp4, webm)
