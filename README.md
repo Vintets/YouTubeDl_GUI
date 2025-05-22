@@ -71,8 +71,8 @@ YouTubeDl_GUI
 ```
 
 ```cmd
-\venv\Scripts\activate.bat
-python3 YouTubeDl_GUI.py
+venv\Scripts\activate.bat
+python YouTubeDl_GUI.py
 ```
 
 через виртуальное окружение
