@@ -585,6 +585,9 @@ yt-dlp --write-thumbnail -f hls-702 https://vk.com/video175062719_456239338
 https://vk.com/clip-152111071_456254458
 
 
+https://vkvideo.ru/video-7902145_456244218
+
+
 # prefixes=('hls-', 'url', 'dash_sep-')
 dash_sep-5+dash_sep-9
 

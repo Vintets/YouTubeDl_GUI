@@ -76,7 +76,7 @@ class Validator:
         return link.netloc == 'rutube.ru'
 
     def detection_vkontakte(self, link: ParseResult) -> bool:
-        return link.netloc == 'vk.com'
+        return link.netloc in ('vk.com', 'vkvideo.ru',)
 
     def detection_youtube(self, link: ParseResult) -> bool:
         return link.netloc in ('youtu.be', 'www.youtube.com',)
@@ -135,7 +135,7 @@ class Validator:
             if __clip:
                 self.verified_link = urlunparse(link._replace(query=''))
             else:
-                self.verified_link = f'https://vk.com/video{video_id}'
+                self.verified_link = f'https://{link.netloc}/video{video_id}'
         else:
             result = False
             self.set_empty_link()
