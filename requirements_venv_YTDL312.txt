@@ -9,9 +9,15 @@ colorama==0.4.6
 loguru==0.7.3
     # via -r requirements_venv_YTDL312.in
 pillow==11.2.1
-    # via -r requirements_venv_YTDL312.in
+    # via
+    #   -r requirements_venv_YTDL312.in
+    #   pystray
 pyperclip==1.9.0
     # via -r requirements_venv_YTDL312.in
+pystray==0.19.5
+    # via -r requirements_venv_YTDL312.in
+six==1.17.0
+    # via pystray
 win32-setctime==1.2.0
     # via loguru
 yt-dlp==2025.3.31

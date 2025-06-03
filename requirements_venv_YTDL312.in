@@ -2,4 +2,5 @@
 loguru
 pillow
 pyperclip
+pystray
 yt-dlp==2025.3.31

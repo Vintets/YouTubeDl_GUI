@@ -34,6 +34,8 @@ pip install -r requirements_venv_YTDL312.txt
 
 > pip install pyperclip
 
+> pip install pystray
+
 > pip install yt-dlp==2025.3.31
 
 + ffmpeg-master-latest-win64-gpl_fix

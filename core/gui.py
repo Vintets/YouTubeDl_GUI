@@ -12,7 +12,9 @@ from core.commands import Commands
 from core.dlp import YoutubeDlExternal
 from core.tooltip import Tooltip
 from core.validators import Validator
+from PIL import Image
 import pyperclip
+import pystray
 
 
 class TextRedirector:
@@ -76,6 +78,7 @@ class TextRedirector:
 
 class MainGUI(Tk):
     def __init__(self, author: str, title: str, version: str, copyright_: str) -> None:
+        self.icon = 'YT-DLP.ico'
         self.validator = Validator()
         self.commands = Commands(validator=self.validator, gui=self)
         self.height_console = 48
@@ -83,7 +86,7 @@ class MainGUI(Tk):
         Tk.__init__(self)
         self.title(f'YouTubeDl_GUI v{version}')
         self.geometry('+490+150')
-        self.iconbitmap('YT-DLP.ico')
+        self.iconbitmap(self.icon)
 
         self.create_buttons_frame()
         self.create_consol_frame()
@@ -133,6 +136,12 @@ class MainGUI(Tk):
                                     font=('Arial', 8, 'bold'))
         self.label_err_link.grid(row=row, column=1, columnspan=4, padx=5, sticky='WE')
 
+        button_trey = Button(frame, text='↓', width=2, command=self.to_tray)
+        button_trey.grid(row=row, column=5, padx=16, pady=3, sticky='ES')
+        Tooltip(button_trey,
+                text='Свернуть в трей',
+                wraplength=100)
+
         self.field_link = Entry(frame, font=('consolas', '10', 'normal'),
                                 textvariable=self.inserted_link)
         self.field_link.grid(row=row + 1, column=1, columnspan=4, padx=5, sticky='WE')
@@ -150,6 +159,27 @@ class MainGUI(Tk):
         Tooltip(self.label_vhost,
                 text=f'Видеохостинг',
                 wraplength=150)
+
+    def to_tray(self):
+        """создать пиктограмму в трее и скрыть основное окно"""
+        img = Image.open(self.icon, formats=('ICO',))
+        img.size = (16, 16)
+        ic = pystray.Icon('test_icon', img, menu=pystray.Menu(
+                    pystray.MenuItem('Развернуть', action=self.menu_show_window, default=True),
+                    pystray.MenuItem('Выход', action=self.menu_quit_window)
+                    ))
+        self.withdraw()
+        ic.run()
+
+    def menu_show_window(self, icon, item):
+        icon.visible = False
+        icon.stop()
+        self.deiconify()
+        self.lift()
+
+    def menu_quit_window(self, icon, item):
+        icon.stop()
+        self.destroy()
 
     def create_widget_all_formats(self, frame, row):
         self.button_list_all_formats = Button(frame, text='Вывести список всех доступных форматов',
