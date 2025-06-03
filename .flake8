@@ -2,7 +2,7 @@
 max-line-length = 100
 max-complexity = 7
 import-order-style = google
-
+min-coverage-percents = 75
 
 # max_function_length = 25
 max_parameters_amount = 7
@@ -27,7 +27,7 @@ ignore =
     TAE001,
     # print found
     T201
-exclude = .git,.vscode,__pycache__,env,venv,logs,zYouTubeDl_GUI_development,*.db,*.bat,*.exe,*.png,*.jpg,*.webm,*.mp4,*.mkv,*.mp3,*.m4a
+exclude = .git,.vscode,__pycache__,env,venv,logs,zYouTubeDl_GUI_development,old,build,dist,*.db,*.bat,*.exe,*.png,*.jpg,*.webm,*.mp4,*.mkv,*.wav,*.mp3,*.m4a,*.xml,*.csv,*.xls,*.xlsx,*.zip
 
 inline-quotes = '
 
