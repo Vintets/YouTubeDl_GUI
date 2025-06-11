@@ -1,7 +1,7 @@
 
             *** yt-dlp ***
 
-youtube-dl давно не обновлялся, используем его форк yt-dlp  v.2024.4.9 (2025.3.31)
+youtube-dl давно не обновлялся, используем его форк yt-dlp  v.2024.4.9 (2025.6.9)
 
 
 # папка приложения
@@ -641,7 +641,7 @@ yt-dlp --write-thumbnail -f 0 https://node.thebadcomedian.ru/hls/chuk_review_hd/
             *** Проблемные символы YouTube ***
 
 
- ｜ 
+ ｜
 ？
 ＂Слово＂
 Эйфория
