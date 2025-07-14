@@ -17,6 +17,7 @@ Thumbs.db
 
 # Project files
 cookies*.txt
+/yt-dlp/yt-dlp_*.zip
 
 # Simlinks
 

@@ -17,7 +17,7 @@ colorama==0.4.6
     #   -c D:\YandexDisk\_Projects_Py\YouTubeDl_GUI\requirements_venv_YTDL312.txt
     #   build
     #   click
-flake8==7.2.0
+flake8==7.3.0
     # via
     #   -r requirements_venv_YTDL312-dev.in
     #   flake8-annotations-coverage
@@ -35,7 +35,7 @@ flake8-builtins==2.5.0
     # via -r requirements_venv_YTDL312-dev.in
 flake8-functions==0.0.8
     # via -r requirements_venv_YTDL312-dev.in
-flake8-import-order==0.18.2
+flake8-import-order==0.19.2
     # via -r requirements_venv_YTDL312-dev.in
 flake8-polyfill==1.0.2
     # via -r requirements_venv_YTDL312-dev.in
@@ -55,12 +55,12 @@ pep8-naming==0.15.1
     # via -r requirements_venv_YTDL312-dev.in
 pip-tools==7.4.1
     # via -r requirements_venv_YTDL312-dev.in
-pycodestyle==2.13.0
+pycodestyle==2.14.0
     # via
     #   flake8
     #   flake8-import-order
     #   flake8-print
-pyflakes==3.3.2
+pyflakes==3.4.0
     # via flake8
 pyproject-hooks==1.2.0
     # via
