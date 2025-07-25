@@ -98,13 +98,13 @@ clear open
 
 ____
 
-:copyright: 2022 by Vint
+:copyright: 2022-2025 by Vint
 
 ## License
 
 :license:
 /*******************************************************
- * Copyright 2022 Vintets <programmer@vintets.ru> - All Rights Reserved
+ * Copyright 2022-2025 Vintets <programmer@vintets.ru> - All Rights Reserved
  *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential

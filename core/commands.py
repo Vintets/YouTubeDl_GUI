@@ -71,7 +71,7 @@ class Commands:
             elif self.validator.get_vhost() == VHost.VK.value:
                 sample = 'hls-702+dash_sep-9'
             elif self.validator.get_vhost() == VHost.YT.value:
-                sample = '137+140'
+                sample = '137+140-1'
             else:
                 sample = '137+140'
             cprint(f'4Форматы заданы неверно! Введите id формата или idVideo+idAudio, например {sample}')

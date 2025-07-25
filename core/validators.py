@@ -22,7 +22,7 @@ class Validator:
     valid_characters_id_rt = string.ascii_lowercase + string.digits
     valid_characters_id_yt = string.ascii_letters + string.digits + '-_'
     valid_characters_id_vk = string.digits + '-_'
-    pattern_formats_yt = re.compile(r'\d{1,3}(\+\d{1,3})?')
+    pattern_formats_yt = re.compile(r'\d{1,3}(\+\d{1,3})?(-\d)?')
     pattern_formats_rt = re.compile(r'^\d{1,4}-[01]$')
     # pattern_formats_vk = re.compile(r'^\d{3,4}$')
     pattern_formats_vk = re.compile(r'\d{1,4}(\+\d{1,2})?')
