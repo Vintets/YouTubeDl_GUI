@@ -21,6 +21,8 @@ https://github.com/yt-dlp/yt-dlp
 
 ## Зависимости
 
+![Python version](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=ffdd54)
+
 > Требуется Python 3.12.0+
 
 Установка зависимостей:
@@ -36,9 +38,9 @@ pip install -r requirements_venv_YTDL312.txt
 
 > pip install pystray
 
-> pip install yt-dlp==2025.8.27
+> pip install yt-dlp==2025.8.27  [![yt-dlp](https://img.shields.io/badge/>__dlp-yt--dlp-red)](https://github.com/yt-dlp/yt-dlp)
 
-+ ffmpeg-master-latest-win64-gpl_fix
+- \+ ffmpeg-master-latest-win64-gpl_fix
 
 
 
