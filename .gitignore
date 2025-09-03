@@ -25,6 +25,7 @@ cookies*.txt
 /logs/
 
 # Other files
+*.tmp
 Очистка_компил_py3.bat
 *.png
 *.jpg
