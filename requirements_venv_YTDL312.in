@@ -3,4 +3,4 @@ loguru
 pillow
 pyperclip
 pystray
-yt-dlp==2025.8.27
+yt-dlp==2025.9.26

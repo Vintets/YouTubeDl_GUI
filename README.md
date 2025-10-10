@@ -1,7 +1,7 @@
 
 # Проект YouTubeDl_GUI
 
-GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2025.8.27
+GUI-враппер для консольной утилиты youtube-dl обновлён для yt-dlp v.2025.9.26
 
 <div align="center">
 <!-- ![YouTubeDl_GUI](https://github.com/Vintets/YouTubeDl_GUI/raw/master/zYouTubeDl_GUI_development/YT-DLP_128.png)  -->
@@ -38,7 +38,7 @@ pip install -r requirements_venv_YTDL312.txt
 
 > pip install pystray
 
-> pip install yt-dlp==2025.8.27  [![yt-dlp](https://img.shields.io/badge/>__dlp-yt--dlp-red)](https://github.com/yt-dlp/yt-dlp)
+> pip install yt-dlp==2025.9.26  [![yt-dlp](https://img.shields.io/badge/>__dlp-yt--dlp-red)](https://github.com/yt-dlp/yt-dlp)
 
 - \+ ffmpeg-master-latest-win64-gpl_fix
 
