@@ -1,16 +1,22 @@
 # System
 Thumbs.db
 *.bak
+*~
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+*.py[cod]
+*$py.class
 
 # Venv
 /env/
-/env2/
 /venv/
+env.bak/
+venv.bak/
 
 # Configs
 
 # Project dirs
-**/__pycache__/
 /zYouTubeDl_GUI_development/*
 /media/
 /screenshots/*
@@ -23,6 +29,7 @@ cookies*.txt
 
 # Log files
 /logs/
+*.log
 
 # Other files
 *.tmp
