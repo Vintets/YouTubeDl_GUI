@@ -11,7 +11,7 @@ except ModuleNotFoundError:
         PATH_LOGS = Path('.')
         LOGGER_PREFIX = 'test'
         LOGGER_NAME_MODULE = True
-    config = FakerConf
+    config: FakerConf = FakerConf  # type: ignore [no-redef]
 from loguru import logger
 
 
@@ -45,7 +45,7 @@ logger.add(FILENAME_LOG_ERR,
            delay=True)
 
 
-def exemples() -> None:
+def _exemples() -> None:
     logger.trace('Hello, World (trace)!')
     logger.debug('Hello, World (debug)!')
     logger.info('Hello, World (info)!')
@@ -71,4 +71,4 @@ if __name__ == '__main__':
     # os.system('color 71')
     os.system('mode con cols=%d lines=%d' % (width, hight))
     os.system('powershell -command "&{$H=get-host;$W=$H.ui.rawui;$B=$W.buffersize;$B.width=%d;$B.height=%d;$W.buffersize=$B;}"' % (width, 4000))
-    exemples()
+    _exemples()
