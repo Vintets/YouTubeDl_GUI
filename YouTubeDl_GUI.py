@@ -34,7 +34,7 @@ from configs import config  # noqa: E402
 from core.gui import MainGUI  # noqa: E402
 
 
-__version_info__ = ('2', '7', '6')
+__version_info__ = ('2', '7', '7')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -61,7 +61,7 @@ def main():
 
 if __name__ == '__main__':
     init_console(width=130, hight=54)
-    check_version()
+    check_version(version=(3, 12, 0))
 
     authorship(__author__, __title__, __version__, __copyright__)  # width=_width
 
