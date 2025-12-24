@@ -34,7 +34,7 @@ from configs import config  # noqa: E402
 from core.gui import MainGUI  # noqa: E402
 
 
-__version_info__ = ('2', '7', '8')
+__version_info__ = ('2', '7', '9')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
@@ -49,7 +49,7 @@ def exit_from_program(code: int = 0) -> None:
         os._exit(code)
 
 
-def main():
+def main() -> None:
     app = MainGUI(
                   author=__author__,
                   title=__title__,

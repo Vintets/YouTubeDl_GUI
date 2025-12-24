@@ -1,13 +1,20 @@
+from functools import wraps
 import re
 import string
+from typing import Any, Callable, Concatenate, ParamSpec, TypeVar
 from urllib.parse import parse_qsl, ParseResult, quote, unquote, urldefrag, urlencode, urlparse, urlunparse
 
 from core.dlp import VHost
 from yt_dlp.utils import DownloadError, ExtractorError
 
 
-def validate_link_format(func):
-    def wrapper(self, *args, **kwargs):
+Param = ParamSpec('Param')
+RetType = TypeVar('RetType')
+
+
+def validate_link_format(func: Callable[Param, RetType]) -> Callable[Concatenate[str, Param], RetType]:
+    @wraps(func)
+    def wrapper(self: Any, *args: Param.args, **kwargs: Param.kwargs) -> None:
         if not self.get_valid_link():
             print('Формат ссылки неправильный!')
             return
@@ -28,12 +35,12 @@ class Validator:
     pattern_formats_vk = re.compile(r'\d{1,4}(\+\d{1,2})?')
 
     def __init__(self) -> None:
-        self.vhost = ''
+        self.vhost: str = ''
         self.reset_vhost()
-        self.original_link = ''
-        self.video_id = None
-        self.verified_link = ''
-        self.video_list = ''
+        self.original_link: str = ''
+        self.video_id: str | None = None
+        self.verified_link: str = ''
+        self.video_list: str = ''
 
     def exclude_substr(self, full_str: str, substr: str) -> str:
         if full_str.startswith(substr):
@@ -188,7 +195,7 @@ class Validator:
             return video_id
         return None
 
-    def validate_video_format(self, video_format: str) -> (str | None):
+    def validate_video_format(self, video_format: str | None) -> (str | None):
         if not video_format:
             return video_format
 
@@ -213,7 +220,7 @@ class Validator:
 
     def validate_rutube_vkontakte_video_format(self,
                                                video_format: str,
-                                               prefixes: tuple[str],
+                                               prefixes: tuple[str, ...],
                                                pattern: re.Pattern
                                                ) -> (str | None):
         analized_format = video_format
@@ -234,7 +241,7 @@ class Validator:
         # исключаем начало id с 0
         for _f in re_format.group().split('+'):
             if _f.startswith('0'):
-                video_format = None
+                return None
                 break
         return video_format
 
@@ -243,7 +250,7 @@ class Validator:
         filtered_query_params = {key: query_params[key] for key in allowed_parameters if query_params.get(key, False)}
         return filtered_query_params
 
-    def get_vhost(self) -> VHost:
+    def get_vhost(self) -> str:
         return self.vhost
 
     def set_video_list(self, video_list: str) -> None:
