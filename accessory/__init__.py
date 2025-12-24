@@ -1,8 +1,8 @@
-from .authorship import authorship  # noqa: E402
+from .author_ship import authorship
 from .clear_console import clear_console  # noqa: E402
 from .colorprint import cprint  # noqa: E402
-from .loguru_log import logger  # noqa: E402
-from .utils import check_version, create_dirs  # noqa: E402
+from .loguru_log import logger
+from .utils import check_version, create_dirs
 
 
 __all__ = (

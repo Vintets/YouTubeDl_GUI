@@ -112,7 +112,7 @@ def _set_color(color: int, force_linux: bool = False) -> str:
 # --------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    from authorship import authorship
+    from author_ship import authorship
     from clear_console import clear_console
     _width = 100
     _hight = 50
