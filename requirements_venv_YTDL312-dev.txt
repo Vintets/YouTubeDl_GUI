@@ -8,7 +8,7 @@ attrs==25.4.0
     # via flake8-bugbear
 build==1.3.0
     # via pip-tools
-click==8.3.0
+click==8.3.1
     # via
     #   mr-proper
     #   pip-tools
@@ -29,9 +29,9 @@ flake8==7.3.0
     #   pep8-naming
 flake8-annotations-coverage==0.0.6
     # via -r requirements_venv_YTDL312-dev.in
-flake8-bugbear==24.12.12
+flake8-bugbear==25.11.29
     # via -r requirements_venv_YTDL312-dev.in
-flake8-builtins==3.0.0
+flake8-builtins==3.1.0
     # via -r requirements_venv_YTDL312-dev.in
 flake8-functions==0.0.8
     # via -r requirements_venv_YTDL312-dev.in
@@ -53,7 +53,7 @@ packaging==25.0
     # via build
 pep8-naming==0.15.1
     # via -r requirements_venv_YTDL312-dev.in
-pip-tools==7.5.1
+pip-tools==7.5.2
     # via -r requirements_venv_YTDL312-dev.in
 pycodestyle==2.14.0
     # via
@@ -66,7 +66,7 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-stdlib-list==0.11.1
+stdlib-list==0.12.0
     # via mr-proper
 wheel==0.45.1
     # via pip-tools

@@ -8,7 +8,7 @@ colorama==0.4.6
     # via loguru
 loguru==0.7.3
     # via -r requirements_venv_YTDL312.in
-pillow==11.3.0
+pillow==12.0.0
     # via
     #   -r requirements_venv_YTDL312.in
     #   pystray
@@ -20,5 +20,5 @@ six==1.17.0
     # via pystray
 win32-setctime==1.2.0
     # via loguru
-yt-dlp==2025.9.26
+yt-dlp==2025.12.8
     # via -r requirements_venv_YTDL312.in
