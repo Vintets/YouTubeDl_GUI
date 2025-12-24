@@ -29,7 +29,7 @@ import time
 PATH_SCRIPT = Path(__file__).parent
 os.chdir(PATH_SCRIPT)
 
-from accessory import authorship, check_version, clear_console, logger  # noqa: E402
+from accessory import authorship, check_version, init_console, logger  # noqa: E402
 from configs import config  # noqa: E402
 from core.gui import MainGUI  # noqa: E402
 
@@ -60,18 +60,7 @@ def main():
 
 
 if __name__ == '__main__':
-    _width = 130
-    _hight = 54
-    if sys.platform == 'win32':
-        os.system('color 71')
-        # os.system('mode con cols=%d lines=%d' % (_width, _hight))
-    else:
-        os.system('setterm -background white -foreground white -store')
-        # ubuntu terminal
-        os.system('setterm -term linux -back $blue -fore white -clear')
-    # PATH_SCRIPT = Path(__file__).parent
-    # os.chdir(PATH_SCRIPT)
-    clear_console()
+    init_console(width=130, hight=54)
     check_version()
 
     authorship(__author__, __title__, __version__, __copyright__)  # width=_width

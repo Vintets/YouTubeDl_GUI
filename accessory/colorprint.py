@@ -113,13 +113,10 @@ def _set_color(color: int, force_linux: bool = False) -> str:
 
 if __name__ == '__main__':
     from author_ship import authorship
-    from clear_console import clear_console
-    _width = 100
+    from console import init_console
+    _width = 120
     _hight = 50
-    if sys.platform == 'win32':
-        os.system('color 71')
-        # os.system(f'mode con cols={_width} lines={_hight}')
-    clear_console()
+    init_console(width=_width, hight=_hight)
 
     __author__ = 'master by Vint'
     __title__ = '--- colorprint ---'
