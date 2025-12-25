@@ -37,6 +37,8 @@ start /B /D "%~dp0venv\Scripts" "python.exe" "%~dp0YouTubeDl_GUI.py"
 %windir%\system32\cmd.exe /C @color 71 && start /B /D ".\venv\Scripts" "python.exe" ".\YouTubeDl_GUI.py"
 
 
+python YouTubeDl_GUI.py
+
 
 # ======================================================================================================================
             *** Git ***
