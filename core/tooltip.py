@@ -1,5 +1,8 @@
-from tkinter import Frame, Label, Toplevel
+from tkinter import Event, Frame, Label, Toplevel
 from tkinter import LEFT, SOLID
+from tkinter.ttk import Button, Checkbutton, Combobox, Entry
+
+Widget = Button | Checkbutton | Combobox | Entry | Label
 
 
 class Tooltip:
@@ -33,13 +36,13 @@ class Tooltip:
     TODO: themes styles support
     """
 
-    def __init__(self, widget,  # noqa: CFQ002
+    def __init__(self, widget: Widget,  # noqa: CFQ002
                  *,
-                 bg='#FFFFEA',
-                 pad=(5, 3, 5, 3),
-                 text='widget info',
-                 waittime=400,
-                 wraplength=250):
+                 bg: str = '#FFFFEA',
+                 pad: tuple[int, int, int, int] = (5, 3, 5, 3),
+                 text: str = 'widget info',
+                 waittime: int = 400,
+                 wraplength: int = 250) -> None:
 
         self.waittime = waittime  # in miliseconds, originally 500
         self.wraplength = wraplength  # in pixels, originally 180
@@ -50,30 +53,32 @@ class Tooltip:
         self.widget.bind('<ButtonPress>', self.on_leave)
         self.bg = bg
         self.pad = pad
-        self.id = None
-        self.tw = None
+        self.id: str | None = None
+        self.tw: Toplevel | None = None
 
-    def on_enter(self, event=None):
+    def on_enter(self, event: Event | None = None) -> None:
         self.schedule()
 
-    def on_leave(self, event=None):
+    def on_leave(self, event: Event | None = None) -> None:
         self.unschedule()
         self.hide()
 
-    def schedule(self):
+    def schedule(self) -> None:
         self.unschedule()
         self.id = self.widget.after(self.waittime, self.show)
 
-    def unschedule(self):
+    def unschedule(self) -> None:
         id_ = self.id
         self.id = None
         if id_:
             self.widget.after_cancel(id_)
 
     @staticmethod
-    def tip_pos_calculator(widget, label,
+    def tip_pos_calculator(widget: Widget, label: Label,
                            *,
-                           tip_delta=(10, 5), pad=(5, 3, 5, 3)):
+                           tip_delta: tuple[int, int] = (10, 5),
+                           pad: tuple[int, int, int, int] = (5, 3, 5, 3)
+                           ) -> tuple[int, int]:
 
         _w = widget
 
@@ -117,7 +122,7 @@ class Tooltip:
 
         return x1, y1
 
-    def show(self):
+    def show(self) -> None:
         bg = self.bg
         pad = self.pad
         widget = self.widget
@@ -147,7 +152,7 @@ class Tooltip:
         _x, _y = self.tip_pos_calculator(widget, label)
         self.tw.wm_geometry('+%d+%d' % (_x, _y))
 
-    def hide(self):
+    def hide(self) -> None:
         tw = self.tw
         if tw:
             tw.destroy()
