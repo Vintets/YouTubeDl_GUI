@@ -1,6 +1,7 @@
 from enum import Enum
 import json  # noqa: F401
 import subprocess
+from typing import Any, Self
 
 from configs import config
 from core.cprint_linux import cprint
@@ -11,7 +12,7 @@ from yt_dlp import YoutubeDL
 from yt_dlp.downloader import FileDownloader
 
 
-def _prepare_multiline_status_color_tk(self, lines=1):
+def _prepare_multiline_status_color_tk(self: Any, lines: int = 1) -> None:
     """Path FileDownloader._prepare_multiline_status for all color output"""
     from yt_dlp.minicurses import (
         BreaklineStatusPrinter,
@@ -31,7 +32,7 @@ def _prepare_multiline_status_color_tk(self, lines=1):
 
 
 class YoutubeDLColorTk(YoutubeDL):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: tuple[Any, ...], **kwargs: dict[str, Any]) -> None:
         super().__init__(*args, **kwargs)
         self._allow_colors.out = True
 
@@ -46,19 +47,19 @@ class YoutubeDLColorTk(YoutubeDL):
 
 class YoutubeDlExternal:
     instance = None
-    youtube_dl = None
+    youtube_dl: YoutubeDLColorTk | YoutubeDL
     bitrate_mp3 = None
     formats = None
     writethumbnail = False
     nocheckcertificate = True
     out_format = config.MERGE_OUTPUT_FORMAT
 
-    def __new__(cls):
+    def __new__(cls) -> Self:
         if cls.instance is None:
             cls.instance = super().__new__(cls)
         return cls.instance
 
-    def __init__(self):
+    def __init__(self) -> None:
         if config.COLOR_TK_CONSOLE:
             self.youtube_dl = YoutubeDLColorTk
         else:
@@ -76,14 +77,14 @@ class YoutubeDlExternal:
         }
         self.append_cookies(self.base_opts)
 
-    def external_list_all_available_formats_(self, link=None):
+    def external_list_all_available_formats_(self, link: str | None = None) -> None:
         if link:
             ytdl = f'yt-dlp.exe -F {link}'
             # subprocess.call(ytdl, shell=True)
             subprocess.check_call(ytdl, shell=False)
 
-    def get_listformats_dict(self, link=None):
-        ydl_opts = {}
+    def get_listformats_dict(self, link: str | None = None) -> Any:
+        ydl_opts: dict[str, Any] = {}
         with self.youtube_dl(ydl_opts) as ydl:
             info_obj = ydl.extract_info(link, download=False)
 
@@ -92,22 +93,23 @@ class YoutubeDlExternal:
             # print(json.dumps(info))
         return info
 
-    def append_cookies(self, ydl_opts=''):
+    def append_cookies(self, ydl_opts: dict[str, Any]) -> None:
         cookies = config.COOKIES_YT
         if config.USE_COOKIES and cookies:
             ydl_opts['cookiefile'] = cookies
 
-    def out_title(self, link=None):
-        ydl_opts = {
+    def out_title(self, link: str | None = None) -> None:
+        ydl_opts: dict[str, Any] = {
             'forcetitle': True,
             'skip_download': True,
             'logger': MyLogger(),
         }
+        assert self.youtube_dl is not None
         with self.youtube_dl(ydl_opts) as ydl:
             ydl.download([link])
 
     @download_error
-    def out_info(self, link=None):
+    def out_info(self, link: str | None = None) -> None:
         info = self.get_listformats_dict(link=link)
         id_ = info['id']
         title = info['title']
@@ -123,8 +125,8 @@ class YoutubeDlExternal:
         cprint(f'20    Наилучшие форматы по умолчанию: ^5_{format_id}')
 
     @download_error
-    def listformats(self, link=None):
-        ydl_opts = {
+    def listformats(self, link: str | None = None) -> None:
+        ydl_opts: dict[str, Any] = {
             'forcetitle': True,
             'listformats': True,
             # 'logger': MyLogger(),
@@ -134,8 +136,8 @@ class YoutubeDlExternal:
             ydl.download([link])
 
     @download_error
-    def format1080mp4(self, link=None):
-        ydl_opts = {
+    def format1080mp4(self, link: str) -> None:
+        ydl_opts: dict[str, Any] = {
             # [vcodec~="^((he|a)vc|h26[45])"]   # с кодеком h264 или h265
             # [protocol^=http]                  # по прямой ссылке по протоколу HTTP/HTTPS
             'format': '(bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a])[protocol^=http]/best[ext=mp4][protocol^=http]/best',
@@ -146,8 +148,8 @@ class YoutubeDlExternal:
         self.thumbnail_convert(link)
 
     @download_error
-    def format1080(self, link=None):
-        ydl_opts = {
+    def format1080(self, link: str) -> None:
+        ydl_opts: dict[str, Any] = {
             'format': 'bestvideo[height<=?1080]+bestaudio/best',
         }
         ydl_opts.update(self.base_opts)
@@ -158,8 +160,8 @@ class YoutubeDlExternal:
         self.thumbnail_convert(link)
 
     @download_error
-    def format_best(self, link=None):
-        ydl_opts = {
+    def format_best(self, link: str) -> None:
+        ydl_opts: dict[str, Any] = {
             'format': 'bestvideo+bestaudio/best',
         }
         ydl_opts.update(self.base_opts)
@@ -170,8 +172,8 @@ class YoutubeDlExternal:
         self.thumbnail_convert(link)
 
     @download_error
-    def format_best_progressive(self, link=None):
-        ydl_opts = {
+    def format_best_progressive(self, link: str) -> None:
+        ydl_opts: dict[str, Any] = {
             'format': 'best',
         }
         ydl_opts.update(self.base_opts)
@@ -180,9 +182,9 @@ class YoutubeDlExternal:
         self.thumbnail_convert(link)
 
     @download_error
-    def format_mp3(self, link=None):
+    def format_mp3(self, link: str) -> None:
         print(f'Загрузка аудио дорожки и конвертация в mp3 с битрейтом {self.bitrate_mp3} kbps')
-        ydl_opts = {
+        ydl_opts: dict[str, Any] = {
             'forcetitle': True,
             'format': 'bestaudio/best[ext=m4a]/best',  # m4a/bestaudio/best
             'postprocessors': [{
@@ -197,8 +199,8 @@ class YoutubeDlExternal:
         self.thumbnail_convert(link)
 
     @download_error
-    def format_custom(self, link=None):
-        ydl_opts = {
+    def format_custom(self, link: str) -> None:
+        ydl_opts: dict[str, Any] = {
             'format': self.formats,
         }
         ydl_opts.update(self.base_opts)
@@ -208,21 +210,21 @@ class YoutubeDlExternal:
             ydl.download([link])
         self.thumbnail_convert(link)
 
-    def set_bitrate_mp3(self, bitrate_mp3, log=True):
+    def set_bitrate_mp3(self, bitrate_mp3: str, log: bool = True) -> None:
         self.bitrate_mp3 = bitrate_mp3[:-5]
         if log:
             print(f'Выбран битрейт mp3: {self.bitrate_mp3}')
 
-    def set_formats(self, formats):
+    def set_formats(self, formats: str) -> None:
         self.formats = formats
         cprint(f'20Выбраны форматы: ^14_{self.formats}')
 
-    def set_writethumbnail(self, value):
+    def set_writethumbnail(self, value: bool) -> None:
         self.writethumbnail = value
         message = 'включена' if self.writethumbnail else 'выключена'
         print(f'Загрузка картинки превью - {message}')
 
-    def thumbnail_convert(self, link):
+    def thumbnail_convert(self, link: str) -> None:
         if self.writethumbnail:
             info = self.get_listformats_dict(link=link)
             id_ = info['id']
