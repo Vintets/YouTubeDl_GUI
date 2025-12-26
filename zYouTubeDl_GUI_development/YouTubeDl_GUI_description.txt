@@ -219,6 +219,9 @@ yt-dlp --write-thumbnail -f bestaudio
 yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio
 
 
+yt-dlp --write-thumbnail -f 137/136,140-1/140 --merge-output-format "mp4/mkv" -o "%HOMEDRIVE%\%HOMEPATH%\Desktop\%(title)s_[%(id)s]_f%(format_id)s.%(ext)s" https://www.youtube.com/watch?v=GQVacwv2GkM
+
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             *** Выбор кодека ***
 
@@ -450,6 +453,9 @@ print('\033[31mText\033[0m')
 Warning : nsig extraction failed: You may experience throttling for some formats
 Install PhantomJS to workaround the issue. Please download it from
 https://phantomjs.org/download.html
+
+
+ПРЕДУПРЕЖДЕНИЕ: [youtube] Не удалось найти поддерживаемую среду выполнения JavaScript. По умолчанию включен только deno; чтобы использовать другую среду выполнения, добавьте --js-runtimes RUNTIME[:PATH] в вашу команду/конфигурацию. Извлечение видео с YouTube без среды выполнения JS устарело, и некоторые форматы могут отсутствовать. См. https://github.com/yt-dlp/yt-dlp/wiki/EJS для получения подробной информации об установке.
 
 
 # ==================================================================================================
