@@ -3,4 +3,4 @@ loguru
 pillow
 pyperclip
 pystray
-yt-dlp==2026.1.29
+yt-dlp==2026.2.04

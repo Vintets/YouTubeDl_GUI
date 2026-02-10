@@ -34,7 +34,7 @@ from configs import config  # noqa: E402
 from core.gui import MainGUI  # noqa: E402
 
 
-__version_info__ = ('2', '8', '2')
+__version_info__ = ('2', '8', '3')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'

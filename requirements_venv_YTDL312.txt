@@ -20,5 +20,5 @@ six==1.17.0
     # via pystray
 win32-setctime==1.2.0
     # via loguru
-yt-dlp==2026.1.29
+yt-dlp==2026.2.4
     # via -r requirements_venv_YTDL312.in
