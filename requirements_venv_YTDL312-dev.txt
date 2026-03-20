@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements_venv_YTDL312-dev.txt requirements_venv_YTDL312-dev.in
 #
-attrs==25.4.0
+attrs==26.1.0
     # via flake8-bugbear
 build==1.4.0
     # via pip-tools
@@ -55,7 +55,7 @@ packaging==26.0
     #   wheel
 pep8-naming==0.15.1
     # via -r requirements_venv_YTDL312-dev.in
-pip-tools==7.5.2
+pip-tools==7.5.3
     # via -r requirements_venv_YTDL312-dev.in
 pycodestyle==2.14.0
     # via
