@@ -211,6 +211,7 @@ yt-dlp -f bestvideo+bestaudio/best https://youtu.be/b_tdqGM4_sE
 yt-dlp -f mp4/bestvideo+m4a/bestaudio https://youtu.be/b_tdqGM4_sE
 
 # видео 299 или 303, аудио 140 или 251
+yt-dlp --write-thumbnail -f 137,140
 yt-dlp --write-thumbnail -f 299/303,140/251
 yt-dlp --write-thumbnail -f best
 yt-dlp --write-thumbnail -f bestvideo
@@ -220,6 +221,7 @@ yt-dlp -f 136/137/mp4/bestvideo,140/m4a/bestaudio
 
 
 yt-dlp --write-thumbnail -f 137/136,140-1/140 --merge-output-format "mp4/mkv" -o "%HOMEDRIVE%\%HOMEPATH%\Desktop\%(title)s_[%(id)s]_f%(format_id)s.%(ext)s" https://www.youtube.com/watch?v=GQVacwv2GkM
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
