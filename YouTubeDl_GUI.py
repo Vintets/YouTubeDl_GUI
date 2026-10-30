@@ -18,7 +18,7 @@
  * permission of Vintets
 *******************************************************/
 
-# for python 3.9.7 and over
+# for python 3.12.0 and over
 """
 
 import os
@@ -34,7 +34,7 @@ from configs import config  # noqa: E402
 from core.gui import MainGUI  # noqa: E402
 
 
-__version_info__ = ('2', '8', '5')
+__version_info__ = ('2', '8', '6')
 __version__ = '.'.join(__version_info__)
 __author__ = 'master by Vint'
 __title__ = '--- YouTubeDl_GUI ---'
