@@ -17,6 +17,7 @@ venv\Scripts\pythonw.exe YouTubeDl_GUI.py
 #WIN#
 # активация виртуального окружения
 %YandexDisk%\_Projects_Py\YouTubeDl_GUI\venv\Scripts\activate.bat
+%YandexDisk%\_Projects_Py\YouTubeDl_GUI\venvd\Scripts\activate.bat
 
 # деактивация окружения
 %YandexDisk%\_Projects_Py\YouTubeDl_GUI\venv\Scripts\deactivate.bat
@@ -81,13 +82,19 @@ pip install pip-tools
 # Компиляция
 pip-compile requirements_venv_YTDL312.in -o requirements_venv_YTDL312.txt
 pip-compile requirements_venv_YTDL312-dev.in -o requirements_venv_YTDL312-dev.txt
+pip-compile requirements_venv_YTDL312.in -o requirements_venv_YTDL314.txt
+pip-compile requirements_venv_YTDL312-dev.in -o requirements_venv_YTDL314-dev.txt
 
 # Установка
 pip-sync requirements_venv_YTDL312.txt requirements_venv_YTDL312-dev.txt
+pip-sync requirements_venv_YTDL314.txt requirements_venv_YTDL314-dev.txt
 
 # Upgrade
 pip-compile requirements_venv_YTDL312.in -o requirements_venv_YTDL312.txt --upgrade
 pip-compile requirements_venv_YTDL312-dev.in -o requirements_venv_YTDL312-dev.txt --upgrade
+
+pip-compile requirements_venv_YTDL312.in -o requirements_venv_YTDL314.txt --upgrade
+pip-compile requirements_venv_YTDL312-dev.in -o requirements_venv_YTDL314-dev.txt --upgrade
 
 
 # ======================================================================================================================

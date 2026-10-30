@@ -11,6 +11,7 @@ Thumbs.db
 # Venv
 /env/
 /venv/
+/venvd/
 env.bak/
 venv.bak/
 
